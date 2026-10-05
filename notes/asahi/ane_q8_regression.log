@@ -1,0 +1,19 @@
+PASS K=512 N=512 trial=0 max_error=0.00185091 relative_rmse=0.000213735
+PASS K=512 N=512 trial=1 max_error=0.0021229 relative_rmse=0.000222559
+PASS K=512 N=512 trial=2 max_error=0 relative_rmse=0
+PASS K=1024 N=2048 trial=0 max_error=0.0040021 relative_rmse=0.000215089
+PASS K=1024 N=2048 trial=1 max_error=0.00369941 relative_rmse=0.00021777
+PASS K=1024 N=2048 trial=2 max_error=0 relative_rmse=0
+PASS K=1024 N=3072 trial=0 max_error=0.00389392 relative_rmse=0.000210725
+PASS K=1024 N=3072 trial=1 max_error=0.00353759 relative_rmse=0.000210832
+PASS K=1024 N=3072 trial=2 max_error=0 relative_rmse=0
+PASS K=3072 N=1024 trial=0 max_error=0.0038506 relative_rmse=0.000204522
+PASS K=3072 N=1024 trial=1 max_error=0.00389214 relative_rmse=0.000211635
+PASS K=3072 N=1024 trial=2 max_error=0 relative_rmse=0
+PASS K=192 N=640 trial=0 max_error=0.00102044 relative_rmse=0.000212515
+PASS K=192 N=640 trial=1 max_error=0.00102624 relative_rmse=0.000214721
+PASS K=192 N=640 trial=2 max_error=0 relative_rmse=0
+PASS batch rows=1 K=1024 N=640 max_error=0.00210148 (including in-place)
+PASS batch rows=7 K=1024 N=640 max_error=0.00208836 (including in-place)
+PASS batch rows=32 K=1024 N=640 max_error=0.00213481 (including in-place)
+ANE submissions: 27

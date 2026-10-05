@@ -285,6 +285,50 @@ AGENTS.md       # symlinked → README.md (agent context)
 
 ## Environments
 
+### Asahi Linux
+
+The Python MLX path has been tested on an **8 GB M1 MacBook Air running
+Fedora Asahi Remix 44**, using
+[omarchy-mlx](https://github.com/joshuaswarren/omarchy-mlx) and stock
+Honeykrisp / Mesa 26.2.3. On the smaller Qwen3-0.6B bf16 target, ordinary
+autoregressive SD with a 4-bit draft **slowed down**: 33.83 → 10.82 tok/s
+(0.32×), averaged over four prompts and two passes. Three prompts also
+failed token identity against greedy decoding. These are compatibility
+findings, not a reproduction of the Qwen3-4B DFlash results above.
+
+The Swift/CoreML full-ANE runner still requires macOS; Linux ANE driver
+availability alone does not port that runner. See
+[notes/asahi_findings.md](./notes/asahi_findings.md) for setup, numerical
+probes, raw receipts, and reproduction commands.
+
+A native Linux DFlash draft path now uses a **copied `qwen3.c` ANE backend**
+inside this repo, with a trained Qwen3-0.6B draft and MLX/Vulkan target. Across
+four prompts × two passes × 100 tokens, scalar bf16 verification matched all
+800 tokens but slowed down: **22.30 → 15.56 tok/s (0.70×; best trial 0.75×)**.
+Batched bf16 verification averaged **0.45×** and failed token identity on
+capital and story. This is a working smaller-model port of the mechanism;
+the original 4B full-ANE speedup remains unreproduced. See
+[notes/asahi_dflash_findings.md](./notes/asahi_dflash_findings.md) for the
+remaining gaps, validation and native build/run instructions.
+
+The [home-project survey and bottleneck report](./notes/asahi_sd_project_survey.md)
+identifies reusable compiler/runtime components, measures small-block Vulkan
+verification and native ANE transfer costs, and links a
+[matched M1 macOS capture kit](./asahi/macos/README.md). Follow
+[task.md](./task.md) after Git pull on the same M1 under macOS; it includes the
+required ANE program, register and buffer dumps. The new macOS captures and
+their Linux replay remain pending.
+
+```bash
+# After creating .venv-asahi with the Vulkan wheel and its native dependencies:
+timeout 90 scripts/asahi_python.sh scripts/smoke_asahi_mlx.py
+timeout 600 scripts/asahi_python.sh scripts/bench_asahi_mlx.py \
+    --max-new 100 --num-draft 3 --repeats 2 --out notes/asahi/bench.json
+# Exit 2 means the benchmark completed but token identity failed.
+```
+
+### macOS
+
 Two Python environments are assumed in this repo:
 
 - **MLX venv** — Python 3.11, `mlx 0.31+`, `mlx-lm 0.31+`. All MLX-side work

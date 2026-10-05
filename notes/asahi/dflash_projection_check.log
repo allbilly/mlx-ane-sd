@@ -1,0 +1,2 @@
+{"committed_context": 10, "cosine": 0.9999998807907104, "relative_l2": 0.0004460476920939982, "max_absolute_error": 0.002073824405670166, "native_ids": [1181, 6233, 315, 13, 13, 13, 13], "reference_ids": [1181, 6233, 315, 13, 13, 13, 13], "top1_agreement": 1.0, "passed": true}
+{"committed_context": 11, "cosine": 0.9999998211860657, "relative_l2": 0.00042696495074778795, "max_absolute_error": 0.0025310516357421875, "native_ids": [6233, 323, 323, 323, 323, 323, 323], "reference_ids": [6233, 323, 323, 323, 323, 323, 323], "top1_agreement": 1.0, "passed": true}

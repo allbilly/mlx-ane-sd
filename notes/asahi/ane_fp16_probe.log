@@ -1,0 +1,6 @@
+[wait] another workload holds ane.lock
+{"k": 64, "n": 96, "rows": 1, "elapsed_s": 0.0018099970038747415, "max_error": 0.00017178058624267578, "cosine": 1.0, "passed": true}
+{"k": 128, "n": 256, "rows": 8, "elapsed_s": 7.996299973456189e-05, "max_error": 0.0002964138984680176, "cosine": 1.0, "passed": true}
+{"k": 1024, "n": 3072, "rows": 8, "elapsed_s": 0.0005533700023079291, "max_error": 0.0010080337524414062, "cosine": 1.0, "passed": true}
+{"k": 1024, "n": 4096, "rows": 7, "elapsed_s": 0.0010548630016273819, "max_error": 0.0009925365447998047, "cosine": 0.9999999403953552, "passed": true}
+{"k": 1024, "n": 8192, "rows": 7, "elapsed_s": 0.0010128180001629516, "max_error": 0.0012810230255126953, "cosine": 0.9999999403953552, "passed": true}

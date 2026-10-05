@@ -1,0 +1,3 @@
+target dtype mlx.core.bfloat16
+text Paris. The capital of Italy is Rome
+PASS pretrained Qwen3-0.6B bf16 GPU load/generate Device(gpu, 0)

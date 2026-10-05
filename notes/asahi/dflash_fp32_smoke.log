@@ -1,0 +1,23 @@
+[load] trained 0.6B DFlash on ANE; target on Vulkan
+[wait] another workload holds ane.lock
+[warmup] both paths
+0 capital baseline: 5.72 tok/s
+0 capital dflash: 6.68 tok/s
+  identity=True speedup=1.168x tokens/cycle=1.5333333333333334
+0 fibonacci baseline: 5.73 tok/s
+0 fibonacci dflash: 10.43 tok/s
+  identity=True speedup=1.821x tokens/cycle=2.3
+0 math baseline: 5.80 tok/s
+0 math dflash: 8.26 tok/s
+  identity=True speedup=1.424x tokens/cycle=1.9166666666666667
+0 story baseline: 5.62 tok/s
+0 story dflash: 7.14 tok/s
+  identity=True speedup=1.270x tokens/cycle=1.7692307692307692
+{
+  "baseline_mean_tps": 5.717856630607838,
+  "dflash_mean_tps": 8.127356959077732,
+  "mean_speedup": 1.4206490502967717,
+  "max_speedup": 1.821159017907948,
+  "all_token_identity": true,
+  "ane_submissions": 3537
+}

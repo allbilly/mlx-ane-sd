@@ -1,0 +1,8 @@
+{
+  "origin": "https://github.com/joshuaswarren/omarchy-mlx",
+  "revision": "ebbc441f24de8e820710ff31f68909e945a66364",
+  "files": {
+    "LICENSE": "a74138dc7f24477a0bdb283cfa7651db16d31e82b17a0c79dd7fcc9bd275431f",
+    "scripts/mlx_provenance.py": "21337ddd29e792911e1c2cbbdd17836c0b16925f556b57dd37355607ee83b8b3"
+  }
+}

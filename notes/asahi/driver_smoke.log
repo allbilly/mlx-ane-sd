@@ -1,0 +1,2 @@
+buffer round trip: OK (65536 bytes, device Apple M1 (G13G B1))
+trace: vk_submissions=0 vk_buffer_copies=0 vk_buffer_fills=0 vk_compute_dispatches=0 gpu_primitive_dispatches=0

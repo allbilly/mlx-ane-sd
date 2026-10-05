@@ -1,0 +1,18 @@
+{
+  "origin": "https://github.com/allbilly/Orion.git",
+  "revision": "6aee791010f554232140eef3d730bb8410d090e7",
+  "purpose": "Pinned macOS ANE runtime, IOSurface I/O and MIL builders for matched M1 capture; local artifact-copy extension is documented in README.md.",
+  "files": {
+    "LICENSE": "94f4476a4da386ed46f831cf7f5890ead55d3848b93642f02c1352c4564f87f7",
+    "core/ane_runtime.h": "8929bbac6d7ef49a38e3f026d16fc1e113ea2d22cf575474f79d87f74dd24d47",
+    "core/ane_runtime.m": "b2871f10bd3f7d3d1aaf43f2b5c62bd467471f735dffaabd0e415b6e19adf62d",
+    "core/iosurface_tensor.h": "1745c1e0e4f2339faa49a254f34769c31bafa74b226206bde1ee12b20a45ce52",
+    "core/iosurface_tensor.m": "638ff4a6073a7636ef57b0857b25ff9fb6765d3015d713870e3296431460fe7e",
+    "core/mil_builder.h": "6bd2d908b848e7d10455eaadbdfdde096b3b677d968d4edfaa3d408fa6d4e1ae",
+    "core/mil_builder.m": "dd788aefb823c7ca6f88142aabc71440ed9b8cc211ac1154db5dade9129515de"
+  },
+  "local_changes": {
+    "core/ane_runtime.h": "Declare orion_program_copy_artifacts.",
+    "core/ane_runtime.m": "Copy evaluated program artifacts before cleanup."
+  }
+}

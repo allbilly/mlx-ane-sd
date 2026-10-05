@@ -1,0 +1,3030 @@
+{
+  "schema": 1,
+  "started_utc": "2026-10-05T12:05:49.913073+00:00",
+  "procedure": "Measure real-prefix target calls and real-input linear routes on Vulkan.\n\nUses the four 100-token scalar baseline continuations already recorded in\ndflash_bf16_serial.json. All target calls start with the same teacher-forced\ncache history. Times include synchronous evaluation, feature extraction, and\ncache evaluation as in the DFlash runner. Padding and row-GEMV are diagnostics.\n",
+  "target": {
+    "model": "mlx-community/Qwen3-0.6B-bf16",
+    "revision": "42096995f6402fde107068cf530136fe64b604f8",
+    "config": {
+      "architectures": [
+        "Qwen3ForCausalLM"
+      ],
+      "attention_bias": false,
+      "attention_dropout": 0.0,
+      "bos_token_id": 151643,
+      "eos_token_id": 151645,
+      "head_dim": 128,
+      "hidden_act": "silu",
+      "hidden_size": 1024,
+      "initializer_range": 0.02,
+      "intermediate_size": 3072,
+      "max_position_embeddings": 40960,
+      "max_window_layers": 28,
+      "model_type": "qwen3",
+      "num_attention_heads": 16,
+      "num_hidden_layers": 28,
+      "num_key_value_heads": 8,
+      "rms_norm_eps": 1e-06,
+      "rope_scaling": null,
+      "rope_theta": 1000000,
+      "sliding_window": null,
+      "tie_word_embeddings": true,
+      "torch_dtype": "bfloat16",
+      "transformers_version": "4.51.0",
+      "use_cache": true,
+      "use_sliding_window": false,
+      "vocab_size": 151936
+    },
+    "files": {
+      "added_tokens.json": "c0284b582e14987fbd3d5a2cb2bd139084371ed9acbae488829a1c900833c680",
+      "config.json": "332d56de2e5cde28245ac8b1776639bf9f7ed55fc911dfd2399ae8872acee2a9",
+      "model.safetensors": "bfe05e58f5acdecd38e5f3e64c82071682683a73db0e57fd437523885a49f2ff",
+      "model.safetensors.index.json": "34238e9a50ea68c6c54c9d23a50f3839867ea8b5d63462121593571ebd37d64f",
+      "special_tokens_map.json": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd",
+      "tokenizer.json": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+      "tokenizer_config.json": "253153d0738ceb4c668d2eff957714dd2bea0b56de772a9fdccd96cbf517e6a0",
+      "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+    }
+  },
+  "mlx_provenance": {
+    "dist": "mlx-omarchy",
+    "verified": "match",
+    "mismatch": null,
+    "files": [
+      {
+        "path": "mlx/core.cpython-314-aarch64-linux-gnu.so",
+        "label": "mlx.core extension",
+        "sha256": "133e15fcb09eb678c8173a561e80a6e3d7680a4606fcd7933df2dc11470daf21",
+        "record_sha256": "133e15fcb09eb678c8173a561e80a6e3d7680a4606fcd7933df2dc11470daf21",
+        "match": true
+      },
+      {
+        "path": "mlx/lib/libmlx.so",
+        "label": "mlx/lib/libmlx.so",
+        "sha256": "1e82df97df9f3fd1cbc5830d8408317892522305c0e8d4ba772df8e42227600f",
+        "record_sha256": "1e82df97df9f3fd1cbc5830d8408317892522305c0e8d4ba772df8e42227600f",
+        "match": true
+      }
+    ],
+    "dist_version": "0.32.4.dev202610041653+6edd258",
+    "mx_version": "0.32.4.dev202610041653+6edd258",
+    "version_match": true
+  },
+  "source_bench_sha256": "e29c9184c9a04d8d2578485ad776c6f4246da4c25a3ad48bbbf4a096a8cbef5b",
+  "sources": {
+    "probe_asahi_sd_routes.py": "61d90d4f046ef585e1f86e408fd6d026e0c6078b95ece18da66f31ddfc3a78a7",
+    "asahi_verify_routes.py": "bcd1395068fc44a14cc6bbedf740189de740157e1d15edd088c64983efe35cce"
+  },
+  "memory_before": {
+    "MemTotal": 7865876480,
+    "MemAvailable": 3852681216,
+    "SwapTotal": 8589901824,
+    "SwapFree": 5479399424
+  },
+  "target_rows": [
+    {
+      "name": "capital",
+      "width": 1,
+      "route": "stock",
+      "median_ms": 45.12396900099702,
+      "samples_ms": [
+        47.342034995381255,
+        45.12396900099702,
+        43.41030799696455
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        1345
+      ],
+      "block_predictions": [
+        1345
+      ]
+    },
+    {
+      "name": "capital",
+      "width": 2,
+      "route": "stock",
+      "median_ms": 162.01999400072964,
+      "samples_ms": [
+        154.2027559989947,
+        162.01999400072964,
+        166.69528500642627
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        1345,
+        482
+      ],
+      "block_predictions": [
+        1345,
+        482
+      ]
+    },
+    {
+      "name": "capital",
+      "width": 2,
+      "route": "row-gemv",
+      "median_ms": 65.19095200201264,
+      "samples_ms": [
+        70.68673500180012,
+        65.19095200201264,
+        64.9667529942235
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        1345,
+        482
+      ],
+      "block_predictions": [
+        1345,
+        482
+      ]
+    },
+    {
+      "name": "capital",
+      "width": 2,
+      "route": "pad32",
+      "median_ms": 178.74416799895698,
+      "samples_ms": [
+        177.59800399653614,
+        178.74416799895698,
+        187.86792599712498
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        1345,
+        482
+      ],
+      "block_predictions": [
+        1345,
+        482
+      ]
+    },
+    {
+      "name": "capital",
+      "width": 4,
+      "route": "stock",
+      "median_ms": 156.63226800097618,
+      "samples_ms": [
+        156.63226800097618,
+        155.80210799816996,
+        172.86533000151394
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        1345,
+        482,
+        10948,
+        13
+      ],
+      "block_predictions": [
+        1345,
+        482,
+        10948,
+        13
+      ]
+    },
+    {
+      "name": "capital",
+      "width": 4,
+      "route": "row-gemv",
+      "median_ms": 100.20889899897156,
+      "samples_ms": [
+        91.0384669987252,
+        100.20889899897156,
+        108.01984399586217
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        1345,
+        482,
+        10948,
+        13
+      ],
+      "block_predictions": [
+        1345,
+        482,
+        10948,
+        13
+      ]
+    },
+    {
+      "name": "capital",
+      "width": 4,
+      "route": "pad32",
+      "median_ms": 181.64812300528865,
+      "samples_ms": [
+        179.62350099696778,
+        181.98004500300158,
+        181.64812300528865
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        1345,
+        482,
+        10948,
+        13
+      ],
+      "block_predictions": [
+        1345,
+        482,
+        10948,
+        13
+      ]
+    },
+    {
+      "name": "capital",
+      "width": 8,
+      "route": "stock",
+      "median_ms": 167.92350100149633,
+      "samples_ms": [
+        160.79177799838362,
+        169.0870839956915,
+        167.92350100149633
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        1345,
+        482,
+        10948,
+        13,
+        576,
+        3283,
+        374,
+        1083
+      ],
+      "block_predictions": [
+        1345,
+        482,
+        10948,
+        13,
+        576,
+        3283,
+        374,
+        1083
+      ]
+    },
+    {
+      "name": "capital",
+      "width": 8,
+      "route": "row-gemv",
+      "median_ms": 174.3057849962497,
+      "samples_ms": [
+        174.3057849962497,
+        175.95397900004173,
+        170.9506000042893
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        1345,
+        482,
+        10948,
+        13,
+        576,
+        3283,
+        374,
+        1083
+      ],
+      "block_predictions": [
+        1345,
+        482,
+        10948,
+        13,
+        576,
+        3283,
+        374,
+        1083
+      ]
+    },
+    {
+      "name": "capital",
+      "width": 8,
+      "route": "pad32",
+      "median_ms": 184.44735500088427,
+      "samples_ms": [
+        179.45410199899925,
+        192.22183800593484,
+        184.44735500088427
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        1345,
+        482,
+        10948,
+        13,
+        576,
+        3283,
+        374,
+        1083
+      ],
+      "block_predictions": [
+        1345,
+        482,
+        10948,
+        13,
+        576,
+        3283,
+        374,
+        1083
+      ]
+    },
+    {
+      "name": "capital",
+      "width": 16,
+      "route": "stock",
+      "median_ms": 158.6096679966431,
+      "samples_ms": [
+        158.6096679966431,
+        152.04065199941397,
+        159.82408700074302
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        1345,
+        482,
+        10948,
+        13,
+        576,
+        3283,
+        374,
+        1083,
+        2114,
+        311,
+        279,
+        11245,
+        8585,
+        22126,
+        11,
+        892
+      ],
+      "block_predictions": [
+        1345,
+        482,
+        10948,
+        13,
+        576,
+        3283,
+        374,
+        1083,
+        2114,
+        311,
+        279,
+        11245,
+        8585,
+        22126,
+        11,
+        892
+      ]
+    },
+    {
+      "name": "capital",
+      "width": 16,
+      "route": "row-gemv",
+      "median_ms": 292.31698399962625,
+      "samples_ms": [
+        292.31698399962625,
+        327.7571930011618,
+        282.6308779985993
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        1345,
+        482,
+        10948,
+        13,
+        576,
+        3283,
+        374,
+        1083,
+        2114,
+        311,
+        279,
+        11245,
+        8585,
+        22126,
+        11,
+        892
+      ],
+      "block_predictions": [
+        1345,
+        482,
+        10948,
+        13,
+        576,
+        3283,
+        374,
+        1083,
+        2114,
+        311,
+        279,
+        11245,
+        8585,
+        22126,
+        11,
+        892
+      ]
+    },
+    {
+      "name": "capital",
+      "width": 16,
+      "route": "pad32",
+      "median_ms": 178.2096309980261,
+      "samples_ms": [
+        176.91275299875997,
+        181.30630400264636,
+        178.2096309980261
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        1345,
+        482,
+        10948,
+        13,
+        576,
+        3283,
+        374,
+        1083,
+        2114,
+        311,
+        279,
+        11245,
+        8585,
+        22126,
+        11,
+        892
+      ],
+      "block_predictions": [
+        1345,
+        482,
+        10948,
+        13,
+        576,
+        3283,
+        374,
+        1083,
+        2114,
+        311,
+        279,
+        11245,
+        8585,
+        22126,
+        11,
+        892
+      ]
+    },
+    {
+      "name": "capital",
+      "width": 32,
+      "route": "stock",
+      "median_ms": 161.6009240024141,
+      "samples_ms": [
+        158.5410839979886,
+        162.53742700064322,
+        161.6009240024141
+      ],
+      "tokens_equal": false,
+      "scalar_predictions": [
+        1345,
+        482,
+        10948,
+        13,
+        576,
+        3283,
+        374,
+        1083,
+        2114,
+        311,
+        279,
+        11245,
+        8585,
+        22126,
+        11,
+        892,
+        6069,
+        311,
+        279,
+        21269,
+        315,
+        279,
+        8585,
+        5429,
+        13,
+        576,
+        8585,
+        22126,
+        374,
+        264,
+        13656,
+        13656
+      ],
+      "block_predictions": [
+        1345,
+        482,
+        10948,
+        13,
+        576,
+        3283,
+        374,
+        1083,
+        2114,
+        311,
+        279,
+        11245,
+        8585,
+        22126,
+        11,
+        892,
+        6069,
+        311,
+        279,
+        21269,
+        315,
+        279,
+        8585,
+        5429,
+        13,
+        576,
+        8585,
+        22126,
+        374,
+        264,
+        5089,
+        13656
+      ]
+    },
+    {
+      "name": "fibonacci",
+      "width": 1,
+      "route": "stock",
+      "median_ms": 48.35032299888553,
+      "samples_ms": [
+        48.35032299888553,
+        49.76307600009022,
+        47.685487996204756
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        17
+      ],
+      "block_predictions": [
+        17
+      ]
+    },
+    {
+      "name": "fibonacci",
+      "width": 2,
+      "route": "stock",
+      "median_ms": 165.8280179981375,
+      "samples_ms": [
+        165.56314199988265,
+        165.8280179981375,
+        166.90027099684812
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        17,
+        8
+      ],
+      "block_predictions": [
+        17,
+        8
+      ]
+    },
+    {
+      "name": "fibonacci",
+      "width": 2,
+      "route": "row-gemv",
+      "median_ms": 68.00111899792682,
+      "samples_ms": [
+        68.00111899792682,
+        70.21708299726015,
+        62.08189699827926
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        17,
+        8
+      ],
+      "block_predictions": [
+        17,
+        8
+      ]
+    },
+    {
+      "name": "fibonacci",
+      "width": 2,
+      "route": "pad32",
+      "median_ms": 182.80339099874254,
+      "samples_ms": [
+        182.80339099874254,
+        187.1591939998325,
+        181.38105400430504
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        17,
+        8
+      ],
+      "block_predictions": [
+        17,
+        8
+      ]
+    },
+    {
+      "name": "fibonacci",
+      "width": 4,
+      "route": "stock",
+      "median_ms": 166.41172699746676,
+      "samples_ms": [
+        155.9917439954006,
+        171.30248899775324,
+        166.41172699746676
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        17,
+        8,
+        284,
+        220
+      ],
+      "block_predictions": [
+        17,
+        8,
+        284,
+        220
+      ]
+    },
+    {
+      "name": "fibonacci",
+      "width": 4,
+      "route": "row-gemv",
+      "median_ms": 108.09538199828239,
+      "samples_ms": [
+        111.13738800486317,
+        103.08816099859541,
+        108.09538199828239
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        17,
+        8,
+        284,
+        220
+      ],
+      "block_predictions": [
+        17,
+        8,
+        284,
+        220
+      ]
+    },
+    {
+      "name": "fibonacci",
+      "width": 4,
+      "route": "pad32",
+      "median_ms": 180.4109270015033,
+      "samples_ms": [
+        180.9510120001505,
+        180.4109270015033,
+        179.1053409979213
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        17,
+        8,
+        284,
+        220
+      ],
+      "block_predictions": [
+        17,
+        8,
+        284,
+        220
+      ]
+    },
+    {
+      "name": "fibonacci",
+      "width": 8,
+      "route": "stock",
+      "median_ms": 159.0597929971409,
+      "samples_ms": [
+        159.0597929971409,
+        157.44399799586972,
+        199.14076299755834
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        17,
+        8,
+        284,
+        220,
+        16,
+        198,
+        2,
+        15801
+      ],
+      "block_predictions": [
+        17,
+        8,
+        284,
+        220,
+        16,
+        198,
+        2,
+        15801
+      ]
+    },
+    {
+      "name": "fibonacci",
+      "width": 8,
+      "route": "row-gemv",
+      "median_ms": 174.73287200118648,
+      "samples_ms": [
+        167.70935500244377,
+        175.3439989988692,
+        174.73287200118648
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        17,
+        8,
+        284,
+        220,
+        16,
+        198,
+        2,
+        15801
+      ],
+      "block_predictions": [
+        17,
+        8,
+        284,
+        220,
+        16,
+        198,
+        2,
+        15801
+      ]
+    },
+    {
+      "name": "fibonacci",
+      "width": 8,
+      "route": "pad32",
+      "median_ms": 175.5569579981966,
+      "samples_ms": [
+        175.90637499961304,
+        175.5569579981966,
+        173.0211180038168
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        17,
+        8,
+        284,
+        220,
+        16,
+        198,
+        2,
+        15801
+      ],
+      "block_predictions": [
+        17,
+        8,
+        284,
+        220,
+        16,
+        198,
+        2,
+        15801
+      ]
+    },
+    {
+      "name": "fibonacci",
+      "width": 16,
+      "route": "stock",
+      "median_ms": 156.96616299828747,
+      "samples_ms": [
+        156.96616299828747,
+        154.704575004871,
+        159.84187799767824
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        17,
+        8,
+        284,
+        220,
+        16,
+        198,
+        2,
+        15801,
+        7,
+        18,
+        8,
+        284,
+        220,
+        17,
+        198,
+        2
+      ],
+      "block_predictions": [
+        17,
+        8,
+        284,
+        220,
+        16,
+        198,
+        2,
+        15801,
+        7,
+        18,
+        8,
+        284,
+        220,
+        17,
+        198,
+        2
+      ]
+    },
+    {
+      "name": "fibonacci",
+      "width": 16,
+      "route": "row-gemv",
+      "median_ms": 306.41668500175,
+      "samples_ms": [
+        308.9059400008409,
+        306.41668500175,
+        294.14773900498403
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        17,
+        8,
+        284,
+        220,
+        16,
+        198,
+        2,
+        15801,
+        7,
+        18,
+        8,
+        284,
+        220,
+        17,
+        198,
+        2
+      ],
+      "block_predictions": [
+        17,
+        8,
+        284,
+        220,
+        16,
+        198,
+        2,
+        15801,
+        7,
+        18,
+        8,
+        284,
+        220,
+        17,
+        198,
+        2
+      ]
+    },
+    {
+      "name": "fibonacci",
+      "width": 16,
+      "route": "pad32",
+      "median_ms": 174.97541399643524,
+      "samples_ms": [
+        173.8807869987795,
+        174.97541399643524,
+        178.58904800232267
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        17,
+        8,
+        284,
+        220,
+        16,
+        198,
+        2,
+        15801,
+        7,
+        18,
+        8,
+        284,
+        220,
+        17,
+        198,
+        2
+      ],
+      "block_predictions": [
+        17,
+        8,
+        284,
+        220,
+        16,
+        198,
+        2,
+        15801,
+        7,
+        18,
+        8,
+        284,
+        220,
+        17,
+        198,
+        2
+      ]
+    },
+    {
+      "name": "fibonacci",
+      "width": 32,
+      "route": "stock",
+      "median_ms": 168.17006599740125,
+      "samples_ms": [
+        160.10346300026868,
+        168.17006599740125,
+        176.62616800225805
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        17,
+        8,
+        284,
+        220,
+        16,
+        198,
+        2,
+        15801,
+        7,
+        18,
+        8,
+        284,
+        220,
+        17,
+        198,
+        2,
+        15801,
+        7,
+        19,
+        8,
+        284,
+        220,
+        18,
+        198,
+        2,
+        15801,
+        7,
+        20,
+        8,
+        284,
+        220,
+        20
+      ],
+      "block_predictions": [
+        17,
+        8,
+        284,
+        220,
+        16,
+        198,
+        2,
+        15801,
+        7,
+        18,
+        8,
+        284,
+        220,
+        17,
+        198,
+        2,
+        15801,
+        7,
+        19,
+        8,
+        284,
+        220,
+        18,
+        198,
+        2,
+        15801,
+        7,
+        20,
+        8,
+        284,
+        220,
+        20
+      ]
+    },
+    {
+      "name": "math",
+      "width": 1,
+      "route": "stock",
+      "median_ms": 48.36840600182768,
+      "samples_ms": [
+        48.22248900018167,
+        48.68049099604832,
+        48.36840600182768
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        220
+      ],
+      "block_predictions": [
+        220
+      ]
+    },
+    {
+      "name": "math",
+      "width": 2,
+      "route": "stock",
+      "median_ms": 167.25914600101532,
+      "samples_ms": [
+        164.50438999891048,
+        167.25914600101532,
+        169.8095280007692
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        220,
+        17
+      ],
+      "block_predictions": [
+        220,
+        17
+      ]
+    },
+    {
+      "name": "math",
+      "width": 2,
+      "route": "row-gemv",
+      "median_ms": 70.42879200162133,
+      "samples_ms": [
+        71.00966900179628,
+        69.3047890017624,
+        70.42879200162133
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        220,
+        17
+      ],
+      "block_predictions": [
+        220,
+        17
+      ]
+    },
+    {
+      "name": "math",
+      "width": 2,
+      "route": "pad32",
+      "median_ms": 181.9473889991059,
+      "samples_ms": [
+        183.05964199680602,
+        179.6462169950246,
+        181.9473889991059
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        220,
+        17
+      ],
+      "block_predictions": [
+        220,
+        17
+      ]
+    },
+    {
+      "name": "math",
+      "width": 4,
+      "route": "stock",
+      "median_ms": 161.40846499911277,
+      "samples_ms": [
+        161.05063200666336,
+        168.70639999979176,
+        161.40846499911277
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        220,
+        17,
+        22,
+        14
+      ],
+      "block_predictions": [
+        220,
+        17,
+        22,
+        14
+      ]
+    },
+    {
+      "name": "math",
+      "width": 4,
+      "route": "row-gemv",
+      "median_ms": 102.86015999736264,
+      "samples_ms": [
+        102.86015999736264,
+        91.14521599985892,
+        111.41576399677433
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        220,
+        17,
+        22,
+        14
+      ],
+      "block_predictions": [
+        220,
+        17,
+        22,
+        14
+      ]
+    },
+    {
+      "name": "math",
+      "width": 4,
+      "route": "pad32",
+      "median_ms": 176.28429299657,
+      "samples_ms": [
+        168.30514799949015,
+        176.28429299657,
+        186.93119199451758
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        220,
+        17,
+        22,
+        14
+      ],
+      "block_predictions": [
+        220,
+        17,
+        22,
+        14
+      ]
+    },
+    {
+      "name": "math",
+      "width": 8,
+      "route": "stock",
+      "median_ms": 160.86171499773627,
+      "samples_ms": [
+        157.45587299898034,
+        165.8753509982489,
+        160.86171499773627
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        220,
+        17,
+        22,
+        14,
+        18,
+        284,
+        220,
+        24
+      ],
+      "block_predictions": [
+        220,
+        17,
+        22,
+        14,
+        18,
+        284,
+        220,
+        24
+      ]
+    },
+    {
+      "name": "math",
+      "width": 8,
+      "route": "row-gemv",
+      "median_ms": 175.9745000017574,
+      "samples_ms": [
+        172.17107499891426,
+        176.7386270003044,
+        175.9745000017574
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        220,
+        17,
+        22,
+        14,
+        18,
+        284,
+        220,
+        24
+      ],
+      "block_predictions": [
+        220,
+        17,
+        22,
+        14,
+        18,
+        284,
+        220,
+        24
+      ]
+    },
+    {
+      "name": "math",
+      "width": 8,
+      "route": "pad32",
+      "median_ms": 173.22295300255064,
+      "samples_ms": [
+        173.5632859999896,
+        169.80486099782865,
+        173.22295300255064
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        220,
+        17,
+        22,
+        14,
+        18,
+        284,
+        220,
+        24
+      ],
+      "block_predictions": [
+        220,
+        17,
+        22,
+        14,
+        18,
+        284,
+        220,
+        24
+      ]
+    },
+    {
+      "name": "math",
+      "width": 16,
+      "route": "stock",
+      "median_ms": 163.8534720041207,
+      "samples_ms": [
+        168.13910700147972,
+        163.8534720041207,
+        161.70175800652942
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        220,
+        17,
+        22,
+        14,
+        18,
+        284,
+        220,
+        24,
+        13,
+        5005,
+        11625,
+        220,
+        19,
+        87,
+        488,
+        220
+      ],
+      "block_predictions": [
+        220,
+        17,
+        22,
+        14,
+        18,
+        284,
+        220,
+        24,
+        13,
+        5005,
+        11625,
+        220,
+        19,
+        87,
+        488,
+        220
+      ]
+    },
+    {
+      "name": "math",
+      "width": 16,
+      "route": "row-gemv",
+      "median_ms": 313.12145000265446,
+      "samples_ms": [
+        313.12145000265446,
+        316.89062600344187,
+        280.87928999593714
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        220,
+        17,
+        22,
+        14,
+        18,
+        284,
+        220,
+        24,
+        13,
+        5005,
+        11625,
+        220,
+        19,
+        87,
+        488,
+        220
+      ],
+      "block_predictions": [
+        220,
+        17,
+        22,
+        14,
+        18,
+        284,
+        220,
+        24,
+        13,
+        5005,
+        11625,
+        220,
+        19,
+        87,
+        488,
+        220
+      ]
+    },
+    {
+      "name": "math",
+      "width": 16,
+      "route": "pad32",
+      "median_ms": 175.0397889991291,
+      "samples_ms": [
+        174.5960800035391,
+        175.0397889991291,
+        175.5529160000151
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        220,
+        17,
+        22,
+        14,
+        18,
+        284,
+        220,
+        24,
+        13,
+        5005,
+        11625,
+        220,
+        19,
+        87,
+        488,
+        220
+      ],
+      "block_predictions": [
+        220,
+        17,
+        22,
+        14,
+        18,
+        284,
+        220,
+        24,
+        13,
+        5005,
+        11625,
+        220,
+        19,
+        87,
+        488,
+        220
+      ]
+    },
+    {
+      "name": "math",
+      "width": 32,
+      "route": "stock",
+      "median_ms": 164.5916400011629,
+      "samples_ms": [
+        158.83420900354395,
+        167.1998129968415,
+        164.5916400011629
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        220,
+        17,
+        22,
+        14,
+        18,
+        284,
+        220,
+        24,
+        13,
+        5005,
+        11625,
+        220,
+        19,
+        87,
+        488,
+        220,
+        18,
+        284,
+        220,
+        16,
+        20,
+        25,
+        220,
+        17,
+        87,
+        284,
+        220,
+        16,
+        20,
+        481,
+        220,
+        18
+      ],
+      "block_predictions": [
+        220,
+        17,
+        22,
+        14,
+        18,
+        284,
+        220,
+        24,
+        13,
+        5005,
+        11625,
+        220,
+        19,
+        87,
+        488,
+        220,
+        18,
+        284,
+        220,
+        16,
+        20,
+        25,
+        220,
+        17,
+        87,
+        284,
+        220,
+        16,
+        20,
+        481,
+        220,
+        18
+      ]
+    },
+    {
+      "name": "story",
+      "width": 1,
+      "route": "stock",
+      "median_ms": 50.158660000306554,
+      "samples_ms": [
+        52.059581998037174,
+        50.158660000306554,
+        48.29948999395128
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        12880
+      ],
+      "block_predictions": [
+        12880
+      ]
+    },
+    {
+      "name": "story",
+      "width": 2,
+      "route": "stock",
+      "median_ms": 169.22240099665942,
+      "samples_ms": [
+        167.92698199424194,
+        169.22240099665942,
+        173.7149109976599
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        12880,
+        264
+      ],
+      "block_predictions": [
+        12880,
+        264
+      ]
+    },
+    {
+      "name": "story",
+      "width": 2,
+      "route": "row-gemv",
+      "median_ms": 65.6919890025165,
+      "samples_ms": [
+        68.4399539968581,
+        65.6919890025165,
+        64.74319500557613
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        12880,
+        264
+      ],
+      "block_predictions": [
+        12880,
+        264
+      ]
+    },
+    {
+      "name": "story",
+      "width": 2,
+      "route": "pad32",
+      "median_ms": 184.04981099592987,
+      "samples_ms": [
+        185.03410500125028,
+        181.73263800417772,
+        184.04981099592987
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        12880,
+        264
+      ],
+      "block_predictions": [
+        12880,
+        264
+      ]
+    },
+    {
+      "name": "story",
+      "width": 4,
+      "route": "stock",
+      "median_ms": 166.03780999867013,
+      "samples_ms": [
+        166.03780999867013,
+        163.7195130024338,
+        167.19168800045736
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        12880,
+        264,
+        3491,
+        25
+      ],
+      "block_predictions": [
+        12880,
+        264,
+        3491,
+        25
+      ]
+    },
+    {
+      "name": "story",
+      "width": 4,
+      "route": "row-gemv",
+      "median_ms": 107.60042100446299,
+      "samples_ms": [
+        106.04054299619747,
+        107.77442200196674,
+        107.60042100446299
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        12880,
+        264,
+        3491,
+        25
+      ],
+      "block_predictions": [
+        12880,
+        264,
+        3491,
+        25
+      ]
+    },
+    {
+      "name": "story",
+      "width": 4,
+      "route": "pad32",
+      "median_ms": 183.97097699926235,
+      "samples_ms": [
+        182.93426600575913,
+        192.93687399476767,
+        183.97097699926235
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        12880,
+        264,
+        3491,
+        25
+      ],
+      "block_predictions": [
+        12880,
+        264,
+        3491,
+        25
+      ]
+    },
+    {
+      "name": "story",
+      "width": 8,
+      "route": "stock",
+      "median_ms": 166.93952100467868,
+      "samples_ms": [
+        166.93952100467868,
+        166.5277279971633,
+        172.43165800027782
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        12880,
+        264,
+        3491,
+        25,
+        264,
+        7826,
+        1372,
+        315
+      ],
+      "block_predictions": [
+        12880,
+        264,
+        3491,
+        25,
+        264,
+        7826,
+        1372,
+        315
+      ]
+    },
+    {
+      "name": "story",
+      "width": 8,
+      "route": "row-gemv",
+      "median_ms": 178.47138099750737,
+      "samples_ms": [
+        161.94280000490835,
+        178.66667400085134,
+        178.47138099750737
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        12880,
+        264,
+        3491,
+        25,
+        264,
+        7826,
+        1372,
+        315
+      ],
+      "block_predictions": [
+        12880,
+        264,
+        3491,
+        25,
+        264,
+        7826,
+        1372,
+        315
+      ]
+    },
+    {
+      "name": "story",
+      "width": 8,
+      "route": "pad32",
+      "median_ms": 185.23156399896834,
+      "samples_ms": [
+        181.43576299917186,
+        187.5633609961369,
+        185.23156399896834
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        12880,
+        264,
+        3491,
+        25,
+        264,
+        7826,
+        1372,
+        315
+      ],
+      "block_predictions": [
+        12880,
+        264,
+        3491,
+        25,
+        264,
+        7826,
+        1372,
+        315
+      ]
+    },
+    {
+      "name": "story",
+      "width": 16,
+      "route": "stock",
+      "median_ms": 158.71000100014498,
+      "samples_ms": [
+        157.15766399807762,
+        158.71000100014498,
+        163.96267999516567
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        12880,
+        264,
+        3491,
+        25,
+        264,
+        7826,
+        1372,
+        315,
+        2841,
+        1033,
+        15691,
+        504,
+        264,
+        25382,
+        17125,
+        429
+      ],
+      "block_predictions": [
+        12880,
+        264,
+        3491,
+        25,
+        264,
+        7826,
+        1372,
+        315,
+        2841,
+        1033,
+        15691,
+        504,
+        264,
+        25382,
+        17125,
+        429
+      ]
+    },
+    {
+      "name": "story",
+      "width": 16,
+      "route": "row-gemv",
+      "median_ms": 305.45697300112806,
+      "samples_ms": [
+        306.91581000428414,
+        305.45697300112806,
+        304.89026400027797
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        12880,
+        264,
+        3491,
+        25,
+        264,
+        7826,
+        1372,
+        315,
+        2841,
+        1033,
+        15691,
+        504,
+        264,
+        25382,
+        17125,
+        429
+      ],
+      "block_predictions": [
+        12880,
+        264,
+        3491,
+        25,
+        264,
+        7826,
+        1372,
+        315,
+        2841,
+        1033,
+        15691,
+        504,
+        264,
+        25382,
+        17125,
+        429
+      ]
+    },
+    {
+      "name": "story",
+      "width": 16,
+      "route": "pad32",
+      "median_ms": 175.82470800698502,
+      "samples_ms": [
+        173.8212870041025,
+        182.58639100531582,
+        175.82470800698502
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        12880,
+        264,
+        3491,
+        25,
+        264,
+        7826,
+        1372,
+        315,
+        2841,
+        1033,
+        15691,
+        504,
+        264,
+        25382,
+        17125,
+        429
+      ],
+      "block_predictions": [
+        12880,
+        264,
+        3491,
+        25,
+        264,
+        7826,
+        1372,
+        315,
+        2841,
+        1033,
+        15691,
+        504,
+        264,
+        25382,
+        17125,
+        429
+      ]
+    },
+    {
+      "name": "story",
+      "width": 32,
+      "route": "stock",
+      "median_ms": 164.42465200088918,
+      "samples_ms": [
+        161.527008000121,
+        164.42465200088918,
+        171.13239799800795
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        12880,
+        264,
+        3491,
+        25,
+        264,
+        7826,
+        1372,
+        315,
+        2841,
+        1033,
+        15691,
+        504,
+        264,
+        25382,
+        17125,
+        429,
+        572,
+        30035,
+        18512,
+        13,
+        576,
+        17125,
+        572,
+        2598,
+        330,
+        785,
+        24298,
+        315,
+        279,
+        23640,
+        1335,
+        892
+      ],
+      "block_predictions": [
+        12880,
+        264,
+        3491,
+        25,
+        264,
+        7826,
+        1372,
+        315,
+        2841,
+        1033,
+        15691,
+        504,
+        264,
+        25382,
+        17125,
+        429,
+        572,
+        30035,
+        18512,
+        13,
+        576,
+        17125,
+        572,
+        2598,
+        330,
+        785,
+        24298,
+        315,
+        279,
+        23640,
+        1335,
+        892
+      ]
+    }
+  ],
+  "linear_rows": [
+    {
+      "name": "capital",
+      "projection": "q_proj",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        2048,
+        1024
+      ],
+      "route": "stock",
+      "median_ms": 0.7804179986123927,
+      "samples_ms": [
+        0.8402940002270043,
+        0.7804179986123927,
+        0.776585002313368
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 6.103515625e-05
+    },
+    {
+      "name": "capital",
+      "projection": "q_proj",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        2048,
+        1024
+      ],
+      "route": "row-gemv",
+      "median_ms": 0.9757109946804121,
+      "samples_ms": [
+        0.9757109946804121,
+        1.0936699982266873,
+        0.8980860002338886
+      ],
+      "bit_equal_to_scalar": true,
+      "max_abs_difference": 0.0
+    },
+    {
+      "name": "capital",
+      "projection": "q_proj",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        2048,
+        1024
+      ],
+      "route": "pad32",
+      "median_ms": 0.6821690039942041,
+      "samples_ms": [
+        0.699377000273671,
+        0.6806270030210726,
+        0.6821690039942041
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 6.103515625e-05
+    },
+    {
+      "name": "capital",
+      "projection": "gate_proj",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        3072,
+        1024
+      ],
+      "route": "stock",
+      "median_ms": 0.9081690004677512,
+      "samples_ms": [
+        1.1000860031344928,
+        0.9081690004677512,
+        0.8746690000407398
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 1.9073486328125e-06
+    },
+    {
+      "name": "capital",
+      "projection": "gate_proj",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        3072,
+        1024
+      ],
+      "route": "row-gemv",
+      "median_ms": 1.05287699989276,
+      "samples_ms": [
+        1.071753002179321,
+        1.05287699989276,
+        1.0310029974789359
+      ],
+      "bit_equal_to_scalar": true,
+      "max_abs_difference": 0.0
+    },
+    {
+      "name": "capital",
+      "projection": "gate_proj",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        3072,
+        1024
+      ],
+      "route": "pad32",
+      "median_ms": 0.9472519959672354,
+      "samples_ms": [
+        0.9472519959672354,
+        0.9331689943792298,
+        1.7759210022632033
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 1.9073486328125e-06
+    },
+    {
+      "name": "capital",
+      "projection": "down_proj",
+      "input_shape": [
+        1,
+        8,
+        3072
+      ],
+      "weight_shape": [
+        1024,
+        3072
+      ],
+      "route": "stock",
+      "median_ms": 1.0709609996411018,
+      "samples_ms": [
+        0.9498349973000586,
+        1.0709609996411018,
+        1.1093779976363294
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.0009765625
+    },
+    {
+      "name": "capital",
+      "projection": "down_proj",
+      "input_shape": [
+        1,
+        8,
+        3072
+      ],
+      "weight_shape": [
+        1024,
+        3072
+      ],
+      "route": "row-gemv",
+      "median_ms": 1.1196699997526594,
+      "samples_ms": [
+        1.2047529962728731,
+        1.0424610009067692,
+        1.1196699997526594
+      ],
+      "bit_equal_to_scalar": true,
+      "max_abs_difference": 0.0
+    },
+    {
+      "name": "capital",
+      "projection": "down_proj",
+      "input_shape": [
+        1,
+        8,
+        3072
+      ],
+      "weight_shape": [
+        1024,
+        3072
+      ],
+      "route": "pad32",
+      "median_ms": 2.201756004069466,
+      "samples_ms": [
+        3.360882998094894,
+        2.201756004069466,
+        1.489004003815353
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.0009765625
+    },
+    {
+      "name": "capital",
+      "projection": "lm_head",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        151936,
+        1024
+      ],
+      "route": "stock",
+      "median_ms": 30.605947998992633,
+      "samples_ms": [
+        30.605947998992633,
+        30.58348900231067,
+        32.4798270012252
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.0625
+    },
+    {
+      "name": "capital",
+      "projection": "lm_head",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        151936,
+        1024
+      ],
+      "route": "row-gemv",
+      "median_ms": 41.62159800034715,
+      "samples_ms": [
+        41.59209800127428,
+        43.539894999412354,
+        41.62159800034715
+      ],
+      "bit_equal_to_scalar": true,
+      "max_abs_difference": 0.0
+    },
+    {
+      "name": "capital",
+      "projection": "lm_head",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        151936,
+        1024
+      ],
+      "route": "pad32",
+      "median_ms": 21.591593002085574,
+      "samples_ms": [
+        21.156091999728233,
+        21.591593002085574,
+        21.71121800347464
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.0625
+    },
+    {
+      "name": "fibonacci",
+      "projection": "q_proj",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        2048,
+        1024
+      ],
+      "route": "stock",
+      "median_ms": 0.6884600006742403,
+      "samples_ms": [
+        0.6952100011403672,
+        0.6884600006742403,
+        0.6787099991925061
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.0001220703125
+    },
+    {
+      "name": "fibonacci",
+      "projection": "q_proj",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        2048,
+        1024
+      ],
+      "route": "row-gemv",
+      "median_ms": 0.7112519961083308,
+      "samples_ms": [
+        0.7112519961083308,
+        0.7109190046321601,
+        0.7313770038308576
+      ],
+      "bit_equal_to_scalar": true,
+      "max_abs_difference": 0.0
+    },
+    {
+      "name": "fibonacci",
+      "projection": "q_proj",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        2048,
+        1024
+      ],
+      "route": "pad32",
+      "median_ms": 0.6925429988768883,
+      "samples_ms": [
+        0.7088769998517819,
+        0.6752519984729588,
+        0.6925429988768883
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.0001220703125
+    },
+    {
+      "name": "fibonacci",
+      "projection": "gate_proj",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        3072,
+        1024
+      ],
+      "route": "stock",
+      "median_ms": 1.0457940006745048,
+      "samples_ms": [
+        0.9436690015718341,
+        1.1821279986179434,
+        1.0457940006745048
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.001953125
+    },
+    {
+      "name": "fibonacci",
+      "projection": "gate_proj",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        3072,
+        1024
+      ],
+      "route": "row-gemv",
+      "median_ms": 0.9000019999803044,
+      "samples_ms": [
+        0.8830429942463525,
+        0.9000019999803044,
+        1.1276700024609454
+      ],
+      "bit_equal_to_scalar": true,
+      "max_abs_difference": 0.0
+    },
+    {
+      "name": "fibonacci",
+      "projection": "gate_proj",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        3072,
+        1024
+      ],
+      "route": "pad32",
+      "median_ms": 1.0378779988968745,
+      "samples_ms": [
+        1.0378779988968745,
+        0.9814189979806542,
+        1.2445869942894205
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.001953125
+    },
+    {
+      "name": "fibonacci",
+      "projection": "down_proj",
+      "input_shape": [
+        1,
+        8,
+        3072
+      ],
+      "weight_shape": [
+        1024,
+        3072
+      ],
+      "route": "stock",
+      "median_ms": 1.070001999323722,
+      "samples_ms": [
+        1.1177940032212064,
+        1.0483779988135211,
+        1.070001999323722
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.0009765625
+    },
+    {
+      "name": "fibonacci",
+      "projection": "down_proj",
+      "input_shape": [
+        1,
+        8,
+        3072
+      ],
+      "weight_shape": [
+        1024,
+        3072
+      ],
+      "route": "row-gemv",
+      "median_ms": 1.1817109989351593,
+      "samples_ms": [
+        1.286919999984093,
+        1.1817109989351593,
+        1.0377110011177137
+      ],
+      "bit_equal_to_scalar": true,
+      "max_abs_difference": 0.0
+    },
+    {
+      "name": "fibonacci",
+      "projection": "down_proj",
+      "input_shape": [
+        1,
+        8,
+        3072
+      ],
+      "weight_shape": [
+        1024,
+        3072
+      ],
+      "route": "pad32",
+      "median_ms": 1.472003998060245,
+      "samples_ms": [
+        1.472003998060245,
+        1.4402529996004887,
+        1.4812959998380393
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.0009765625
+    },
+    {
+      "name": "fibonacci",
+      "projection": "lm_head",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        151936,
+        1024
+      ],
+      "route": "stock",
+      "median_ms": 30.11915499519091,
+      "samples_ms": [
+        30.87528100149939,
+        29.69511200353736,
+        30.11915499519091
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.0625
+    },
+    {
+      "name": "fibonacci",
+      "projection": "lm_head",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        151936,
+        1024
+      ],
+      "route": "row-gemv",
+      "median_ms": 41.957391003961675,
+      "samples_ms": [
+        41.35601499729091,
+        41.957391003961675,
+        42.74443400208838
+      ],
+      "bit_equal_to_scalar": true,
+      "max_abs_difference": 0.0
+    },
+    {
+      "name": "fibonacci",
+      "projection": "lm_head",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        151936,
+        1024
+      ],
+      "route": "pad32",
+      "median_ms": 21.404801002063323,
+      "samples_ms": [
+        21.219341993855778,
+        21.565843002463225,
+        21.404801002063323
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.0625
+    },
+    {
+      "name": "math",
+      "projection": "q_proj",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        2048,
+        1024
+      ],
+      "route": "stock",
+      "median_ms": 0.672458998451475,
+      "samples_ms": [
+        0.6861689980723895,
+        0.6712940012221225,
+        0.672458998451475
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.0001220703125
+    },
+    {
+      "name": "math",
+      "projection": "q_proj",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        2048,
+        1024
+      ],
+      "route": "row-gemv",
+      "median_ms": 0.7038769981591031,
+      "samples_ms": [
+        0.7936270048958249,
+        0.7038769981591031,
+        0.6579179971595295
+      ],
+      "bit_equal_to_scalar": true,
+      "max_abs_difference": 0.0
+    },
+    {
+      "name": "math",
+      "projection": "q_proj",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        2048,
+        1024
+      ],
+      "route": "pad32",
+      "median_ms": 0.7983359973877668,
+      "samples_ms": [
+        0.9166689997073263,
+        0.7636680020368658,
+        0.7983359973877668
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.0001220703125
+    },
+    {
+      "name": "math",
+      "projection": "gate_proj",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        3072,
+        1024
+      ],
+      "route": "stock",
+      "median_ms": 0.9877110060187988,
+      "samples_ms": [
+        1.106335999793373,
+        0.9877110060187988,
+        0.9844189989962615
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 2.9802322387695312e-08
+    },
+    {
+      "name": "math",
+      "projection": "gate_proj",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        3072,
+        1024
+      ],
+      "route": "row-gemv",
+      "median_ms": 0.9672939995652996,
+      "samples_ms": [
+        1.3880870028515346,
+        0.9672939995652996,
+        0.9507520007900894
+      ],
+      "bit_equal_to_scalar": true,
+      "max_abs_difference": 0.0
+    },
+    {
+      "name": "math",
+      "projection": "gate_proj",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        3072,
+        1024
+      ],
+      "route": "pad32",
+      "median_ms": 0.797917993622832,
+      "samples_ms": [
+        1.084835996152833,
+        0.797917993622832,
+        0.7692100043641403
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 2.9802322387695312e-08
+    },
+    {
+      "name": "math",
+      "projection": "down_proj",
+      "input_shape": [
+        1,
+        8,
+        3072
+      ],
+      "weight_shape": [
+        1024,
+        3072
+      ],
+      "route": "stock",
+      "median_ms": 0.9329189997515641,
+      "samples_ms": [
+        0.9329189997515641,
+        0.9165860028588213,
+        0.9390030027134344
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 7.62939453125e-06
+    },
+    {
+      "name": "math",
+      "projection": "down_proj",
+      "input_shape": [
+        1,
+        8,
+        3072
+      ],
+      "weight_shape": [
+        1024,
+        3072
+      ],
+      "route": "row-gemv",
+      "median_ms": 1.0343359972466715,
+      "samples_ms": [
+        1.0343359972466715,
+        1.084793999325484,
+        1.0328360003768466
+      ],
+      "bit_equal_to_scalar": true,
+      "max_abs_difference": 0.0
+    },
+    {
+      "name": "math",
+      "projection": "down_proj",
+      "input_shape": [
+        1,
+        8,
+        3072
+      ],
+      "weight_shape": [
+        1024,
+        3072
+      ],
+      "route": "pad32",
+      "median_ms": 1.4810869979555719,
+      "samples_ms": [
+        1.5951280001900159,
+        1.4810869979555719,
+        1.3850859977537766
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 7.62939453125e-06
+    },
+    {
+      "name": "math",
+      "projection": "lm_head",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        151936,
+        1024
+      ],
+      "route": "stock",
+      "median_ms": 30.921031000616495,
+      "samples_ms": [
+        31.493324997427408,
+        30.921031000616495,
+        30.731906001165044
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.03125
+    },
+    {
+      "name": "math",
+      "projection": "lm_head",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        151936,
+        1024
+      ],
+      "route": "row-gemv",
+      "median_ms": 42.01439199823653,
+      "samples_ms": [
+        42.01439199823653,
+        41.305430997454096,
+        42.206016994896345
+      ],
+      "bit_equal_to_scalar": true,
+      "max_abs_difference": 0.0
+    },
+    {
+      "name": "math",
+      "projection": "lm_head",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        151936,
+        1024
+      ],
+      "route": "pad32",
+      "median_ms": 21.878218001802452,
+      "samples_ms": [
+        21.878218001802452,
+        21.155716996872798,
+        22.23117800167529
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.03125
+    },
+    {
+      "name": "story",
+      "projection": "q_proj",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        2048,
+        1024
+      ],
+      "route": "stock",
+      "median_ms": 0.8211329986806959,
+      "samples_ms": [
+        1.3275119999889284,
+        0.8211329986806959,
+        0.759089998609852
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.0009765625
+    },
+    {
+      "name": "story",
+      "projection": "q_proj",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        2048,
+        1024
+      ],
+      "route": "row-gemv",
+      "median_ms": 0.8655489946249872,
+      "samples_ms": [
+        0.8351750002475455,
+        0.8655489946249872,
+        1.1086769954999909
+      ],
+      "bit_equal_to_scalar": true,
+      "max_abs_difference": 0.0
+    },
+    {
+      "name": "story",
+      "projection": "q_proj",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        2048,
+        1024
+      ],
+      "route": "pad32",
+      "median_ms": 0.8172160014510155,
+      "samples_ms": [
+        0.6450889995903708,
+        0.8662159962113947,
+        0.8172160014510155
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.0009765625
+    },
+    {
+      "name": "story",
+      "projection": "gate_proj",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        3072,
+        1024
+      ],
+      "route": "stock",
+      "median_ms": 1.037968002492562,
+      "samples_ms": [
+        1.0940099964500405,
+        1.037968002492562,
+        0.8975910022854805
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.00390625
+    },
+    {
+      "name": "story",
+      "projection": "gate_proj",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        3072,
+        1024
+      ],
+      "route": "row-gemv",
+      "median_ms": 1.328971004113555,
+      "samples_ms": [
+        1.3159709997125901,
+        1.442763998056762,
+        1.328971004113555
+      ],
+      "bit_equal_to_scalar": true,
+      "max_abs_difference": 0.0
+    },
+    {
+      "name": "story",
+      "projection": "gate_proj",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        3072,
+        1024
+      ],
+      "route": "pad32",
+      "median_ms": 0.7635910005774349,
+      "samples_ms": [
+        0.80096599413082,
+        0.7635910005774349,
+        0.7411319966195151
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.00390625
+    },
+    {
+      "name": "story",
+      "projection": "down_proj",
+      "input_shape": [
+        1,
+        8,
+        3072
+      ],
+      "weight_shape": [
+        1024,
+        3072
+      ],
+      "route": "stock",
+      "median_ms": 0.9539669990772381,
+      "samples_ms": [
+        0.9240910003427416,
+        0.9539669990772381,
+        0.9710499944048934
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.00048828125
+    },
+    {
+      "name": "story",
+      "projection": "down_proj",
+      "input_shape": [
+        1,
+        8,
+        3072
+      ],
+      "weight_shape": [
+        1024,
+        3072
+      ],
+      "route": "row-gemv",
+      "median_ms": 1.243220001924783,
+      "samples_ms": [
+        1.243220001924783,
+        1.186718996905256,
+        6.531143000756856
+      ],
+      "bit_equal_to_scalar": true,
+      "max_abs_difference": 0.0
+    },
+    {
+      "name": "story",
+      "projection": "down_proj",
+      "input_shape": [
+        1,
+        8,
+        3072
+      ],
+      "weight_shape": [
+        1024,
+        3072
+      ],
+      "route": "pad32",
+      "median_ms": 1.5188879988272674,
+      "samples_ms": [
+        1.3121369993314147,
+        2.3911050011520274,
+        1.5188879988272674
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.00048828125
+    },
+    {
+      "name": "story",
+      "projection": "lm_head",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        151936,
+        1024
+      ],
+      "route": "stock",
+      "median_ms": 30.378278002899606,
+      "samples_ms": [
+        30.378278002899606,
+        29.94868999667233,
+        31.190117995720357
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.0625
+    },
+    {
+      "name": "story",
+      "projection": "lm_head",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        151936,
+        1024
+      ],
+      "route": "row-gemv",
+      "median_ms": 42.540513997664675,
+      "samples_ms": [
+        42.46130499814171,
+        42.540513997664675,
+        43.81785900477553
+      ],
+      "bit_equal_to_scalar": true,
+      "max_abs_difference": 0.0
+    },
+    {
+      "name": "story",
+      "projection": "lm_head",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        151936,
+        1024
+      ],
+      "route": "pad32",
+      "median_ms": 21.77940799447242,
+      "samples_ms": [
+        21.224861004156992,
+        23.88305199565366,
+        21.77940799447242
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.0625
+    }
+  ],
+  "memory_after": {
+    "MemTotal": 7865876480,
+    "MemAvailable": 2096578560,
+    "SwapTotal": 8589901824,
+    "SwapFree": 5384241152
+  }
+}

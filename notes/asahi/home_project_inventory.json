@@ -1,0 +1,265 @@
+{
+  "inspected_utc": "2026-10-05T12:07:27.079743+00:00",
+  "scope": "Read-only inspection of all nonhidden top-level Git projects in /home/asahi. Copies and changes stay in mlx-ane-sd.",
+  "projects": [
+    {
+      "project": "Orion",
+      "revision": "6aee791010f554232140eef3d730bb8410d090e7",
+      "origin": "https://github.com/allbilly/Orion.git",
+      "dirty_paths": [],
+      "top_level_docs": [
+        "LICENSE",
+        "Makefile",
+        "README.md",
+        "RESULTS.md"
+      ]
+    },
+    {
+      "project": "ane",
+      "revision": "cdc556e1ec36e1f5b632c3d3fbff674c4ac991b9",
+      "origin": "https://github.com/allbilly/ane",
+      "dirty_paths": [
+        "M qwen35/__main__.py",
+        " M qwen35/ane.py",
+        " M qwen35/tools/benchmark.py",
+        "?? sd.md"
+      ],
+      "top_level_docs": [
+        "README.md",
+        "REFERENCE.md",
+        "REGISTER_PROGRMMING.md",
+        "cpu.md",
+        "how_to_parse_hex_blob.md",
+        "macos_hwx.md",
+        "problem.md",
+        "sd.md"
+      ]
+    },
+    {
+      "project": "ane-linux-experiments",
+      "revision": "a15bb23a87e0e4129f110c7c7d75948b999f593f",
+      "origin": "https://github.com/joshuaswarren/ane-linux-experiments",
+      "dirty_paths": [],
+      "top_level_docs": [
+        "AGENTS.md",
+        "GATES.md",
+        "LICENSE",
+        "README.md"
+      ]
+    },
+    {
+      "project": "ane-linux-experiments-qwen-ane-inference",
+      "revision": "a15bb23a87e0e4129f110c7c7d75948b999f593f",
+      "origin": "https://github.com/joshuaswarren/ane-linux-experiments",
+      "dirty_paths": [
+        "?? receipts/2026-10-04-qwen-ane-inference/",
+        "?? receipts/2026-10-05-qwen-cached-model/"
+      ],
+      "top_level_docs": [
+        "AGENTS.md",
+        "GATES.md",
+        "LICENSE",
+        "README.md"
+      ]
+    },
+    {
+      "project": "applegpu",
+      "revision": "b14d4cccc0aa8721bbc2936c7c9f9fec56813b0b",
+      "origin": "https://github.com/allbilly/applegpu",
+      "dirty_paths": [
+        "M .gitignore",
+        "?? qwen35/"
+      ],
+      "top_level_docs": [
+        "README.md",
+        "REFERENCE.md"
+      ]
+    },
+    {
+      "project": "calm",
+      "revision": "cab0b7b44965e7deeb12a6a188b7d64ce224498e",
+      "origin": "https://github.com/zeux/calm.git",
+      "dirty_paths": [],
+      "top_level_docs": [
+        "LICENSE.md",
+        "Makefile",
+        "README.md"
+      ]
+    },
+    {
+      "project": "coreglass",
+      "revision": "1435908ca48c15d7ccb96441d783446b9d713098",
+      "origin": "https://github.com/joshuaswarren/coreglass",
+      "dirty_paths": [
+        "M AGENTS.md",
+        " M README.md",
+        " M coreglass/app.py",
+        " M coreglass/build.py",
+        " M coreglass/ingest.py",
+        " M coreglass/llmstep.py",
+        " M coreglass/remote.py",
+        " M hosts.example.toml",
+        " M tests/test_coreglass.py",
+        "?? docs/ASAHI.md"
+      ],
+      "top_level_docs": [
+        "AGENTS.md",
+        "README.md",
+        "pyproject.toml"
+      ]
+    },
+    {
+      "project": "coreml_to_ane_hwx",
+      "revision": "0da81de0551ec8b0c01f4e346d9e13129257da2d",
+      "origin": "https://github.com/freedomtan/coreml_to_ane_hwx/",
+      "dirty_paths": [],
+      "top_level_docs": [
+        "LICENSE",
+        "Makefile",
+        "README.md"
+      ]
+    },
+    {
+      "project": "joshuaswarren_mil-hwx-compiler",
+      "revision": "6f46c6a4d1af617cb190de38f14e444a66f2448f",
+      "origin": "https://github.com/joshuaswarren/mil-hwx-compiler",
+      "dirty_paths": [],
+      "top_level_docs": [
+        "DISCLAIMER.md",
+        "LICENSE",
+        "Makefile",
+        "README.md"
+      ]
+    },
+    {
+      "project": "linux",
+      "revision": "ce9f2eba72c061a50b2d790450e90af3439d8c24",
+      "origin": "https://github.com/allbilly/linux",
+      "dirty_paths": [],
+      "top_level_docs": [
+        "Makefile"
+      ]
+    },
+    {
+      "project": "llama.cpp-mirai-s",
+      "revision": "b59ae80f419a5415cb950f2a7b2284a500fe74cb",
+      "origin": "https://github.com/alesha-pro/llama.cpp-mirai-s",
+      "dirty_paths": [],
+      "top_level_docs": [
+        "AGENTS.md",
+        "CLAUDE.md",
+        "CMakeLists.txt",
+        "CONTRIBUTING.md",
+        "LICENSE",
+        "Makefile",
+        "README.md",
+        "SECURITY.md",
+        "pyproject.toml"
+      ]
+    },
+    {
+      "project": "mil-hwx-compiler",
+      "revision": "87e8db19b2b6ebdc8e9505095142c387d08e9c21",
+      "origin": "https://github.com/allbilly/mil-hwx-compiler",
+      "dirty_paths": [],
+      "top_level_docs": [
+        "DISCLAIMER.md",
+        "LICENSE",
+        "Makefile",
+        "README.md"
+      ]
+    },
+    {
+      "project": "mlx-ane-sd",
+      "revision": "963eb1b4611de287945b007559781e0c269db6df",
+      "origin": "https://github.com/shipstuff/mlx-ane-sd",
+      "dirty_paths": [
+        "M .gitignore",
+        " M README.md",
+        "?? asahi/",
+        "?? notes/asahi/",
+        "?? notes/asahi_dflash_findings.md",
+        "?? notes/asahi_findings.md",
+        "?? scripts/asahi_ane.py",
+        "?? scripts/asahi_dflash.py",
+        "?? scripts/asahi_python.sh",
+        "?? scripts/asahi_verify_routes.py",
+        "?? scripts/bench_asahi_dflash.py",
+        "?? scripts/bench_asahi_mlx.py",
+        "?? scripts/check_asahi_dflash.py",
+        "?? scripts/fetch_asahi_dflash.py",
+        "?? scripts/probe_asahi_ane.py",
+        "?? scripts/probe_asahi_sd_routes.py",
+        "?? scripts/probe_asahi_verify.py",
+        "?? scripts/smoke_asahi_mlx.py",
+        "?? scripts/test_asahi_sd_cache.py"
+      ],
+      "top_level_docs": [
+        "AGENTS.md",
+        "CLAUDE.md",
+        "README.md"
+      ]
+    },
+    {
+      "project": "old_whisper.cpp",
+      "revision": "e5346aeb5803d47f4b717a4fe82621d21cbc7b01",
+      "origin": "https://github.com/ggml-org/whisper.cpp",
+      "dirty_paths": [
+        "M  Makefile",
+        "?? allbilly_ane",
+        "?? anecc/",
+        "?? asahi/whisper-tiny-encoder.hwx"
+      ],
+      "top_level_docs": [
+        "CMakeLists.txt",
+        "LICENSE",
+        "Makefile",
+        "README.md"
+      ]
+    },
+    {
+      "project": "omarchy-mlx",
+      "revision": "ebbc441f24de8e820710ff31f68909e945a66364",
+      "origin": "https://github.com/joshuaswarren/omarchy-mlx",
+      "dirty_paths": [],
+      "top_level_docs": [
+        "AGENTS.md",
+        "CONTRIBUTING.md",
+        "LICENSE",
+        "README.md"
+      ]
+    },
+    {
+      "project": "qwen3.c",
+      "revision": "9735730e5ed88e8d3d7544a5da18ac48e942d395",
+      "origin": "https://github.com/allbilly/qwen3.c.git",
+      "dirty_paths": [],
+      "top_level_docs": [
+        "LICENSE",
+        "Makefile",
+        "README.md"
+      ]
+    },
+    {
+      "project": "uzu",
+      "revision": "4d880766f5a4137b63d56c3924e7a2e403b0ccc6",
+      "origin": "https://github.com/trymirai/uzu",
+      "dirty_paths": [],
+      "top_level_docs": [
+        "Cargo.toml",
+        "LICENSE",
+        "README.md"
+      ]
+    },
+    {
+      "project": "yalm",
+      "revision": "6cd1ef6e7d6b9f724b6d98a63b273f903928ad2f",
+      "origin": "https://github.com/andrewkchan/yalm.git",
+      "dirty_paths": [],
+      "top_level_docs": [
+        "Makefile",
+        "README.md"
+      ]
+    }
+  ]
+}

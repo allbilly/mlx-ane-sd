@@ -1,0 +1,61 @@
+{
+  "scope": "Compare ANE linears on real DFlash inputs against rounded FP32 CPU products.\n\nThis isolates native projection correctness, not agreement with every possible\nframework attention kernel. It compares the final draft hidden vectors and\nproposal IDs after multiple context updates, using the published trained draft.\n",
+  "weights_sha256": "74a0b0f98b2a5b6a82c3c0bf8a4c7fbbe2a85f1920a7b6836ba6a9b716541a64",
+  "native_library_sha256": "a09044ddbbcbdeb5b8036ccf296650e699ab421ce6e0af970618a05425919960",
+  "rows": [
+    {
+      "committed_context": 10,
+      "cosine": 0.9999998807907104,
+      "relative_l2": 0.0004460476920939982,
+      "max_absolute_error": 0.002073824405670166,
+      "native_ids": [
+        1181,
+        6233,
+        315,
+        13,
+        13,
+        13,
+        13
+      ],
+      "reference_ids": [
+        1181,
+        6233,
+        315,
+        13,
+        13,
+        13,
+        13
+      ],
+      "top1_agreement": 1.0,
+      "passed": true
+    },
+    {
+      "committed_context": 11,
+      "cosine": 0.9999998211860657,
+      "relative_l2": 0.00042696495074778795,
+      "max_absolute_error": 0.0025310516357421875,
+      "native_ids": [
+        6233,
+        323,
+        323,
+        323,
+        323,
+        323,
+        323
+      ],
+      "reference_ids": [
+        6233,
+        323,
+        323,
+        323,
+        323,
+        323,
+        323
+      ],
+      "top1_agreement": 1.0,
+      "passed": true
+    }
+  ],
+  "submissions": 132,
+  "passed": true
+}

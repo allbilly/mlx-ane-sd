@@ -1,0 +1,20 @@
+{
+  "architecture": "H13G/T8103",
+  "reference": "~/ane/gpt2/training/orion/kernels",
+  "sources": [
+    {
+      "primitive": "linear_32_768_768_forward",
+      "hwx_sha256": "421625fc9d5054dffaaf78c2df4783b11a31c55a05f8d2a7432d81b409aa66e5"
+    },
+    {
+      "primitive": "linear_32_768_3072_forward",
+      "hwx_sha256": "e8f91f8423825dd32aa4b954cc09e3fc87dc39af2eebe71fc225d3357f98769c"
+    },
+    {
+      "primitive": "linear_32_3072_768_forward",
+      "hwx_sha256": "d6e9e3a251225d129a9551b8a40d2a2d82fbe5b66cca727262c3828700465d53"
+    }
+  ],
+  "template_sha256": "b7806029cc215b8a70ff3e14d4dd188988a49b24831b4909de82aea6e0e4d680",
+  "learned_weights_in_template": false
+}

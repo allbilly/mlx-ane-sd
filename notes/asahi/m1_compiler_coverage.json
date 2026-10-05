@@ -1,0 +1,98 @@
+{
+  "schema": 1,
+  "compiler": "allbilly/mil-hwx-compiler",
+  "compiler_revision": "87e8db19b2b6ebdc8e9505095142c387d08e9c21",
+  "compiler_sha256": "b33c520b999a0d8a136f0751057f93441d5583ad276fe4c92ef511cfdb9d165f",
+  "runtime_dependency": {
+    "url": "https://archives.fedoraproject.org/pub/archive/fedora/linux/releases/42/Everything/aarch64/os/Packages/l/libicu-76.1-4.fc42.aarch64.rpm",
+    "sha256": "d53cbaaf7981e34eea0a711ed5da81d95bfa1405580a1ab9bdb600f092d53c3d"
+  },
+  "procedure": "Compile the exact prepared real-input MIL cases using the existing Linux H13G compiler and locally extracted ICU76 runtime. No hardware submission.",
+  "rows": [
+    {
+      "graph": "rmsnorm",
+      "argv": [
+        "/home/asahi/mil-hwx-compiler/build/mil-hwxc",
+        "--mil",
+        "/home/asahi/mlx-ane-sd/.asahi/m1-sd-capture-ready/cases/capital-rmsnorm/model.mil",
+        "--model-root",
+        "/home/asahi/mlx-ane-sd/.asahi/m1-sd-capture-ready/cases/capital-rmsnorm",
+        "--target",
+        "H13G",
+        "--output",
+        "/home/asahi/mlx-ane-sd/.asahi/m1-sd-capture-ready/linux-coverage/rmsnorm"
+      ],
+      "returncode": 65,
+      "stdout": "",
+      "stderr": "5:5: error [h13g.legalize.unsupported-graph]: H13G has no measured schedule for this typed graph, geometry, constants and operand edges\n"
+    },
+    {
+      "graph": "fused-ffn",
+      "argv": [
+        "/home/asahi/mil-hwx-compiler/build/mil-hwxc",
+        "--mil",
+        "/home/asahi/mlx-ane-sd/.asahi/m1-sd-capture-ready/cases/capital-fused-ffn/model.mil",
+        "--model-root",
+        "/home/asahi/mlx-ane-sd/.asahi/m1-sd-capture-ready/cases/capital-fused-ffn",
+        "--target",
+        "H13G",
+        "--output",
+        "/home/asahi/mlx-ane-sd/.asahi/m1-sd-capture-ready/linux-coverage/fused-ffn"
+      ],
+      "returncode": 65,
+      "stdout": "",
+      "stderr": "5:5: error [h13g.legalize.unsupported-graph]: H13G has no measured schedule for this typed graph, geometry, constants and operand edges\n"
+    },
+    {
+      "graph": "cached-attention",
+      "argv": [
+        "/home/asahi/mil-hwx-compiler/build/mil-hwxc",
+        "--mil",
+        "/home/asahi/mlx-ane-sd/.asahi/m1-sd-capture-ready/cases/capital-cached-attention/model.mil",
+        "--model-root",
+        "/home/asahi/mlx-ane-sd/.asahi/m1-sd-capture-ready/cases/capital-cached-attention",
+        "--target",
+        "H13G",
+        "--output",
+        "/home/asahi/mlx-ane-sd/.asahi/m1-sd-capture-ready/linux-coverage/cached-attention"
+      ],
+      "returncode": 65,
+      "stdout": "",
+      "stderr": "5:5: error [h13g.legalize.unsupported-graph]: H13G has no measured schedule for this typed graph, geometry, constants and operand edges\n"
+    },
+    {
+      "graph": "head4096",
+      "argv": [
+        "/home/asahi/mil-hwx-compiler/build/mil-hwxc",
+        "--mil",
+        "/home/asahi/mlx-ane-sd/.asahi/m1-sd-capture-ready/cases/capital-head4096/model.mil",
+        "--model-root",
+        "/home/asahi/mlx-ane-sd/.asahi/m1-sd-capture-ready/cases/capital-head4096",
+        "--target",
+        "H13G",
+        "--output",
+        "/home/asahi/mlx-ane-sd/.asahi/m1-sd-capture-ready/linux-coverage/head4096"
+      ],
+      "returncode": 65,
+      "stdout": "",
+      "stderr": "5:5: error [h13g.legalize.unsupported-graph]: H13G has no measured schedule for this typed graph, geometry, constants and operand edges\n"
+    },
+    {
+      "graph": "head8192",
+      "argv": [
+        "/home/asahi/mil-hwx-compiler/build/mil-hwxc",
+        "--mil",
+        "/home/asahi/mlx-ane-sd/.asahi/m1-sd-capture-ready/cases/capital-head8192/model.mil",
+        "--model-root",
+        "/home/asahi/mlx-ane-sd/.asahi/m1-sd-capture-ready/cases/capital-head8192",
+        "--target",
+        "H13G",
+        "--output",
+        "/home/asahi/mlx-ane-sd/.asahi/m1-sd-capture-ready/linux-coverage/head8192"
+      ],
+      "returncode": 65,
+      "stdout": "",
+      "stderr": "5:5: error [h13g.legalize.unsupported-graph]: H13G has no measured schedule for this typed graph, geometry, constants and operand edges\n"
+    }
+  ]
+}

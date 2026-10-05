@@ -1,0 +1,3030 @@
+{
+  "schema": 1,
+  "started_utc": "2026-10-05T12:02:42.159406+00:00",
+  "procedure": "Measure real-prefix target calls and real-input linear routes on Vulkan.\n\nUses the four 100-token scalar baseline continuations already recorded in\ndflash_bf16_serial.json. All target calls start with the same teacher-forced\ncache history. Times include synchronous evaluation, feature extraction, and\ncache evaluation as in the DFlash runner. Padding and row-GEMV are diagnostics.\n",
+  "target": {
+    "model": "mlx-community/Qwen3-0.6B-bf16",
+    "revision": "42096995f6402fde107068cf530136fe64b604f8",
+    "config": {
+      "architectures": [
+        "Qwen3ForCausalLM"
+      ],
+      "attention_bias": false,
+      "attention_dropout": 0.0,
+      "bos_token_id": 151643,
+      "eos_token_id": 151645,
+      "head_dim": 128,
+      "hidden_act": "silu",
+      "hidden_size": 1024,
+      "initializer_range": 0.02,
+      "intermediate_size": 3072,
+      "max_position_embeddings": 40960,
+      "max_window_layers": 28,
+      "model_type": "qwen3",
+      "num_attention_heads": 16,
+      "num_hidden_layers": 28,
+      "num_key_value_heads": 8,
+      "rms_norm_eps": 1e-06,
+      "rope_scaling": null,
+      "rope_theta": 1000000,
+      "sliding_window": null,
+      "tie_word_embeddings": true,
+      "torch_dtype": "bfloat16",
+      "transformers_version": "4.51.0",
+      "use_cache": true,
+      "use_sliding_window": false,
+      "vocab_size": 151936
+    },
+    "files": {
+      "added_tokens.json": "c0284b582e14987fbd3d5a2cb2bd139084371ed9acbae488829a1c900833c680",
+      "config.json": "332d56de2e5cde28245ac8b1776639bf9f7ed55fc911dfd2399ae8872acee2a9",
+      "model.safetensors": "bfe05e58f5acdecd38e5f3e64c82071682683a73db0e57fd437523885a49f2ff",
+      "model.safetensors.index.json": "34238e9a50ea68c6c54c9d23a50f3839867ea8b5d63462121593571ebd37d64f",
+      "special_tokens_map.json": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd",
+      "tokenizer.json": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+      "tokenizer_config.json": "253153d0738ceb4c668d2eff957714dd2bea0b56de772a9fdccd96cbf517e6a0",
+      "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+    }
+  },
+  "mlx_provenance": {
+    "dist": "mlx-omarchy",
+    "verified": "match",
+    "mismatch": null,
+    "files": [
+      {
+        "path": "mlx/core.cpython-314-aarch64-linux-gnu.so",
+        "label": "mlx.core extension",
+        "sha256": "133e15fcb09eb678c8173a561e80a6e3d7680a4606fcd7933df2dc11470daf21",
+        "record_sha256": "133e15fcb09eb678c8173a561e80a6e3d7680a4606fcd7933df2dc11470daf21",
+        "match": true
+      },
+      {
+        "path": "mlx/lib/libmlx.so",
+        "label": "mlx/lib/libmlx.so",
+        "sha256": "1e82df97df9f3fd1cbc5830d8408317892522305c0e8d4ba772df8e42227600f",
+        "record_sha256": "1e82df97df9f3fd1cbc5830d8408317892522305c0e8d4ba772df8e42227600f",
+        "match": true
+      }
+    ],
+    "dist_version": "0.32.4.dev202610041653+6edd258",
+    "mx_version": "0.32.4.dev202610041653+6edd258",
+    "version_match": true
+  },
+  "source_bench_sha256": "e29c9184c9a04d8d2578485ad776c6f4246da4c25a3ad48bbbf4a096a8cbef5b",
+  "sources": {
+    "probe_asahi_sd_routes.py": "af9ee35a22291106a6b843ef1274b4163db264b79b8b57e86defd0b143a0a95f",
+    "asahi_verify_routes.py": "403c52d100b75796ba0175e69b40f6bbb61e2fa5e190ce03099258aa59e43dd1"
+  },
+  "memory_before": {
+    "MemTotal": 7865876480,
+    "MemAvailable": 3301900288,
+    "SwapTotal": 8589901824,
+    "SwapFree": 5447614464
+  },
+  "target_rows": [
+    {
+      "name": "capital",
+      "width": 1,
+      "route": "stock",
+      "median_ms": 46.545019999030046,
+      "samples_ms": [
+        46.545019999030046,
+        47.05164199549472,
+        45.25919099978637
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        1345
+      ],
+      "block_predictions": [
+        1345
+      ]
+    },
+    {
+      "name": "capital",
+      "width": 2,
+      "route": "stock",
+      "median_ms": 166.81578099814942,
+      "samples_ms": [
+        164.06274999462767,
+        171.44780299713602,
+        166.81578099814942
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        1345,
+        482
+      ],
+      "block_predictions": [
+        1345,
+        482
+      ]
+    },
+    {
+      "name": "capital",
+      "width": 2,
+      "route": "row-gemv",
+      "median_ms": 174.89908100105822,
+      "samples_ms": [
+        175.02807999699144,
+        174.89908100105822,
+        168.73264700552681
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        1345,
+        482
+      ],
+      "block_predictions": [
+        1345,
+        482
+      ]
+    },
+    {
+      "name": "capital",
+      "width": 2,
+      "route": "pad32",
+      "median_ms": 178.34448399662506,
+      "samples_ms": [
+        178.34448399662506,
+        176.3190339988796,
+        198.98302499495912
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        1345,
+        482
+      ],
+      "block_predictions": [
+        1345,
+        482
+      ]
+    },
+    {
+      "name": "capital",
+      "width": 4,
+      "route": "stock",
+      "median_ms": 168.33102400414646,
+      "samples_ms": [
+        165.78103399660904,
+        168.33102400414646,
+        172.5292150003952
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        1345,
+        482,
+        10948,
+        13
+      ],
+      "block_predictions": [
+        1345,
+        482,
+        10948,
+        13
+      ]
+    },
+    {
+      "name": "capital",
+      "width": 4,
+      "route": "row-gemv",
+      "median_ms": 171.29572099656798,
+      "samples_ms": [
+        188.64435800060164,
+        171.29572099656798,
+        166.5959899983136
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        1345,
+        482,
+        10948,
+        13
+      ],
+      "block_predictions": [
+        1345,
+        482,
+        10948,
+        13
+      ]
+    },
+    {
+      "name": "capital",
+      "width": 4,
+      "route": "pad32",
+      "median_ms": 191.15738900291035,
+      "samples_ms": [
+        181.6182209950057,
+        191.97492799867177,
+        191.15738900291035
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        1345,
+        482,
+        10948,
+        13
+      ],
+      "block_predictions": [
+        1345,
+        482,
+        10948,
+        13
+      ]
+    },
+    {
+      "name": "capital",
+      "width": 8,
+      "route": "stock",
+      "median_ms": 161.64646799734328,
+      "samples_ms": [
+        158.19223200378474,
+        162.68350499740336,
+        161.64646799734328
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        1345,
+        482,
+        10948,
+        13,
+        576,
+        3283,
+        374,
+        1083
+      ],
+      "block_predictions": [
+        1345,
+        482,
+        10948,
+        13,
+        576,
+        3283,
+        374,
+        1083
+      ]
+    },
+    {
+      "name": "capital",
+      "width": 8,
+      "route": "row-gemv",
+      "median_ms": 171.18130499875406,
+      "samples_ms": [
+        171.18130499875406,
+        171.32134499843232,
+        163.6551259944099
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        1345,
+        482,
+        10948,
+        13,
+        576,
+        3283,
+        374,
+        1083
+      ],
+      "block_predictions": [
+        1345,
+        482,
+        10948,
+        13,
+        576,
+        3283,
+        374,
+        1083
+      ]
+    },
+    {
+      "name": "capital",
+      "width": 8,
+      "route": "pad32",
+      "median_ms": 176.4869489998091,
+      "samples_ms": [
+        179.79585300054168,
+        175.9419509980944,
+        176.4869489998091
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        1345,
+        482,
+        10948,
+        13,
+        576,
+        3283,
+        374,
+        1083
+      ],
+      "block_predictions": [
+        1345,
+        482,
+        10948,
+        13,
+        576,
+        3283,
+        374,
+        1083
+      ]
+    },
+    {
+      "name": "capital",
+      "width": 16,
+      "route": "stock",
+      "median_ms": 161.6326340008527,
+      "samples_ms": [
+        160.38593200210016,
+        163.57687699928647,
+        161.6326340008527
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        1345,
+        482,
+        10948,
+        13,
+        576,
+        3283,
+        374,
+        1083,
+        2114,
+        311,
+        279,
+        11245,
+        8585,
+        22126,
+        11,
+        892
+      ],
+      "block_predictions": [
+        1345,
+        482,
+        10948,
+        13,
+        576,
+        3283,
+        374,
+        1083,
+        2114,
+        311,
+        279,
+        11245,
+        8585,
+        22126,
+        11,
+        892
+      ]
+    },
+    {
+      "name": "capital",
+      "width": 16,
+      "route": "row-gemv",
+      "median_ms": 166.26453200296964,
+      "samples_ms": [
+        163.2717530010268,
+        166.26453200296964,
+        167.75902600056725
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        1345,
+        482,
+        10948,
+        13,
+        576,
+        3283,
+        374,
+        1083,
+        2114,
+        311,
+        279,
+        11245,
+        8585,
+        22126,
+        11,
+        892
+      ],
+      "block_predictions": [
+        1345,
+        482,
+        10948,
+        13,
+        576,
+        3283,
+        374,
+        1083,
+        2114,
+        311,
+        279,
+        11245,
+        8585,
+        22126,
+        11,
+        892
+      ]
+    },
+    {
+      "name": "capital",
+      "width": 16,
+      "route": "pad32",
+      "median_ms": 180.11822599510197,
+      "samples_ms": [
+        180.11822599510197,
+        178.91227300424362,
+        181.13868000364164
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        1345,
+        482,
+        10948,
+        13,
+        576,
+        3283,
+        374,
+        1083,
+        2114,
+        311,
+        279,
+        11245,
+        8585,
+        22126,
+        11,
+        892
+      ],
+      "block_predictions": [
+        1345,
+        482,
+        10948,
+        13,
+        576,
+        3283,
+        374,
+        1083,
+        2114,
+        311,
+        279,
+        11245,
+        8585,
+        22126,
+        11,
+        892
+      ]
+    },
+    {
+      "name": "capital",
+      "width": 32,
+      "route": "stock",
+      "median_ms": 163.68279299786082,
+      "samples_ms": [
+        161.17755400046008,
+        163.68279299786082,
+        183.22846399678383
+      ],
+      "tokens_equal": false,
+      "scalar_predictions": [
+        1345,
+        482,
+        10948,
+        13,
+        576,
+        3283,
+        374,
+        1083,
+        2114,
+        311,
+        279,
+        11245,
+        8585,
+        22126,
+        11,
+        892,
+        6069,
+        311,
+        279,
+        21269,
+        315,
+        279,
+        8585,
+        5429,
+        13,
+        576,
+        8585,
+        22126,
+        374,
+        264,
+        13656,
+        13656
+      ],
+      "block_predictions": [
+        1345,
+        482,
+        10948,
+        13,
+        576,
+        3283,
+        374,
+        1083,
+        2114,
+        311,
+        279,
+        11245,
+        8585,
+        22126,
+        11,
+        892,
+        6069,
+        311,
+        279,
+        21269,
+        315,
+        279,
+        8585,
+        5429,
+        13,
+        576,
+        8585,
+        22126,
+        374,
+        264,
+        5089,
+        13656
+      ]
+    },
+    {
+      "name": "fibonacci",
+      "width": 1,
+      "route": "stock",
+      "median_ms": 46.94397600542288,
+      "samples_ms": [
+        47.18518300069263,
+        46.62301900680177,
+        46.94397600542288
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        17
+      ],
+      "block_predictions": [
+        17
+      ]
+    },
+    {
+      "name": "fibonacci",
+      "width": 2,
+      "route": "stock",
+      "median_ms": 170.0333090047934,
+      "samples_ms": [
+        163.1843779978226,
+        170.0333090047934,
+        170.40947399800643
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        17,
+        8
+      ],
+      "block_predictions": [
+        17,
+        8
+      ]
+    },
+    {
+      "name": "fibonacci",
+      "width": 2,
+      "route": "row-gemv",
+      "median_ms": 168.21839899785118,
+      "samples_ms": [
+        167.57965199940372,
+        168.21839899785118,
+        180.62301600002684
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        17,
+        8
+      ],
+      "block_predictions": [
+        17,
+        8
+      ]
+    },
+    {
+      "name": "fibonacci",
+      "width": 2,
+      "route": "pad32",
+      "median_ms": 180.31260099814972,
+      "samples_ms": [
+        180.04751899570692,
+        180.31260099814972,
+        180.43014199793106
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        17,
+        8
+      ],
+      "block_predictions": [
+        17,
+        8
+      ]
+    },
+    {
+      "name": "fibonacci",
+      "width": 4,
+      "route": "stock",
+      "median_ms": 161.648551998951,
+      "samples_ms": [
+        161.648551998951,
+        165.76670100039337,
+        160.18355800042627
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        17,
+        8,
+        284,
+        220
+      ],
+      "block_predictions": [
+        17,
+        8,
+        284,
+        220
+      ]
+    },
+    {
+      "name": "fibonacci",
+      "width": 4,
+      "route": "row-gemv",
+      "median_ms": 170.39080799440853,
+      "samples_ms": [
+        166.68157299864106,
+        170.39080799440853,
+        171.8760099975043
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        17,
+        8,
+        284,
+        220
+      ],
+      "block_predictions": [
+        17,
+        8,
+        284,
+        220
+      ]
+    },
+    {
+      "name": "fibonacci",
+      "width": 4,
+      "route": "pad32",
+      "median_ms": 178.7407319934573,
+      "samples_ms": [
+        177.45794499933254,
+        178.7407319934573,
+        194.42362699919613
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        17,
+        8,
+        284,
+        220
+      ],
+      "block_predictions": [
+        17,
+        8,
+        284,
+        220
+      ]
+    },
+    {
+      "name": "fibonacci",
+      "width": 8,
+      "route": "stock",
+      "median_ms": 156.94811299908906,
+      "samples_ms": [
+        156.94811299908906,
+        161.09088799566962,
+        153.60262600006536
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        17,
+        8,
+        284,
+        220,
+        16,
+        198,
+        2,
+        15801
+      ],
+      "block_predictions": [
+        17,
+        8,
+        284,
+        220,
+        16,
+        198,
+        2,
+        15801
+      ]
+    },
+    {
+      "name": "fibonacci",
+      "width": 8,
+      "route": "row-gemv",
+      "median_ms": 162.62508899671957,
+      "samples_ms": [
+        162.5172560015926,
+        162.62508899671957,
+        172.25213299388997
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        17,
+        8,
+        284,
+        220,
+        16,
+        198,
+        2,
+        15801
+      ],
+      "block_predictions": [
+        17,
+        8,
+        284,
+        220,
+        16,
+        198,
+        2,
+        15801
+      ]
+    },
+    {
+      "name": "fibonacci",
+      "width": 8,
+      "route": "pad32",
+      "median_ms": 175.9432020044187,
+      "samples_ms": [
+        175.9432020044187,
+        174.80516499927035,
+        179.500353995536
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        17,
+        8,
+        284,
+        220,
+        16,
+        198,
+        2,
+        15801
+      ],
+      "block_predictions": [
+        17,
+        8,
+        284,
+        220,
+        16,
+        198,
+        2,
+        15801
+      ]
+    },
+    {
+      "name": "fibonacci",
+      "width": 16,
+      "route": "stock",
+      "median_ms": 154.91528699931223,
+      "samples_ms": [
+        153.03479499561945,
+        161.46467700309586,
+        154.91528699931223
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        17,
+        8,
+        284,
+        220,
+        16,
+        198,
+        2,
+        15801,
+        7,
+        18,
+        8,
+        284,
+        220,
+        17,
+        198,
+        2
+      ],
+      "block_predictions": [
+        17,
+        8,
+        284,
+        220,
+        16,
+        198,
+        2,
+        15801,
+        7,
+        18,
+        8,
+        284,
+        220,
+        17,
+        198,
+        2
+      ]
+    },
+    {
+      "name": "fibonacci",
+      "width": 16,
+      "route": "row-gemv",
+      "median_ms": 149.91218200157164,
+      "samples_ms": [
+        142.78087799903005,
+        149.91218200157164,
+        166.1605330009479
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        17,
+        8,
+        284,
+        220,
+        16,
+        198,
+        2,
+        15801,
+        7,
+        18,
+        8,
+        284,
+        220,
+        17,
+        198,
+        2
+      ],
+      "block_predictions": [
+        17,
+        8,
+        284,
+        220,
+        16,
+        198,
+        2,
+        15801,
+        7,
+        18,
+        8,
+        284,
+        220,
+        17,
+        198,
+        2
+      ]
+    },
+    {
+      "name": "fibonacci",
+      "width": 16,
+      "route": "pad32",
+      "median_ms": 178.09452600340592,
+      "samples_ms": [
+        186.06086799991317,
+        151.73359100299422,
+        178.09452600340592
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        17,
+        8,
+        284,
+        220,
+        16,
+        198,
+        2,
+        15801,
+        7,
+        18,
+        8,
+        284,
+        220,
+        17,
+        198,
+        2
+      ],
+      "block_predictions": [
+        17,
+        8,
+        284,
+        220,
+        16,
+        198,
+        2,
+        15801,
+        7,
+        18,
+        8,
+        284,
+        220,
+        17,
+        198,
+        2
+      ]
+    },
+    {
+      "name": "fibonacci",
+      "width": 32,
+      "route": "stock",
+      "median_ms": 147.46273400669452,
+      "samples_ms": [
+        147.34406799834687,
+        147.46273400669452,
+        174.3824160002987
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        17,
+        8,
+        284,
+        220,
+        16,
+        198,
+        2,
+        15801,
+        7,
+        18,
+        8,
+        284,
+        220,
+        17,
+        198,
+        2,
+        15801,
+        7,
+        19,
+        8,
+        284,
+        220,
+        18,
+        198,
+        2,
+        15801,
+        7,
+        20,
+        8,
+        284,
+        220,
+        20
+      ],
+      "block_predictions": [
+        17,
+        8,
+        284,
+        220,
+        16,
+        198,
+        2,
+        15801,
+        7,
+        18,
+        8,
+        284,
+        220,
+        17,
+        198,
+        2,
+        15801,
+        7,
+        19,
+        8,
+        284,
+        220,
+        18,
+        198,
+        2,
+        15801,
+        7,
+        20,
+        8,
+        284,
+        220,
+        20
+      ]
+    },
+    {
+      "name": "math",
+      "width": 1,
+      "route": "stock",
+      "median_ms": 47.496015002252534,
+      "samples_ms": [
+        49.14404999726685,
+        46.51418599678436,
+        47.496015002252534
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        220
+      ],
+      "block_predictions": [
+        220
+      ]
+    },
+    {
+      "name": "math",
+      "width": 2,
+      "route": "stock",
+      "median_ms": 161.26921999966726,
+      "samples_ms": [
+        155.74769999511773,
+        168.29431599762756,
+        161.26921999966726
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        220,
+        17
+      ],
+      "block_predictions": [
+        220,
+        17
+      ]
+    },
+    {
+      "name": "math",
+      "width": 2,
+      "route": "row-gemv",
+      "median_ms": 170.70401499950094,
+      "samples_ms": [
+        189.96239500120282,
+        170.25355800433317,
+        170.70401499950094
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        220,
+        17
+      ],
+      "block_predictions": [
+        220,
+        17
+      ]
+    },
+    {
+      "name": "math",
+      "width": 2,
+      "route": "pad32",
+      "median_ms": 181.8586770023103,
+      "samples_ms": [
+        180.85343199345516,
+        181.8586770023103,
+        185.910911000974
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        220,
+        17
+      ],
+      "block_predictions": [
+        220,
+        17
+      ]
+    },
+    {
+      "name": "math",
+      "width": 4,
+      "route": "stock",
+      "median_ms": 161.46717700030422,
+      "samples_ms": [
+        161.46717700030422,
+        161.33655200246722,
+        164.02779199415818
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        220,
+        17,
+        22,
+        14
+      ],
+      "block_predictions": [
+        220,
+        17,
+        22,
+        14
+      ]
+    },
+    {
+      "name": "math",
+      "width": 4,
+      "route": "row-gemv",
+      "median_ms": 167.82473400235176,
+      "samples_ms": [
+        172.23521699634148,
+        165.75474399724044,
+        167.82473400235176
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        220,
+        17,
+        22,
+        14
+      ],
+      "block_predictions": [
+        220,
+        17,
+        22,
+        14
+      ]
+    },
+    {
+      "name": "math",
+      "width": 4,
+      "route": "pad32",
+      "median_ms": 181.93496899766615,
+      "samples_ms": [
+        173.51550300372764,
+        182.09121800464345,
+        181.93496899766615
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        220,
+        17,
+        22,
+        14
+      ],
+      "block_predictions": [
+        220,
+        17,
+        22,
+        14
+      ]
+    },
+    {
+      "name": "math",
+      "width": 8,
+      "route": "stock",
+      "median_ms": 161.07876200112514,
+      "samples_ms": [
+        165.35861999727786,
+        160.57747200102312,
+        161.07876200112514
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        220,
+        17,
+        22,
+        14,
+        18,
+        284,
+        220,
+        24
+      ],
+      "block_predictions": [
+        220,
+        17,
+        22,
+        14,
+        18,
+        284,
+        220,
+        24
+      ]
+    },
+    {
+      "name": "math",
+      "width": 8,
+      "route": "row-gemv",
+      "median_ms": 166.14970000227913,
+      "samples_ms": [
+        165.18095399806043,
+        168.8700640006573,
+        166.14970000227913
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        220,
+        17,
+        22,
+        14,
+        18,
+        284,
+        220,
+        24
+      ],
+      "block_predictions": [
+        220,
+        17,
+        22,
+        14,
+        18,
+        284,
+        220,
+        24
+      ]
+    },
+    {
+      "name": "math",
+      "width": 8,
+      "route": "pad32",
+      "median_ms": 175.08874699706212,
+      "samples_ms": [
+        172.72454799967818,
+        175.08874699706212,
+        176.40628299704986
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        220,
+        17,
+        22,
+        14,
+        18,
+        284,
+        220,
+        24
+      ],
+      "block_predictions": [
+        220,
+        17,
+        22,
+        14,
+        18,
+        284,
+        220,
+        24
+      ]
+    },
+    {
+      "name": "math",
+      "width": 16,
+      "route": "stock",
+      "median_ms": 159.8623919999227,
+      "samples_ms": [
+        159.8623919999227,
+        163.56321000057505,
+        159.6498100043391
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        220,
+        17,
+        22,
+        14,
+        18,
+        284,
+        220,
+        24,
+        13,
+        5005,
+        11625,
+        220,
+        19,
+        87,
+        488,
+        220
+      ],
+      "block_predictions": [
+        220,
+        17,
+        22,
+        14,
+        18,
+        284,
+        220,
+        24,
+        13,
+        5005,
+        11625,
+        220,
+        19,
+        87,
+        488,
+        220
+      ]
+    },
+    {
+      "name": "math",
+      "width": 16,
+      "route": "row-gemv",
+      "median_ms": 168.643772994983,
+      "samples_ms": [
+        166.0868249964551,
+        168.643772994983,
+        170.5725159990834
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        220,
+        17,
+        22,
+        14,
+        18,
+        284,
+        220,
+        24,
+        13,
+        5005,
+        11625,
+        220,
+        19,
+        87,
+        488,
+        220
+      ],
+      "block_predictions": [
+        220,
+        17,
+        22,
+        14,
+        18,
+        284,
+        220,
+        24,
+        13,
+        5005,
+        11625,
+        220,
+        19,
+        87,
+        488,
+        220
+      ]
+    },
+    {
+      "name": "math",
+      "width": 16,
+      "route": "pad32",
+      "median_ms": 175.29212099907454,
+      "samples_ms": [
+        175.29212099907454,
+        175.18195400043624,
+        180.1707679987885
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        220,
+        17,
+        22,
+        14,
+        18,
+        284,
+        220,
+        24,
+        13,
+        5005,
+        11625,
+        220,
+        19,
+        87,
+        488,
+        220
+      ],
+      "block_predictions": [
+        220,
+        17,
+        22,
+        14,
+        18,
+        284,
+        220,
+        24,
+        13,
+        5005,
+        11625,
+        220,
+        19,
+        87,
+        488,
+        220
+      ]
+    },
+    {
+      "name": "math",
+      "width": 32,
+      "route": "stock",
+      "median_ms": 161.72363399527967,
+      "samples_ms": [
+        161.72363399527967,
+        161.2879700041958,
+        167.28227899875492
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        220,
+        17,
+        22,
+        14,
+        18,
+        284,
+        220,
+        24,
+        13,
+        5005,
+        11625,
+        220,
+        19,
+        87,
+        488,
+        220,
+        18,
+        284,
+        220,
+        16,
+        20,
+        25,
+        220,
+        17,
+        87,
+        284,
+        220,
+        16,
+        20,
+        481,
+        220,
+        18
+      ],
+      "block_predictions": [
+        220,
+        17,
+        22,
+        14,
+        18,
+        284,
+        220,
+        24,
+        13,
+        5005,
+        11625,
+        220,
+        19,
+        87,
+        488,
+        220,
+        18,
+        284,
+        220,
+        16,
+        20,
+        25,
+        220,
+        17,
+        87,
+        284,
+        220,
+        16,
+        20,
+        481,
+        220,
+        18
+      ]
+    },
+    {
+      "name": "story",
+      "width": 1,
+      "route": "stock",
+      "median_ms": 48.29826200148091,
+      "samples_ms": [
+        49.65788099798374,
+        48.29826200148091,
+        45.27614900143817
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        12880
+      ],
+      "block_predictions": [
+        12880
+      ]
+    },
+    {
+      "name": "story",
+      "width": 2,
+      "route": "stock",
+      "median_ms": 169.501645003038,
+      "samples_ms": [
+        176.58169999776874,
+        159.60718499991344,
+        169.501645003038
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        12880,
+        264
+      ],
+      "block_predictions": [
+        12880,
+        264
+      ]
+    },
+    {
+      "name": "story",
+      "width": 2,
+      "route": "row-gemv",
+      "median_ms": 171.79309300263412,
+      "samples_ms": [
+        171.51717800152255,
+        175.9197020001011,
+        171.79309300263412
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        12880,
+        264
+      ],
+      "block_predictions": [
+        12880,
+        264
+      ]
+    },
+    {
+      "name": "story",
+      "width": 2,
+      "route": "pad32",
+      "median_ms": 180.4089750003186,
+      "samples_ms": [
+        176.41707500297343,
+        181.60151199845131,
+        180.4089750003186
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        12880,
+        264
+      ],
+      "block_predictions": [
+        12880,
+        264
+      ]
+    },
+    {
+      "name": "story",
+      "width": 4,
+      "route": "stock",
+      "median_ms": 156.6066969971871,
+      "samples_ms": [
+        156.6066969971871,
+        154.36358099395875,
+        160.2946399943903
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        12880,
+        264,
+        3491,
+        25
+      ],
+      "block_predictions": [
+        12880,
+        264,
+        3491,
+        25
+      ]
+    },
+    {
+      "name": "story",
+      "width": 4,
+      "route": "row-gemv",
+      "median_ms": 169.26789599529002,
+      "samples_ms": [
+        170.8904299957794,
+        169.26789599529002,
+        167.38861199701205
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        12880,
+        264,
+        3491,
+        25
+      ],
+      "block_predictions": [
+        12880,
+        264,
+        3491,
+        25
+      ]
+    },
+    {
+      "name": "story",
+      "width": 4,
+      "route": "pad32",
+      "median_ms": 180.9519359958358,
+      "samples_ms": [
+        174.78010299964808,
+        180.9519359958358,
+        182.40026599960402
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        12880,
+        264,
+        3491,
+        25
+      ],
+      "block_predictions": [
+        12880,
+        264,
+        3491,
+        25
+      ]
+    },
+    {
+      "name": "story",
+      "width": 8,
+      "route": "stock",
+      "median_ms": 167.03843099821825,
+      "samples_ms": [
+        156.29712599911727,
+        169.38225900230464,
+        167.03843099821825
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        12880,
+        264,
+        3491,
+        25,
+        264,
+        7826,
+        1372,
+        315
+      ],
+      "block_predictions": [
+        12880,
+        264,
+        3491,
+        25,
+        264,
+        7826,
+        1372,
+        315
+      ]
+    },
+    {
+      "name": "story",
+      "width": 8,
+      "route": "row-gemv",
+      "median_ms": 166.48122500191675,
+      "samples_ms": [
+        162.25602800113847,
+        166.48122500191675,
+        172.88095799449366
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        12880,
+        264,
+        3491,
+        25,
+        264,
+        7826,
+        1372,
+        315
+      ],
+      "block_predictions": [
+        12880,
+        264,
+        3491,
+        25,
+        264,
+        7826,
+        1372,
+        315
+      ]
+    },
+    {
+      "name": "story",
+      "width": 8,
+      "route": "pad32",
+      "median_ms": 184.97600899718236,
+      "samples_ms": [
+        191.40036599856103,
+        184.97600899718236,
+        179.8015639942605
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        12880,
+        264,
+        3491,
+        25,
+        264,
+        7826,
+        1372,
+        315
+      ],
+      "block_predictions": [
+        12880,
+        264,
+        3491,
+        25,
+        264,
+        7826,
+        1372,
+        315
+      ]
+    },
+    {
+      "name": "story",
+      "width": 16,
+      "route": "stock",
+      "median_ms": 160.00569999596337,
+      "samples_ms": [
+        155.71887799887918,
+        160.00569999596337,
+        160.62740699999267
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        12880,
+        264,
+        3491,
+        25,
+        264,
+        7826,
+        1372,
+        315,
+        2841,
+        1033,
+        15691,
+        504,
+        264,
+        25382,
+        17125,
+        429
+      ],
+      "block_predictions": [
+        12880,
+        264,
+        3491,
+        25,
+        264,
+        7826,
+        1372,
+        315,
+        2841,
+        1033,
+        15691,
+        504,
+        264,
+        25382,
+        17125,
+        429
+      ]
+    },
+    {
+      "name": "story",
+      "width": 16,
+      "route": "row-gemv",
+      "median_ms": 167.73455499787815,
+      "samples_ms": [
+        163.6893989998498,
+        170.0920910006971,
+        167.73455499787815
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        12880,
+        264,
+        3491,
+        25,
+        264,
+        7826,
+        1372,
+        315,
+        2841,
+        1033,
+        15691,
+        504,
+        264,
+        25382,
+        17125,
+        429
+      ],
+      "block_predictions": [
+        12880,
+        264,
+        3491,
+        25,
+        264,
+        7826,
+        1372,
+        315,
+        2841,
+        1033,
+        15691,
+        504,
+        264,
+        25382,
+        17125,
+        429
+      ]
+    },
+    {
+      "name": "story",
+      "width": 16,
+      "route": "pad32",
+      "median_ms": 177.41923799621873,
+      "samples_ms": [
+        179.26460699527524,
+        175.93219900300028,
+        177.41923799621873
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        12880,
+        264,
+        3491,
+        25,
+        264,
+        7826,
+        1372,
+        315,
+        2841,
+        1033,
+        15691,
+        504,
+        264,
+        25382,
+        17125,
+        429
+      ],
+      "block_predictions": [
+        12880,
+        264,
+        3491,
+        25,
+        264,
+        7826,
+        1372,
+        315,
+        2841,
+        1033,
+        15691,
+        504,
+        264,
+        25382,
+        17125,
+        429
+      ]
+    },
+    {
+      "name": "story",
+      "width": 32,
+      "route": "stock",
+      "median_ms": 162.85027599951718,
+      "samples_ms": [
+        162.85027599951718,
+        161.68940499483142,
+        166.00435099826427
+      ],
+      "tokens_equal": true,
+      "scalar_predictions": [
+        12880,
+        264,
+        3491,
+        25,
+        264,
+        7826,
+        1372,
+        315,
+        2841,
+        1033,
+        15691,
+        504,
+        264,
+        25382,
+        17125,
+        429,
+        572,
+        30035,
+        18512,
+        13,
+        576,
+        17125,
+        572,
+        2598,
+        330,
+        785,
+        24298,
+        315,
+        279,
+        23640,
+        1335,
+        892
+      ],
+      "block_predictions": [
+        12880,
+        264,
+        3491,
+        25,
+        264,
+        7826,
+        1372,
+        315,
+        2841,
+        1033,
+        15691,
+        504,
+        264,
+        25382,
+        17125,
+        429,
+        572,
+        30035,
+        18512,
+        13,
+        576,
+        17125,
+        572,
+        2598,
+        330,
+        785,
+        24298,
+        315,
+        279,
+        23640,
+        1335,
+        892
+      ]
+    }
+  ],
+  "linear_rows": [
+    {
+      "name": "capital",
+      "projection": "q_proj",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        2048,
+        1024
+      ],
+      "route": "stock",
+      "median_ms": 0.7954970060382038,
+      "samples_ms": [
+        0.7954970060382038,
+        0.7762049935990945,
+        0.8359970015590079
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 6.103515625e-05
+    },
+    {
+      "name": "capital",
+      "projection": "q_proj",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        2048,
+        1024
+      ],
+      "route": "row-gemv",
+      "median_ms": 0.750621002225671,
+      "samples_ms": [
+        0.750621002225671,
+        0.7704550007474609,
+        0.7451220008078963
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 6.103515625e-05
+    },
+    {
+      "name": "capital",
+      "projection": "q_proj",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        2048,
+        1024
+      ],
+      "route": "pad32",
+      "median_ms": 0.6672469971817918,
+      "samples_ms": [
+        0.6672469971817918,
+        0.695830000040587,
+        0.6398300029104576
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 6.103515625e-05
+    },
+    {
+      "name": "capital",
+      "projection": "gate_proj",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        3072,
+        1024
+      ],
+      "route": "stock",
+      "median_ms": 0.9669549981481396,
+      "samples_ms": [
+        1.7498669985798188,
+        0.9669549981481396,
+        0.8945800000219606
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 1.9073486328125e-06
+    },
+    {
+      "name": "capital",
+      "projection": "gate_proj",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        3072,
+        1024
+      ],
+      "route": "row-gemv",
+      "median_ms": 0.9306619976996444,
+      "samples_ms": [
+        0.9142879935097881,
+        0.9366630038130097,
+        0.9306619976996444
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 1.9073486328125e-06
+    },
+    {
+      "name": "capital",
+      "projection": "gate_proj",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        3072,
+        1024
+      ],
+      "route": "pad32",
+      "median_ms": 0.7514550015912391,
+      "samples_ms": [
+        0.7135799969546497,
+        0.7895379967521876,
+        0.7514550015912391
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 1.9073486328125e-06
+    },
+    {
+      "name": "capital",
+      "projection": "down_proj",
+      "input_shape": [
+        1,
+        8,
+        3072
+      ],
+      "weight_shape": [
+        1024,
+        3072
+      ],
+      "route": "stock",
+      "median_ms": 1.0464959996170364,
+      "samples_ms": [
+        1.1556200042832643,
+        1.0464959996170364,
+        1.0326209958293475
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.0009765625
+    },
+    {
+      "name": "capital",
+      "projection": "down_proj",
+      "input_shape": [
+        1,
+        8,
+        3072
+      ],
+      "weight_shape": [
+        1024,
+        3072
+      ],
+      "route": "row-gemv",
+      "median_ms": 1.1690780011122115,
+      "samples_ms": [
+        3.487319001578726,
+        1.1690780011122115,
+        1.1003289982909337
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.0009765625
+    },
+    {
+      "name": "capital",
+      "projection": "down_proj",
+      "input_shape": [
+        1,
+        8,
+        3072
+      ],
+      "weight_shape": [
+        1024,
+        3072
+      ],
+      "route": "pad32",
+      "median_ms": 1.4759110054001212,
+      "samples_ms": [
+        1.5154939974308945,
+        1.4759110054001212,
+        1.4426609996007755
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.0009765625
+    },
+    {
+      "name": "capital",
+      "projection": "lm_head",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        151936,
+        1024
+      ],
+      "route": "stock",
+      "median_ms": 29.478506003215443,
+      "samples_ms": [
+        30.238334999012295,
+        29.324713999812957,
+        29.478506003215443
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.0625
+    },
+    {
+      "name": "capital",
+      "projection": "lm_head",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        151936,
+        1024
+      ],
+      "route": "row-gemv",
+      "median_ms": 30.720084003405645,
+      "samples_ms": [
+        30.720084003405645,
+        32.165660995815415,
+        29.68042100110324
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.0625
+    },
+    {
+      "name": "capital",
+      "projection": "lm_head",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        151936,
+        1024
+      ],
+      "route": "pad32",
+      "median_ms": 21.923870001046453,
+      "samples_ms": [
+        21.906827998463996,
+        22.156201004690956,
+        21.923870001046453
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.0625
+    },
+    {
+      "name": "fibonacci",
+      "projection": "q_proj",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        2048,
+        1024
+      ],
+      "route": "stock",
+      "median_ms": 0.70966400380712,
+      "samples_ms": [
+        0.7562890023109503,
+        0.6905379996169358,
+        0.70966400380712
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.0001220703125
+    },
+    {
+      "name": "fibonacci",
+      "projection": "q_proj",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        2048,
+        1024
+      ],
+      "route": "row-gemv",
+      "median_ms": 0.6674140022369102,
+      "samples_ms": [
+        0.6980800026212819,
+        0.6659559949184768,
+        0.6674140022369102
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.0001220703125
+    },
+    {
+      "name": "fibonacci",
+      "projection": "q_proj",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        2048,
+        1024
+      ],
+      "route": "pad32",
+      "median_ms": 0.625788998149801,
+      "samples_ms": [
+        0.6234149986994453,
+        0.7301639998331666,
+        0.625788998149801
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.0001220703125
+    },
+    {
+      "name": "fibonacci",
+      "projection": "gate_proj",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        3072,
+        1024
+      ],
+      "route": "stock",
+      "median_ms": 0.8120379934553057,
+      "samples_ms": [
+        0.8120379934553057,
+        0.8169549982994795,
+        0.7799969971529208
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.001953125
+    },
+    {
+      "name": "fibonacci",
+      "projection": "gate_proj",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        3072,
+        1024
+      ],
+      "route": "row-gemv",
+      "median_ms": 0.844039001094643,
+      "samples_ms": [
+        0.8640800006105565,
+        0.844039001094643,
+        0.8292049969895743
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.001953125
+    },
+    {
+      "name": "fibonacci",
+      "projection": "gate_proj",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        3072,
+        1024
+      ],
+      "route": "pad32",
+      "median_ms": 0.6952469993848354,
+      "samples_ms": [
+        0.6952469993848354,
+        0.8793720044195652,
+        0.6423309969250113
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.001953125
+    },
+    {
+      "name": "fibonacci",
+      "projection": "down_proj",
+      "input_shape": [
+        1,
+        8,
+        3072
+      ],
+      "weight_shape": [
+        1024,
+        3072
+      ],
+      "route": "stock",
+      "median_ms": 0.8549130070605315,
+      "samples_ms": [
+        0.8656630016048439,
+        0.8549130070605315,
+        0.8355799946002662
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.0009765625
+    },
+    {
+      "name": "fibonacci",
+      "projection": "down_proj",
+      "input_shape": [
+        1,
+        8,
+        3072
+      ],
+      "weight_shape": [
+        1024,
+        3072
+      ],
+      "route": "row-gemv",
+      "median_ms": 0.8458299998892471,
+      "samples_ms": [
+        0.9330379980383441,
+        0.8447889995295554,
+        0.8458299998892471
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.0009765625
+    },
+    {
+      "name": "fibonacci",
+      "projection": "down_proj",
+      "input_shape": [
+        1,
+        8,
+        3072
+      ],
+      "weight_shape": [
+        1024,
+        3072
+      ],
+      "route": "pad32",
+      "median_ms": 1.3727030018344522,
+      "samples_ms": [
+        1.3727030018344522,
+        1.2643700029002503,
+        5.044272002123762
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.0009765625
+    },
+    {
+      "name": "fibonacci",
+      "projection": "lm_head",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        151936,
+        1024
+      ],
+      "route": "stock",
+      "median_ms": 29.581047005194705,
+      "samples_ms": [
+        29.617671003506985,
+        29.581047005194705,
+        29.48321299481904
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.0625
+    },
+    {
+      "name": "fibonacci",
+      "projection": "lm_head",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        151936,
+        1024
+      ],
+      "route": "row-gemv",
+      "median_ms": 29.64475499902619,
+      "samples_ms": [
+        30.724124997504987,
+        29.64475499902619,
+        29.582422001112718
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.0625
+    },
+    {
+      "name": "fibonacci",
+      "projection": "lm_head",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        151936,
+        1024
+      ],
+      "route": "pad32",
+      "median_ms": 22.310908992949408,
+      "samples_ms": [
+        22.15240900113713,
+        24.497983999026474,
+        22.310908992949408
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.0625
+    },
+    {
+      "name": "math",
+      "projection": "q_proj",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        2048,
+        1024
+      ],
+      "route": "stock",
+      "median_ms": 1.1030790046788752,
+      "samples_ms": [
+        1.594702000147663,
+        1.0314540049876086,
+        1.1030790046788752
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.0001220703125
+    },
+    {
+      "name": "math",
+      "projection": "q_proj",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        2048,
+        1024
+      ],
+      "route": "row-gemv",
+      "median_ms": 1.6981599983409978,
+      "samples_ms": [
+        1.3324939936865121,
+        1.6981599983409978,
+        2.030074996582698
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.0001220703125
+    },
+    {
+      "name": "math",
+      "projection": "q_proj",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        2048,
+        1024
+      ],
+      "route": "pad32",
+      "median_ms": 0.6445809995057061,
+      "samples_ms": [
+        0.6346640002448112,
+        0.6886229966767132,
+        0.6445809995057061
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.0001220703125
+    },
+    {
+      "name": "math",
+      "projection": "gate_proj",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        3072,
+        1024
+      ],
+      "route": "stock",
+      "median_ms": 0.8595800027251244,
+      "samples_ms": [
+        0.9004130042740144,
+        0.826497001980897,
+        0.8595800027251244
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 2.9802322387695312e-08
+    },
+    {
+      "name": "math",
+      "projection": "gate_proj",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        3072,
+        1024
+      ],
+      "route": "row-gemv",
+      "median_ms": 0.9717040011310019,
+      "samples_ms": [
+        1.00262100022519,
+        0.9717040011310019,
+        0.8342880028067157
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 2.9802322387695312e-08
+    },
+    {
+      "name": "math",
+      "projection": "gate_proj",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        3072,
+        1024
+      ],
+      "route": "pad32",
+      "median_ms": 0.8738300020922907,
+      "samples_ms": [
+        0.7818309968570247,
+        0.9689540020190179,
+        0.8738300020922907
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 2.9802322387695312e-08
+    },
+    {
+      "name": "math",
+      "projection": "down_proj",
+      "input_shape": [
+        1,
+        8,
+        3072
+      ],
+      "weight_shape": [
+        1024,
+        3072
+      ],
+      "route": "stock",
+      "median_ms": 0.9068709987332113,
+      "samples_ms": [
+        0.9621630015317351,
+        0.8705799991730601,
+        0.9068709987332113
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 7.62939453125e-06
+    },
+    {
+      "name": "math",
+      "projection": "down_proj",
+      "input_shape": [
+        1,
+        8,
+        3072
+      ],
+      "weight_shape": [
+        1024,
+        3072
+      ],
+      "route": "row-gemv",
+      "median_ms": 4.283773996576201,
+      "samples_ms": [
+        2.121659003023524,
+        4.283773996576201,
+        5.312435998348519
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 7.62939453125e-06
+    },
+    {
+      "name": "math",
+      "projection": "down_proj",
+      "input_shape": [
+        1,
+        8,
+        3072
+      ],
+      "weight_shape": [
+        1024,
+        3072
+      ],
+      "route": "pad32",
+      "median_ms": 1.7207010023412295,
+      "samples_ms": [
+        1.7207010023412295,
+        1.544743005069904,
+        1.9605339984991588
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 7.62939453125e-06
+    },
+    {
+      "name": "math",
+      "projection": "lm_head",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        151936,
+        1024
+      ],
+      "route": "stock",
+      "median_ms": 29.073132005578373,
+      "samples_ms": [
+        29.683254004339688,
+        29.073132005578373,
+        29.06129800248891
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.03125
+    },
+    {
+      "name": "math",
+      "projection": "lm_head",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        151936,
+        1024
+      ],
+      "route": "row-gemv",
+      "median_ms": 29.39792200049851,
+      "samples_ms": [
+        29.89387900015572,
+        29.39792200049851,
+        29.347339004743844
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.03125
+    },
+    {
+      "name": "math",
+      "projection": "lm_head",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        151936,
+        1024
+      ],
+      "route": "pad32",
+      "median_ms": 22.2866590047488,
+      "samples_ms": [
+        22.40424299816368,
+        22.078659996623173,
+        22.2866590047488
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.03125
+    },
+    {
+      "name": "story",
+      "projection": "q_proj",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        2048,
+        1024
+      ],
+      "route": "stock",
+      "median_ms": 0.7297479969565757,
+      "samples_ms": [
+        0.6609150004805997,
+        0.7297479969565757,
+        4.903694993117824
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.0009765625
+    },
+    {
+      "name": "story",
+      "projection": "q_proj",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        2048,
+        1024
+      ],
+      "route": "row-gemv",
+      "median_ms": 0.7499979983549565,
+      "samples_ms": [
+        0.7499979983549565,
+        0.765539996791631,
+        0.683247999404557
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.0009765625
+    },
+    {
+      "name": "story",
+      "projection": "q_proj",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        2048,
+        1024
+      ],
+      "route": "pad32",
+      "median_ms": 0.6191229986143298,
+      "samples_ms": [
+        0.6458319985540584,
+        0.6191229986143298,
+        0.6094150012359023
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.0009765625
+    },
+    {
+      "name": "story",
+      "projection": "gate_proj",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        3072,
+        1024
+      ],
+      "route": "stock",
+      "median_ms": 0.890331000846345,
+      "samples_ms": [
+        0.8855810010572895,
+        0.9919139993144199,
+        0.890331000846345
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.00390625
+    },
+    {
+      "name": "story",
+      "projection": "gate_proj",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        3072,
+        1024
+      ],
+      "route": "row-gemv",
+      "median_ms": 0.9722059985506348,
+      "samples_ms": [
+        0.9830810013227165,
+        0.9722059985506348,
+        0.9661219955887645
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.00390625
+    },
+    {
+      "name": "story",
+      "projection": "gate_proj",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        3072,
+        1024
+      ],
+      "route": "pad32",
+      "median_ms": 0.802747999841813,
+      "samples_ms": [
+        0.7834560019546188,
+        0.802747999841813,
+        0.8132480070344172
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.00390625
+    },
+    {
+      "name": "story",
+      "projection": "down_proj",
+      "input_shape": [
+        1,
+        8,
+        3072
+      ],
+      "weight_shape": [
+        1024,
+        3072
+      ],
+      "route": "stock",
+      "median_ms": 0.9722050017444417,
+      "samples_ms": [
+        0.9147480013780296,
+        1.0134549957001582,
+        0.9722050017444417
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.00048828125
+    },
+    {
+      "name": "story",
+      "projection": "down_proj",
+      "input_shape": [
+        1,
+        8,
+        3072
+      ],
+      "weight_shape": [
+        1024,
+        3072
+      ],
+      "route": "row-gemv",
+      "median_ms": 0.9477060011704452,
+      "samples_ms": [
+        0.9477060011704452,
+        0.9408309997525066,
+        0.9585809966665693
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.00048828125
+    },
+    {
+      "name": "story",
+      "projection": "down_proj",
+      "input_shape": [
+        1,
+        8,
+        3072
+      ],
+      "weight_shape": [
+        1024,
+        3072
+      ],
+      "route": "pad32",
+      "median_ms": 1.352704995952081,
+      "samples_ms": [
+        1.397496002027765,
+        1.352704995952081,
+        1.311871994403191
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.00048828125
+    },
+    {
+      "name": "story",
+      "projection": "lm_head",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        151936,
+        1024
+      ],
+      "route": "stock",
+      "median_ms": 29.39621299447026,
+      "samples_ms": [
+        29.39621299447026,
+        31.087126000784338,
+        29.233504996227566
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.0625
+    },
+    {
+      "name": "story",
+      "projection": "lm_head",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        151936,
+        1024
+      ],
+      "route": "row-gemv",
+      "median_ms": 29.473379996488802,
+      "samples_ms": [
+        30.041962003451772,
+        29.473379996488802,
+        29.404547000012826
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.0625
+    },
+    {
+      "name": "story",
+      "projection": "lm_head",
+      "input_shape": [
+        1,
+        8,
+        1024
+      ],
+      "weight_shape": [
+        151936,
+        1024
+      ],
+      "route": "pad32",
+      "median_ms": 22.02240000042366,
+      "samples_ms": [
+        22.016732997144572,
+        24.254227995697875,
+        22.02240000042366
+      ],
+      "bit_equal_to_scalar": false,
+      "max_abs_difference": 0.0625
+    }
+  ],
+  "memory_after": {
+    "MemTotal": 7865876480,
+    "MemAvailable": 1688420352,
+    "SwapTotal": 8589901824,
+    "SwapFree": 4801347584
+  }
+}

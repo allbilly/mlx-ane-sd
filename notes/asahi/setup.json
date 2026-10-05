@@ -1,0 +1,17 @@
+{
+  "kernel": "7.1.13+",
+  "source_commit": "963eb1b4611de287945b007559781e0c269db6df",
+  "wheel_release": "v0.7.27",
+  "wheel_version": "0.32.4.dev202610041653+6edd258",
+  "wheel_sha256": "f10c1df8677d1ada2a438c7ec0d40b50fc3ca75b5cfdb2be8a697f9482f09b87",
+  "native_packages": [
+    "openblas-serial-0.3.29-2.fc43.aarch64",
+    "libgfortran-16.0.1-0.10.fc44.aarch64"
+  ],
+  "native_libraries": {
+    "usr/lib64/libgfortran.so.5.0.0": "ff67d4fcfaca5a927f1094341f563530d511a512d27960524770c6d8347d36eb"
+  },
+  "smoke_command": "timeout 90 env MLX_OMARCHY_TRACE_DISPATCH=1 scripts/asahi_python.sh scripts/smoke_asahi_mlx.py",
+  "smoke_harness_sha256": "9b8969f93f3883c2802150ad9fc989704758e3528f3d4b6ef8049400afd0ef50",
+  "model_download_note": "ModelScope mirror weight bytes verified against pinned Hugging Face LFS SHA256. Direct connections used after configured proxy repeatedly timed out."
+}

@@ -6,3 +6,6 @@ __pycache__/
 *.mlmodelc/
 /tmp/
 results/raw/
+.venv-asahi/
+.asahi/
+asahi/reference/

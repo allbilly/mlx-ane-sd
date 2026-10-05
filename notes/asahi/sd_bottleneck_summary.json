@@ -1,0 +1,79 @@
+{
+  "procedure": "Mean of the per-prompt median target timings across four fixed real prefixes; native mean across four prompts and three warmed proposals each.",
+  "target_mean_median_ms": {
+    "1:stock": 48.0003395005042,
+    "2:stock": 166.08238974913547,
+    "2:row-gemv": 67.32821300101932,
+    "2:pad32": 181.88618974818382,
+    "4:stock": 162.62256749905646,
+    "4:row-gemv": 104.6912154997699,
+    "4:pad32": 180.57858000065607,
+    "8:stock": 163.69613250026305,
+    "8:row-gemv": 175.87113449917524,
+    "8:pad32": 179.61470750014996,
+    "16:stock": 159.53482599979907,
+    "16:row-gemv": 304.3280230012897,
+    "16:pad32": 176.01238550014386,
+    "32:stock": 164.69682050046686
+  },
+  "linear_mean_median_ms": {
+    "q_proj:stock": {
+      "ms": 0.740617499104701,
+      "all_bit_equal_to_scalar": false
+    },
+    "q_proj:row-gemv": {
+      "ms": 0.8140972458932083,
+      "all_bit_equal_to_scalar": true
+    },
+    "q_proj:pad32": {
+      "ms": 0.7475660004274687,
+      "all_bit_equal_to_scalar": false
+    },
+    "gate_proj:stock": {
+      "ms": 0.9949105024134042,
+      "all_bit_equal_to_scalar": false
+    },
+    "gate_proj:row-gemv": {
+      "ms": 1.0622860008879798,
+      "all_bit_equal_to_scalar": true
+    },
+    "gate_proj:pad32": {
+      "ms": 0.8866597472660942,
+      "all_bit_equal_to_scalar": false
+    },
+    "down_proj:stock": {
+      "ms": 1.0069622494484065,
+      "all_bit_equal_to_scalar": false
+    },
+    "down_proj:row-gemv": {
+      "ms": 1.1447342494648183,
+      "all_bit_equal_to_scalar": true
+    },
+    "down_proj:pad32": {
+      "ms": 1.6684337497281376,
+      "all_bit_equal_to_scalar": false
+    },
+    "lm_head:stock": {
+      "ms": 30.50610299942491,
+      "all_bit_equal_to_scalar": false
+    },
+    "lm_head:row-gemv": {
+      "ms": 42.03347375005251,
+      "all_bit_equal_to_scalar": true
+    },
+    "lm_head:pad32": {
+      "ms": 21.663505000105943,
+      "all_bit_equal_to_scalar": false
+    }
+  },
+  "native_mean_ms": {
+    "wall": 39.84952724810379,
+    "pack": 1.97765675,
+    "upload": 0.6883856666666667,
+    "submit": 17.229626,
+    "download": 1.0282594166666665,
+    "unpack": 3.92935675,
+    "outside_native": 14.996242664770456
+  },
+  "native_calls": 59
+}

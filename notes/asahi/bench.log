@@ -1,0 +1,19 @@
+provenance: mlx-omarchy 0.32.4.dev202610041653+6edd258 mx=0.32.4.dev202610041653+6edd258 verified=match harness=ebbc441f core.cpython-314-aarch64-linux-gnu.so=sha256:133e15fcb09eb678 libmlx.so=sha256:1e82df97df9f3fd1
+[load] bf16 target and quantized draft
+[warmup] both paths
+1 capital    baseline=33.59 SD=10.96 tok/s speedup=0.33x identical=False draft fraction=72.0%
+1 fibonacci  baseline=33.17 SD=10.87 tok/s speedup=0.33x identical=True draft fraction=73.0%
+1 math       baseline=35.06 SD=11.20 tok/s speedup=0.32x identical=False draft fraction=72.0%
+1 story      baseline=34.50 SD=10.25 tok/s speedup=0.30x identical=False draft fraction=62.0%
+2 capital    baseline=33.02 SD=11.00 tok/s speedup=0.33x identical=False draft fraction=72.0%
+2 fibonacci  baseline=33.24 SD=10.90 tok/s speedup=0.33x identical=True draft fraction=73.0%
+2 math       baseline=34.67 SD=11.07 tok/s speedup=0.32x identical=False draft fraction=72.0%
+2 story      baseline=33.43 SD=10.32 tok/s speedup=0.31x identical=False draft fraction=62.0%
+{
+  "baseline_mean_tok_s": 33.83497313916757,
+  "sd_mean_tok_s": 10.82094957003283,
+  "mean_speedup": 0.3199402985348001,
+  "max_speedup": 0.33307523909777903,
+  "all_tokens_identical": false,
+  "max_rss_bytes": 312524800
+}

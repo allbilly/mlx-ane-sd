@@ -1,0 +1,16 @@
+{
+  "origin": "https://github.com/allbilly/qwen3.c.git",
+  "revision": "69d81fc2f7679b6678578a757fa9b2bc69ffbd28",
+  "files": {
+    "LICENSE": "db525b8641f794b26d52d52cc410cb58209a4ff385c5446d3264e1d9641af9b3",
+    "runq.c": "8a2305ff1c7b13d5a50ca016cd30dc0fb5281ed6e2cd74d909f85f2acee2a649",
+    "qwen3.h": "8ccdf1fc163ab2a4b7fdf5e20d1a654c76f5b2b91dc5af771a61800df8da8c7e",
+    "npu_matmul.h": "7f65f77519b4a2f604e1b4113b54b9d8dbcbd81cb537510d8b3880ff7ab0a655",
+    "ane/ane_matmul.c": "cb18789aca07dbe4ff00048fc47d82b6ed3db0912aaf81f8234e75ce69d00be8",
+    "ane/ane_matmul.h": "5e2306b8eea5435585944165ebd8f8d098561a1f62e67975a3cc3ff043387929",
+    "ane/linear_template.h": "b7806029cc215b8a70ff3e14d4dd188988a49b24831b4909de82aea6e0e4d680",
+    "ane/template-provenance.json": "23ac20c8ae0e2c5ee290b9aeb99ed29298fd0396ff6fa4a8970f2f74b39aef17",
+    "ane/prefill.h": "f6848b122f0e60158fe25fa521aa018573abd816c1e5be765d6de0451dca38b0",
+    "tests/ane_matmul_test.c": "33fbf468c850c99d67c1b4958e4bc399ee38a85058f3cfd481507163d50e6a9e"
+  }
+}

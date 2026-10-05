@@ -1,0 +1,97 @@
+{
+  "schema": 1,
+  "compiler": "allbilly/mil-hwx-compiler",
+  "procedure": "Compile the exact prepared real-input MIL cases using the existing Linux H13G compiler; no hardware submission.",
+  "rows": [
+    {
+      "graph": "rmsnorm",
+      "compiler_revision": "87e8db19b2b6ebdc8e9505095142c387d08e9c21",
+      "argv": [
+        "/home/asahi/mil-hwx-compiler/build/mil-hwxc",
+        "--mil",
+        "/home/asahi/mlx-ane-sd/.asahi/m1-sd-capture/cases/capital-rmsnorm/model.mil",
+        "--model-root",
+        "/home/asahi/mlx-ane-sd/.asahi/m1-sd-capture/cases/capital-rmsnorm",
+        "--target",
+        "H13G",
+        "--output",
+        "/home/asahi/mlx-ane-sd/.asahi/m1-sd-capture/linux-coverage/rmsnorm"
+      ],
+      "returncode": 127,
+      "stdout": "",
+      "stderr": "/home/asahi/mil-hwx-compiler/build/mil-hwxc: error while loading shared libraries: libicui18n.so.76: cannot open shared object file: No such file or directory\n"
+    },
+    {
+      "graph": "fused-ffn",
+      "compiler_revision": "87e8db19b2b6ebdc8e9505095142c387d08e9c21",
+      "argv": [
+        "/home/asahi/mil-hwx-compiler/build/mil-hwxc",
+        "--mil",
+        "/home/asahi/mlx-ane-sd/.asahi/m1-sd-capture/cases/capital-fused-ffn/model.mil",
+        "--model-root",
+        "/home/asahi/mlx-ane-sd/.asahi/m1-sd-capture/cases/capital-fused-ffn",
+        "--target",
+        "H13G",
+        "--output",
+        "/home/asahi/mlx-ane-sd/.asahi/m1-sd-capture/linux-coverage/fused-ffn"
+      ],
+      "returncode": 127,
+      "stdout": "",
+      "stderr": "/home/asahi/mil-hwx-compiler/build/mil-hwxc: error while loading shared libraries: libicui18n.so.76: cannot open shared object file: No such file or directory\n"
+    },
+    {
+      "graph": "cached-attention",
+      "compiler_revision": "87e8db19b2b6ebdc8e9505095142c387d08e9c21",
+      "argv": [
+        "/home/asahi/mil-hwx-compiler/build/mil-hwxc",
+        "--mil",
+        "/home/asahi/mlx-ane-sd/.asahi/m1-sd-capture/cases/capital-cached-attention/model.mil",
+        "--model-root",
+        "/home/asahi/mlx-ane-sd/.asahi/m1-sd-capture/cases/capital-cached-attention",
+        "--target",
+        "H13G",
+        "--output",
+        "/home/asahi/mlx-ane-sd/.asahi/m1-sd-capture/linux-coverage/cached-attention"
+      ],
+      "returncode": 127,
+      "stdout": "",
+      "stderr": "/home/asahi/mil-hwx-compiler/build/mil-hwxc: error while loading shared libraries: libicui18n.so.76: cannot open shared object file: No such file or directory\n"
+    },
+    {
+      "graph": "head4096",
+      "compiler_revision": "87e8db19b2b6ebdc8e9505095142c387d08e9c21",
+      "argv": [
+        "/home/asahi/mil-hwx-compiler/build/mil-hwxc",
+        "--mil",
+        "/home/asahi/mlx-ane-sd/.asahi/m1-sd-capture/cases/capital-head4096/model.mil",
+        "--model-root",
+        "/home/asahi/mlx-ane-sd/.asahi/m1-sd-capture/cases/capital-head4096",
+        "--target",
+        "H13G",
+        "--output",
+        "/home/asahi/mlx-ane-sd/.asahi/m1-sd-capture/linux-coverage/head4096"
+      ],
+      "returncode": 127,
+      "stdout": "",
+      "stderr": "/home/asahi/mil-hwx-compiler/build/mil-hwxc: error while loading shared libraries: libicui18n.so.76: cannot open shared object file: No such file or directory\n"
+    },
+    {
+      "graph": "head8192",
+      "compiler_revision": "87e8db19b2b6ebdc8e9505095142c387d08e9c21",
+      "argv": [
+        "/home/asahi/mil-hwx-compiler/build/mil-hwxc",
+        "--mil",
+        "/home/asahi/mlx-ane-sd/.asahi/m1-sd-capture/cases/capital-head8192/model.mil",
+        "--model-root",
+        "/home/asahi/mlx-ane-sd/.asahi/m1-sd-capture/cases/capital-head8192",
+        "--target",
+        "H13G",
+        "--output",
+        "/home/asahi/mlx-ane-sd/.asahi/m1-sd-capture/linux-coverage/head8192"
+      ],
+      "returncode": 127,
+      "stdout": "",
+      "stderr": "/home/asahi/mil-hwx-compiler/build/mil-hwxc: error while loading shared libraries: libicui18n.so.76: cannot open shared object file: No such file or directory\n"
+    }
+  ]
+}

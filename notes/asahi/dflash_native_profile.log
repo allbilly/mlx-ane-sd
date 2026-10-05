@@ -1,0 +1,12 @@
+capital 0: wall=39.83 ms ioctl=17.02 ms calls=59
+capital 1: wall=39.25 ms ioctl=18.68 ms calls=59
+capital 2: wall=34.63 ms ioctl=16.82 ms calls=59
+fibonacci 0: wall=40.00 ms ioctl=17.96 ms calls=59
+fibonacci 1: wall=39.81 ms ioctl=18.10 ms calls=59
+fibonacci 2: wall=37.55 ms ioctl=18.06 ms calls=59
+math 0: wall=46.47 ms ioctl=17.68 ms calls=59
+math 1: wall=37.49 ms ioctl=13.89 ms calls=59
+math 2: wall=38.00 ms ioctl=14.07 ms calls=59
+story 0: wall=46.38 ms ioctl=18.18 ms calls=59
+story 1: wall=40.34 ms ioctl=18.15 ms calls=59
+story 2: wall=38.46 ms ioctl=18.14 ms calls=59

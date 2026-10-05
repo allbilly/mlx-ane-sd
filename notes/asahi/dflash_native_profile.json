@@ -1,0 +1,6136 @@
+{
+  "schema": 1,
+  "started_utc": "2026-10-05T12:11:38.044193+00:00",
+  "procedure": "Separate native ANE wait, mapped-buffer transfers and CPU draft work.\n\nThis is a diagnostic with clock reads and ctypes snapshots, not a replacement\nthroughput benchmark. Four real benchmark prefixes prime the trained draft.\nThe same proposal is repeated without committing new tokens.\n",
+  "target": {
+    "model": "mlx-community/Qwen3-0.6B-bf16",
+    "revision": "42096995f6402fde107068cf530136fe64b604f8",
+    "config": {
+      "architectures": [
+        "Qwen3ForCausalLM"
+      ],
+      "attention_bias": false,
+      "attention_dropout": 0.0,
+      "bos_token_id": 151643,
+      "eos_token_id": 151645,
+      "head_dim": 128,
+      "hidden_act": "silu",
+      "hidden_size": 1024,
+      "initializer_range": 0.02,
+      "intermediate_size": 3072,
+      "max_position_embeddings": 40960,
+      "max_window_layers": 28,
+      "model_type": "qwen3",
+      "num_attention_heads": 16,
+      "num_hidden_layers": 28,
+      "num_key_value_heads": 8,
+      "rms_norm_eps": 1e-06,
+      "rope_scaling": null,
+      "rope_theta": 1000000,
+      "sliding_window": null,
+      "tie_word_embeddings": true,
+      "torch_dtype": "bfloat16",
+      "transformers_version": "4.51.0",
+      "use_cache": true,
+      "use_sliding_window": false,
+      "vocab_size": 151936
+    },
+    "files": {
+      "added_tokens.json": "c0284b582e14987fbd3d5a2cb2bd139084371ed9acbae488829a1c900833c680",
+      "config.json": "332d56de2e5cde28245ac8b1776639bf9f7ed55fc911dfd2399ae8872acee2a9",
+      "model.safetensors": "bfe05e58f5acdecd38e5f3e64c82071682683a73db0e57fd437523885a49f2ff",
+      "model.safetensors.index.json": "34238e9a50ea68c6c54c9d23a50f3839867ea8b5d63462121593571ebd37d64f",
+      "special_tokens_map.json": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd",
+      "tokenizer.json": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+      "tokenizer_config.json": "253153d0738ceb4c668d2eff957714dd2bea0b56de772a9fdccd96cbf517e6a0",
+      "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+    }
+  },
+  "mlx_provenance": {
+    "dist": "mlx-omarchy",
+    "verified": "match",
+    "mismatch": null,
+    "files": [
+      {
+        "path": "mlx/core.cpython-314-aarch64-linux-gnu.so",
+        "label": "mlx.core extension",
+        "sha256": "133e15fcb09eb678c8173a561e80a6e3d7680a4606fcd7933df2dc11470daf21",
+        "record_sha256": "133e15fcb09eb678c8173a561e80a6e3d7680a4606fcd7933df2dc11470daf21",
+        "match": true
+      },
+      {
+        "path": "mlx/lib/libmlx.so",
+        "label": "mlx/lib/libmlx.so",
+        "sha256": "1e82df97df9f3fd1cbc5830d8408317892522305c0e8d4ba772df8e42227600f",
+        "record_sha256": "1e82df97df9f3fd1cbc5830d8408317892522305c0e8d4ba772df8e42227600f",
+        "match": true
+      }
+    ],
+    "dist_version": "0.32.4.dev202610041653+6edd258",
+    "mx_version": "0.32.4.dev202610041653+6edd258",
+    "version_match": true
+  },
+  "library_sha256": "bb4db3e7c3dc69bad7d51e06f9e92130550b506b889763f6588e683ec10247db",
+  "sources": {
+    "profile_asahi_dflash.py": "a807d9bc3617ee43913eb72981aa28bcfc18e7e9808650a09dff20fbe778f315",
+    "asahi_ane.py": "d61c8812366c156ad323320c078c1fdddd549b5bbc42965901b78c7115c309e0",
+    "asahi_dflash.py": "9c1fb62496a8bfdd900d4747c7d43c9a77acb2c60e1c35253fe15654020db386",
+    "ane_matmul.c": "0ca9d1ae076f92989639f0bf8f3fe79a958fde4dd2daf6e04fc8e54d61d2f316"
+  },
+  "rows": [
+    {
+      "name": "capital",
+      "repeat": 0,
+      "context_tokens": 27,
+      "wall_ms": 39.827397995395586,
+      "draft_phase_s": {
+        "context": 0.0,
+        "body": 0.017620329999772366,
+        "head": 0.022172319004312158
+      },
+      "native": {
+        "calls": 59,
+        "pack_ns": 2041680,
+        "upload_ns": 686254,
+        "submit_ns": 17021034,
+        "download_ns": 924130,
+        "unpack_ns": 3934321
+      },
+      "kernels": {
+        "layers.0.self_attn.q_proj.weight": {
+          "calls": 1,
+          "pack_ns": 40834,
+          "upload_ns": 13833,
+          "submit_ns": 197627,
+          "download_ns": 12541,
+          "unpack_ns": 62376
+        },
+        "layers.0.self_attn.k_proj.weight": {
+          "calls": 1,
+          "pack_ns": 40334,
+          "upload_ns": 8916,
+          "submit_ns": 118710,
+          "download_ns": 6541,
+          "unpack_ns": 31292
+        },
+        "layers.0.self_attn.v_proj.weight": {
+          "calls": 1,
+          "pack_ns": 40625,
+          "upload_ns": 9292,
+          "submit_ns": 120125,
+          "download_ns": 6709,
+          "unpack_ns": 31292
+        },
+        "layers.0.self_attn.o_proj.weight": {
+          "calls": 1,
+          "pack_ns": 80501,
+          "upload_ns": 18167,
+          "submit_ns": 220043,
+          "download_ns": 6583,
+          "unpack_ns": 31292
+        },
+        "layers.0.mlp.gate_proj.weight": {
+          "calls": 1,
+          "pack_ns": 40292,
+          "upload_ns": 16125,
+          "submit_ns": 284252,
+          "download_ns": 19000,
+          "unpack_ns": 93251
+        },
+        "layers.0.mlp.up_proj.weight": {
+          "calls": 1,
+          "pack_ns": 57583,
+          "upload_ns": 13542,
+          "submit_ns": 285377,
+          "download_ns": 19083,
+          "unpack_ns": 93126
+        },
+        "layers.0.mlp.down_proj.weight": {
+          "calls": 1,
+          "pack_ns": 121209,
+          "upload_ns": 23292,
+          "submit_ns": 283961,
+          "download_ns": 6875,
+          "unpack_ns": 31375
+        },
+        "layers.1.self_attn.q_proj.weight": {
+          "calls": 1,
+          "pack_ns": 40667,
+          "upload_ns": 11625,
+          "submit_ns": 150876,
+          "download_ns": 13542,
+          "unpack_ns": 62375
+        },
+        "layers.1.self_attn.k_proj.weight": {
+          "calls": 1,
+          "pack_ns": 40792,
+          "upload_ns": 12083,
+          "submit_ns": 90459,
+          "download_ns": 6750,
+          "unpack_ns": 31250
+        },
+        "layers.1.self_attn.v_proj.weight": {
+          "calls": 1,
+          "pack_ns": 40750,
+          "upload_ns": 9167,
+          "submit_ns": 96167,
+          "download_ns": 7000,
+          "unpack_ns": 31250
+        },
+        "layers.1.self_attn.o_proj.weight": {
+          "calls": 1,
+          "pack_ns": 59125,
+          "upload_ns": 11833,
+          "submit_ns": 147793,
+          "download_ns": 5459,
+          "unpack_ns": 34416
+        },
+        "layers.1.mlp.gate_proj.weight": {
+          "calls": 1,
+          "pack_ns": 30000,
+          "upload_ns": 10042,
+          "submit_ns": 190751,
+          "download_ns": 16375,
+          "unpack_ns": 67918
+        },
+        "layers.1.mlp.up_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29583,
+          "upload_ns": 10167,
+          "submit_ns": 187710,
+          "download_ns": 16875,
+          "unpack_ns": 68000
+        },
+        "layers.1.mlp.down_proj.weight": {
+          "calls": 1,
+          "pack_ns": 87667,
+          "upload_ns": 19625,
+          "submit_ns": 187543,
+          "download_ns": 5750,
+          "unpack_ns": 23000
+        },
+        "layers.2.self_attn.q_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29583,
+          "upload_ns": 8667,
+          "submit_ns": 138917,
+          "download_ns": 10542,
+          "unpack_ns": 45459
+        },
+        "layers.2.self_attn.k_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29500,
+          "upload_ns": 6750,
+          "submit_ns": 81792,
+          "download_ns": 5292,
+          "unpack_ns": 22750
+        },
+        "layers.2.self_attn.v_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29667,
+          "upload_ns": 9542,
+          "submit_ns": 83459,
+          "download_ns": 5333,
+          "unpack_ns": 22750
+        },
+        "layers.2.self_attn.o_proj.weight": {
+          "calls": 1,
+          "pack_ns": 58917,
+          "upload_ns": 11083,
+          "submit_ns": 138293,
+          "download_ns": 5250,
+          "unpack_ns": 22708
+        },
+        "layers.2.mlp.gate_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29417,
+          "upload_ns": 10250,
+          "submit_ns": 185793,
+          "download_ns": 15667,
+          "unpack_ns": 67875
+        },
+        "layers.2.mlp.up_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29375,
+          "upload_ns": 9792,
+          "submit_ns": 185209,
+          "download_ns": 15625,
+          "unpack_ns": 68042
+        },
+        "layers.2.mlp.down_proj.weight": {
+          "calls": 1,
+          "pack_ns": 87834,
+          "upload_ns": 16000,
+          "submit_ns": 188002,
+          "download_ns": 5333,
+          "unpack_ns": 22834
+        },
+        "head.0": {
+          "calls": 1,
+          "pack_ns": 25833,
+          "upload_ns": 11376,
+          "submit_ns": 239626,
+          "download_ns": 18834,
+          "unpack_ns": 79334
+        },
+        "head.4096": {
+          "calls": 1,
+          "pack_ns": 25959,
+          "upload_ns": 11333,
+          "submit_ns": 233793,
+          "download_ns": 19375,
+          "unpack_ns": 79251
+        },
+        "head.8192": {
+          "calls": 1,
+          "pack_ns": 26167,
+          "upload_ns": 14583,
+          "submit_ns": 261127,
+          "download_ns": 20083,
+          "unpack_ns": 79168
+        },
+        "head.12288": {
+          "calls": 1,
+          "pack_ns": 26209,
+          "upload_ns": 11041,
+          "submit_ns": 374378,
+          "download_ns": 20833,
+          "unpack_ns": 79501
+        },
+        "head.16384": {
+          "calls": 1,
+          "pack_ns": 26083,
+          "upload_ns": 11292,
+          "submit_ns": 370753,
+          "download_ns": 19333,
+          "unpack_ns": 79459
+        },
+        "head.20480": {
+          "calls": 1,
+          "pack_ns": 26167,
+          "upload_ns": 11125,
+          "submit_ns": 368961,
+          "download_ns": 19083,
+          "unpack_ns": 90501
+        },
+        "head.24576": {
+          "calls": 1,
+          "pack_ns": 26126,
+          "upload_ns": 11500,
+          "submit_ns": 373836,
+          "download_ns": 18708,
+          "unpack_ns": 79292
+        },
+        "head.28672": {
+          "calls": 1,
+          "pack_ns": 26042,
+          "upload_ns": 10791,
+          "submit_ns": 421503,
+          "download_ns": 19626,
+          "unpack_ns": 79167
+        },
+        "head.32768": {
+          "calls": 1,
+          "pack_ns": 26125,
+          "upload_ns": 11334,
+          "submit_ns": 369794,
+          "download_ns": 18417,
+          "unpack_ns": 79209
+        },
+        "head.36864": {
+          "calls": 1,
+          "pack_ns": 35000,
+          "upload_ns": 13376,
+          "submit_ns": 368377,
+          "download_ns": 18292,
+          "unpack_ns": 79125
+        },
+        "head.40960": {
+          "calls": 1,
+          "pack_ns": 25958,
+          "upload_ns": 10751,
+          "submit_ns": 368752,
+          "download_ns": 26542,
+          "unpack_ns": 79292
+        },
+        "head.45056": {
+          "calls": 1,
+          "pack_ns": 25917,
+          "upload_ns": 10583,
+          "submit_ns": 386086,
+          "download_ns": 18333,
+          "unpack_ns": 79293
+        },
+        "head.49152": {
+          "calls": 1,
+          "pack_ns": 25791,
+          "upload_ns": 10750,
+          "submit_ns": 373128,
+          "download_ns": 18292,
+          "unpack_ns": 79375
+        },
+        "head.53248": {
+          "calls": 1,
+          "pack_ns": 26000,
+          "upload_ns": 10542,
+          "submit_ns": 369169,
+          "download_ns": 18292,
+          "unpack_ns": 79375
+        },
+        "head.57344": {
+          "calls": 1,
+          "pack_ns": 25917,
+          "upload_ns": 13334,
+          "submit_ns": 377752,
+          "download_ns": 18292,
+          "unpack_ns": 79334
+        },
+        "head.61440": {
+          "calls": 1,
+          "pack_ns": 26042,
+          "upload_ns": 10542,
+          "submit_ns": 370544,
+          "download_ns": 18375,
+          "unpack_ns": 87251
+        },
+        "head.65536": {
+          "calls": 1,
+          "pack_ns": 25875,
+          "upload_ns": 10709,
+          "submit_ns": 371836,
+          "download_ns": 18333,
+          "unpack_ns": 79292
+        },
+        "head.69632": {
+          "calls": 1,
+          "pack_ns": 25959,
+          "upload_ns": 10458,
+          "submit_ns": 369419,
+          "download_ns": 18334,
+          "unpack_ns": 79250
+        },
+        "head.73728": {
+          "calls": 1,
+          "pack_ns": 25959,
+          "upload_ns": 10958,
+          "submit_ns": 369795,
+          "download_ns": 18375,
+          "unpack_ns": 79334
+        },
+        "head.77824": {
+          "calls": 1,
+          "pack_ns": 26083,
+          "upload_ns": 10959,
+          "submit_ns": 368461,
+          "download_ns": 18375,
+          "unpack_ns": 79209
+        },
+        "head.81920": {
+          "calls": 1,
+          "pack_ns": 25958,
+          "upload_ns": 10792,
+          "submit_ns": 367419,
+          "download_ns": 18417,
+          "unpack_ns": 79251
+        },
+        "head.86016": {
+          "calls": 1,
+          "pack_ns": 25959,
+          "upload_ns": 10916,
+          "submit_ns": 370169,
+          "download_ns": 18334,
+          "unpack_ns": 79125
+        },
+        "head.90112": {
+          "calls": 1,
+          "pack_ns": 25917,
+          "upload_ns": 10958,
+          "submit_ns": 369878,
+          "download_ns": 18416,
+          "unpack_ns": 79376
+        },
+        "head.94208": {
+          "calls": 1,
+          "pack_ns": 26126,
+          "upload_ns": 10791,
+          "submit_ns": 368836,
+          "download_ns": 18334,
+          "unpack_ns": 79292
+        },
+        "head.98304": {
+          "calls": 1,
+          "pack_ns": 25959,
+          "upload_ns": 10583,
+          "submit_ns": 369169,
+          "download_ns": 18292,
+          "unpack_ns": 79334
+        },
+        "head.102400": {
+          "calls": 1,
+          "pack_ns": 25958,
+          "upload_ns": 10834,
+          "submit_ns": 369502,
+          "download_ns": 18292,
+          "unpack_ns": 79209
+        },
+        "head.106496": {
+          "calls": 1,
+          "pack_ns": 25917,
+          "upload_ns": 10416,
+          "submit_ns": 365295,
+          "download_ns": 18250,
+          "unpack_ns": 79167
+        },
+        "head.110592": {
+          "calls": 1,
+          "pack_ns": 25750,
+          "upload_ns": 13167,
+          "submit_ns": 379794,
+          "download_ns": 18417,
+          "unpack_ns": 79292
+        },
+        "head.114688": {
+          "calls": 1,
+          "pack_ns": 25958,
+          "upload_ns": 10709,
+          "submit_ns": 364252,
+          "download_ns": 19375,
+          "unpack_ns": 79293
+        },
+        "head.118784": {
+          "calls": 1,
+          "pack_ns": 25834,
+          "upload_ns": 10917,
+          "submit_ns": 366502,
+          "download_ns": 19792,
+          "unpack_ns": 79209
+        },
+        "head.122880": {
+          "calls": 1,
+          "pack_ns": 26125,
+          "upload_ns": 11292,
+          "submit_ns": 370877,
+          "download_ns": 25292,
+          "unpack_ns": 79334
+        },
+        "head.126976": {
+          "calls": 1,
+          "pack_ns": 26251,
+          "upload_ns": 11166,
+          "submit_ns": 367419,
+          "download_ns": 19292,
+          "unpack_ns": 79459
+        },
+        "head.131072": {
+          "calls": 1,
+          "pack_ns": 25958,
+          "upload_ns": 11000,
+          "submit_ns": 368461,
+          "download_ns": 20042,
+          "unpack_ns": 79459
+        },
+        "head.135168": {
+          "calls": 1,
+          "pack_ns": 26042,
+          "upload_ns": 10834,
+          "submit_ns": 371794,
+          "download_ns": 18750,
+          "unpack_ns": 79292
+        },
+        "head.139264": {
+          "calls": 1,
+          "pack_ns": 26208,
+          "upload_ns": 10625,
+          "submit_ns": 365711,
+          "download_ns": 18917,
+          "unpack_ns": 79334
+        },
+        "head.143360": {
+          "calls": 1,
+          "pack_ns": 26126,
+          "upload_ns": 10791,
+          "submit_ns": 388003,
+          "download_ns": 19583,
+          "unpack_ns": 88168
+        },
+        "head.147456": {
+          "calls": 1,
+          "pack_ns": 26167,
+          "upload_ns": 15083,
+          "submit_ns": 367961,
+          "download_ns": 18250,
+          "unpack_ns": 79376
+        },
+        "head.151552": {
+          "calls": 1,
+          "pack_ns": 26000,
+          "upload_ns": 8250,
+          "submit_ns": 60043,
+          "download_ns": 1833,
+          "unpack_ns": 7708
+        }
+      },
+      "proposals": [
+        12095,
+        13,
+        13,
+        13,
+        13,
+        13,
+        374
+      ]
+    },
+    {
+      "name": "capital",
+      "repeat": 1,
+      "context_tokens": 27,
+      "wall_ms": 39.251477996003814,
+      "draft_phase_s": {
+        "context": 0.0,
+        "body": 0.01645361300325021,
+        "head": 0.022759614999813493
+      },
+      "native": {
+        "calls": 59,
+        "pack_ns": 1869972,
+        "upload_ns": 662170,
+        "submit_ns": 18677961,
+        "download_ns": 888008,
+        "unpack_ns": 3879106
+      },
+      "kernels": {
+        "layers.0.self_attn.q_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29417,
+          "upload_ns": 9000,
+          "submit_ns": 196209,
+          "download_ns": 10542,
+          "unpack_ns": 45542
+        },
+        "layers.0.self_attn.k_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29375,
+          "upload_ns": 6667,
+          "submit_ns": 116750,
+          "download_ns": 5375,
+          "unpack_ns": 22834
+        },
+        "layers.0.self_attn.v_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29542,
+          "upload_ns": 6500,
+          "submit_ns": 115542,
+          "download_ns": 5334,
+          "unpack_ns": 22625
+        },
+        "layers.0.self_attn.o_proj.weight": {
+          "calls": 1,
+          "pack_ns": 59250,
+          "upload_ns": 11709,
+          "submit_ns": 200168,
+          "download_ns": 5541,
+          "unpack_ns": 22834
+        },
+        "layers.0.mlp.gate_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29542,
+          "upload_ns": 9958,
+          "submit_ns": 286752,
+          "download_ns": 15834,
+          "unpack_ns": 67875
+        },
+        "layers.0.mlp.up_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29292,
+          "upload_ns": 9959,
+          "submit_ns": 282543,
+          "download_ns": 16334,
+          "unpack_ns": 68125
+        },
+        "layers.0.mlp.down_proj.weight": {
+          "calls": 1,
+          "pack_ns": 87459,
+          "upload_ns": 18667,
+          "submit_ns": 293669,
+          "download_ns": 5333,
+          "unpack_ns": 22792
+        },
+        "layers.1.self_attn.q_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29542,
+          "upload_ns": 10750,
+          "submit_ns": 198626,
+          "download_ns": 10459,
+          "unpack_ns": 45333
+        },
+        "layers.1.self_attn.k_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29584,
+          "upload_ns": 9375,
+          "submit_ns": 115626,
+          "download_ns": 5333,
+          "unpack_ns": 22625
+        },
+        "layers.1.self_attn.v_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29459,
+          "upload_ns": 6666,
+          "submit_ns": 117251,
+          "download_ns": 5334,
+          "unpack_ns": 22791
+        },
+        "layers.1.self_attn.o_proj.weight": {
+          "calls": 1,
+          "pack_ns": 58542,
+          "upload_ns": 11166,
+          "submit_ns": 194668,
+          "download_ns": 5292,
+          "unpack_ns": 22750
+        },
+        "layers.1.mlp.gate_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29792,
+          "upload_ns": 9958,
+          "submit_ns": 285252,
+          "download_ns": 15709,
+          "unpack_ns": 68125
+        },
+        "layers.1.mlp.up_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29750,
+          "upload_ns": 10250,
+          "submit_ns": 286002,
+          "download_ns": 15667,
+          "unpack_ns": 68042
+        },
+        "layers.1.mlp.down_proj.weight": {
+          "calls": 1,
+          "pack_ns": 88334,
+          "upload_ns": 18792,
+          "submit_ns": 288669,
+          "download_ns": 5750,
+          "unpack_ns": 22791
+        },
+        "layers.2.self_attn.q_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29709,
+          "upload_ns": 8875,
+          "submit_ns": 200418,
+          "download_ns": 11250,
+          "unpack_ns": 45250
+        },
+        "layers.2.self_attn.k_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29917,
+          "upload_ns": 7208,
+          "submit_ns": 118793,
+          "download_ns": 5541,
+          "unpack_ns": 22792
+        },
+        "layers.2.self_attn.v_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29458,
+          "upload_ns": 7042,
+          "submit_ns": 119292,
+          "download_ns": 5500,
+          "unpack_ns": 22834
+        },
+        "layers.2.self_attn.o_proj.weight": {
+          "calls": 1,
+          "pack_ns": 59125,
+          "upload_ns": 11833,
+          "submit_ns": 205252,
+          "download_ns": 6000,
+          "unpack_ns": 22875
+        },
+        "layers.2.mlp.gate_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29708,
+          "upload_ns": 12667,
+          "submit_ns": 282960,
+          "download_ns": 16375,
+          "unpack_ns": 153585
+        },
+        "layers.2.mlp.up_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29542,
+          "upload_ns": 10125,
+          "submit_ns": 284460,
+          "download_ns": 15750,
+          "unpack_ns": 68084
+        },
+        "layers.2.mlp.down_proj.weight": {
+          "calls": 1,
+          "pack_ns": 87584,
+          "upload_ns": 16250,
+          "submit_ns": 274044,
+          "download_ns": 5375,
+          "unpack_ns": 22791
+        },
+        "head.0": {
+          "calls": 1,
+          "pack_ns": 25917,
+          "upload_ns": 13667,
+          "submit_ns": 370669,
+          "download_ns": 18250,
+          "unpack_ns": 79417
+        },
+        "head.4096": {
+          "calls": 1,
+          "pack_ns": 25875,
+          "upload_ns": 10709,
+          "submit_ns": 373752,
+          "download_ns": 18375,
+          "unpack_ns": 79126
+        },
+        "head.8192": {
+          "calls": 1,
+          "pack_ns": 25958,
+          "upload_ns": 14292,
+          "submit_ns": 369794,
+          "download_ns": 18417,
+          "unpack_ns": 79084
+        },
+        "head.12288": {
+          "calls": 1,
+          "pack_ns": 25751,
+          "upload_ns": 10541,
+          "submit_ns": 367794,
+          "download_ns": 18292,
+          "unpack_ns": 79417
+        },
+        "head.16384": {
+          "calls": 1,
+          "pack_ns": 25917,
+          "upload_ns": 11334,
+          "submit_ns": 373794,
+          "download_ns": 18542,
+          "unpack_ns": 79209
+        },
+        "head.20480": {
+          "calls": 1,
+          "pack_ns": 25917,
+          "upload_ns": 10458,
+          "submit_ns": 368795,
+          "download_ns": 18333,
+          "unpack_ns": 79209
+        },
+        "head.24576": {
+          "calls": 1,
+          "pack_ns": 26000,
+          "upload_ns": 11084,
+          "submit_ns": 368377,
+          "download_ns": 19000,
+          "unpack_ns": 79126
+        },
+        "head.28672": {
+          "calls": 1,
+          "pack_ns": 26084,
+          "upload_ns": 10542,
+          "submit_ns": 366294,
+          "download_ns": 18208,
+          "unpack_ns": 79376
+        },
+        "head.32768": {
+          "calls": 1,
+          "pack_ns": 26042,
+          "upload_ns": 10542,
+          "submit_ns": 846173,
+          "download_ns": 18500,
+          "unpack_ns": 74792
+        },
+        "head.36864": {
+          "calls": 1,
+          "pack_ns": 21542,
+          "upload_ns": 9875,
+          "submit_ns": 367753,
+          "download_ns": 18333,
+          "unpack_ns": 79167
+        },
+        "head.40960": {
+          "calls": 1,
+          "pack_ns": 25959,
+          "upload_ns": 10708,
+          "submit_ns": 368211,
+          "download_ns": 18375,
+          "unpack_ns": 91709
+        },
+        "head.45056": {
+          "calls": 1,
+          "pack_ns": 26042,
+          "upload_ns": 10833,
+          "submit_ns": 366169,
+          "download_ns": 18334,
+          "unpack_ns": 79375
+        },
+        "head.49152": {
+          "calls": 1,
+          "pack_ns": 26001,
+          "upload_ns": 10791,
+          "submit_ns": 372253,
+          "download_ns": 18333,
+          "unpack_ns": 79167
+        },
+        "head.53248": {
+          "calls": 1,
+          "pack_ns": 25917,
+          "upload_ns": 10459,
+          "submit_ns": 366544,
+          "download_ns": 18333,
+          "unpack_ns": 79251
+        },
+        "head.57344": {
+          "calls": 1,
+          "pack_ns": 26000,
+          "upload_ns": 10833,
+          "submit_ns": 370170,
+          "download_ns": 18375,
+          "unpack_ns": 79042
+        },
+        "head.61440": {
+          "calls": 1,
+          "pack_ns": 26083,
+          "upload_ns": 10334,
+          "submit_ns": 368336,
+          "download_ns": 19041,
+          "unpack_ns": 84418
+        },
+        "head.65536": {
+          "calls": 1,
+          "pack_ns": 26042,
+          "upload_ns": 10750,
+          "submit_ns": 364961,
+          "download_ns": 19917,
+          "unpack_ns": 79209
+        },
+        "head.69632": {
+          "calls": 1,
+          "pack_ns": 26292,
+          "upload_ns": 11083,
+          "submit_ns": 370586,
+          "download_ns": 21042,
+          "unpack_ns": 79376
+        },
+        "head.73728": {
+          "calls": 1,
+          "pack_ns": 26625,
+          "upload_ns": 11459,
+          "submit_ns": 374086,
+          "download_ns": 20375,
+          "unpack_ns": 79292
+        },
+        "head.77824": {
+          "calls": 1,
+          "pack_ns": 26375,
+          "upload_ns": 28167,
+          "submit_ns": 371044,
+          "download_ns": 20834,
+          "unpack_ns": 79250
+        },
+        "head.81920": {
+          "calls": 1,
+          "pack_ns": 26417,
+          "upload_ns": 11125,
+          "submit_ns": 382295,
+          "download_ns": 19416,
+          "unpack_ns": 79334
+        },
+        "head.86016": {
+          "calls": 1,
+          "pack_ns": 26042,
+          "upload_ns": 10750,
+          "submit_ns": 370211,
+          "download_ns": 19250,
+          "unpack_ns": 79001
+        },
+        "head.90112": {
+          "calls": 1,
+          "pack_ns": 26250,
+          "upload_ns": 11250,
+          "submit_ns": 365836,
+          "download_ns": 18167,
+          "unpack_ns": 79250
+        },
+        "head.94208": {
+          "calls": 1,
+          "pack_ns": 26042,
+          "upload_ns": 10833,
+          "submit_ns": 370461,
+          "download_ns": 18292,
+          "unpack_ns": 90251
+        },
+        "head.98304": {
+          "calls": 1,
+          "pack_ns": 26041,
+          "upload_ns": 10625,
+          "submit_ns": 368128,
+          "download_ns": 18292,
+          "unpack_ns": 79417
+        },
+        "head.102400": {
+          "calls": 1,
+          "pack_ns": 25917,
+          "upload_ns": 13333,
+          "submit_ns": 362711,
+          "download_ns": 18375,
+          "unpack_ns": 79251
+        },
+        "head.106496": {
+          "calls": 1,
+          "pack_ns": 26000,
+          "upload_ns": 10833,
+          "submit_ns": 365044,
+          "download_ns": 18417,
+          "unpack_ns": 79042
+        },
+        "head.110592": {
+          "calls": 1,
+          "pack_ns": 26125,
+          "upload_ns": 10667,
+          "submit_ns": 367127,
+          "download_ns": 18334,
+          "unpack_ns": 79125
+        },
+        "head.114688": {
+          "calls": 1,
+          "pack_ns": 25875,
+          "upload_ns": 11417,
+          "submit_ns": 365919,
+          "download_ns": 18375,
+          "unpack_ns": 79209
+        },
+        "head.118784": {
+          "calls": 1,
+          "pack_ns": 26042,
+          "upload_ns": 12917,
+          "submit_ns": 363377,
+          "download_ns": 18292,
+          "unpack_ns": 79209
+        },
+        "head.122880": {
+          "calls": 1,
+          "pack_ns": 26167,
+          "upload_ns": 10958,
+          "submit_ns": 377586,
+          "download_ns": 18334,
+          "unpack_ns": 79250
+        },
+        "head.126976": {
+          "calls": 1,
+          "pack_ns": 26000,
+          "upload_ns": 11125,
+          "submit_ns": 368753,
+          "download_ns": 18292,
+          "unpack_ns": 79417
+        },
+        "head.131072": {
+          "calls": 1,
+          "pack_ns": 26209,
+          "upload_ns": 10750,
+          "submit_ns": 368002,
+          "download_ns": 18334,
+          "unpack_ns": 79208
+        },
+        "head.135168": {
+          "calls": 1,
+          "pack_ns": 26167,
+          "upload_ns": 10625,
+          "submit_ns": 370877,
+          "download_ns": 19084,
+          "unpack_ns": 79250
+        },
+        "head.139264": {
+          "calls": 1,
+          "pack_ns": 26125,
+          "upload_ns": 10625,
+          "submit_ns": 381003,
+          "download_ns": 18958,
+          "unpack_ns": 79042
+        },
+        "head.143360": {
+          "calls": 1,
+          "pack_ns": 25958,
+          "upload_ns": 13292,
+          "submit_ns": 365169,
+          "download_ns": 18500,
+          "unpack_ns": 91876
+        },
+        "head.147456": {
+          "calls": 1,
+          "pack_ns": 26083,
+          "upload_ns": 10792,
+          "submit_ns": 373377,
+          "download_ns": 18584,
+          "unpack_ns": 79167
+        },
+        "head.151552": {
+          "calls": 1,
+          "pack_ns": 26250,
+          "upload_ns": 8375,
+          "submit_ns": 63584,
+          "download_ns": 1875,
+          "unpack_ns": 7500
+        }
+      },
+      "proposals": [
+        12095,
+        13,
+        13,
+        13,
+        13,
+        13,
+        374
+      ]
+    },
+    {
+      "name": "capital",
+      "repeat": 2,
+      "context_tokens": 27,
+      "wall_ms": 34.625279004103504,
+      "draft_phase_s": {
+        "context": 0.0,
+        "body": 0.015343229999416508,
+        "head": 0.019251966004958376
+      },
+      "native": {
+        "calls": 59,
+        "pack_ns": 1591757,
+        "upload_ns": 648919,
+        "submit_ns": 16815829,
+        "download_ns": 824338,
+        "unpack_ns": 3050312
+      },
+      "kernels": {
+        "layers.0.self_attn.q_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29708,
+          "upload_ns": 9125,
+          "submit_ns": 210002,
+          "download_ns": 10541,
+          "unpack_ns": 45751
+        },
+        "layers.0.self_attn.k_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29459,
+          "upload_ns": 6666,
+          "submit_ns": 115751,
+          "download_ns": 5292,
+          "unpack_ns": 22708
+        },
+        "layers.0.self_attn.v_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29458,
+          "upload_ns": 6792,
+          "submit_ns": 120626,
+          "download_ns": 5292,
+          "unpack_ns": 22666
+        },
+        "layers.0.self_attn.o_proj.weight": {
+          "calls": 1,
+          "pack_ns": 58834,
+          "upload_ns": 11333,
+          "submit_ns": 195668,
+          "download_ns": 5542,
+          "unpack_ns": 22792
+        },
+        "layers.0.mlp.gate_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29541,
+          "upload_ns": 10250,
+          "submit_ns": 283586,
+          "download_ns": 16917,
+          "unpack_ns": 67958
+        },
+        "layers.0.mlp.up_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29542,
+          "upload_ns": 10042,
+          "submit_ns": 285460,
+          "download_ns": 16500,
+          "unpack_ns": 67959
+        },
+        "layers.0.mlp.down_proj.weight": {
+          "calls": 1,
+          "pack_ns": 91917,
+          "upload_ns": 19959,
+          "submit_ns": 286043,
+          "download_ns": 5959,
+          "unpack_ns": 25333
+        },
+        "layers.1.self_attn.q_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29459,
+          "upload_ns": 20125,
+          "submit_ns": 198209,
+          "download_ns": 9667,
+          "unpack_ns": 35417
+        },
+        "layers.1.self_attn.k_proj.weight": {
+          "calls": 1,
+          "pack_ns": 23042,
+          "upload_ns": 93042,
+          "submit_ns": 118335,
+          "download_ns": 5333,
+          "unpack_ns": 22792
+        },
+        "layers.1.self_attn.v_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29667,
+          "upload_ns": 6667,
+          "submit_ns": 114584,
+          "download_ns": 5291,
+          "unpack_ns": 22834
+        },
+        "layers.1.self_attn.o_proj.weight": {
+          "calls": 1,
+          "pack_ns": 58958,
+          "upload_ns": 11334,
+          "submit_ns": 196834,
+          "download_ns": 4751,
+          "unpack_ns": 17833
+        },
+        "layers.1.mlp.gate_proj.weight": {
+          "calls": 1,
+          "pack_ns": 23167,
+          "upload_ns": 10334,
+          "submit_ns": 283960,
+          "download_ns": 15667,
+          "unpack_ns": 68042
+        },
+        "layers.1.mlp.up_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29625,
+          "upload_ns": 10000,
+          "submit_ns": 280586,
+          "download_ns": 15666,
+          "unpack_ns": 68126
+        },
+        "layers.1.mlp.down_proj.weight": {
+          "calls": 1,
+          "pack_ns": 88084,
+          "upload_ns": 18583,
+          "submit_ns": 272961,
+          "download_ns": 4750,
+          "unpack_ns": 17750
+        },
+        "layers.2.self_attn.q_proj.weight": {
+          "calls": 1,
+          "pack_ns": 23125,
+          "upload_ns": 9416,
+          "submit_ns": 195793,
+          "download_ns": 9334,
+          "unpack_ns": 35250
+        },
+        "layers.2.self_attn.k_proj.weight": {
+          "calls": 1,
+          "pack_ns": 23000,
+          "upload_ns": 5417,
+          "submit_ns": 113918,
+          "download_ns": 4750,
+          "unpack_ns": 17875
+        },
+        "layers.2.self_attn.v_proj.weight": {
+          "calls": 1,
+          "pack_ns": 23209,
+          "upload_ns": 8041,
+          "submit_ns": 111834,
+          "download_ns": 4750,
+          "unpack_ns": 17792
+        },
+        "layers.2.self_attn.o_proj.weight": {
+          "calls": 1,
+          "pack_ns": 45917,
+          "upload_ns": 9208,
+          "submit_ns": 192501,
+          "download_ns": 4792,
+          "unpack_ns": 17750
+        },
+        "layers.2.mlp.gate_proj.weight": {
+          "calls": 1,
+          "pack_ns": 23084,
+          "upload_ns": 7916,
+          "submit_ns": 281794,
+          "download_ns": 14000,
+          "unpack_ns": 53292
+        },
+        "layers.2.mlp.up_proj.weight": {
+          "calls": 1,
+          "pack_ns": 23041,
+          "upload_ns": 7917,
+          "submit_ns": 274960,
+          "download_ns": 14042,
+          "unpack_ns": 53167
+        },
+        "layers.2.mlp.down_proj.weight": {
+          "calls": 1,
+          "pack_ns": 68917,
+          "upload_ns": 12750,
+          "submit_ns": 271085,
+          "download_ns": 4709,
+          "unpack_ns": 17833
+        },
+        "head.0": {
+          "calls": 1,
+          "pack_ns": 20334,
+          "upload_ns": 8792,
+          "submit_ns": 364169,
+          "download_ns": 22500,
+          "unpack_ns": 62000
+        },
+        "head.4096": {
+          "calls": 1,
+          "pack_ns": 20250,
+          "upload_ns": 8250,
+          "submit_ns": 366878,
+          "download_ns": 16250,
+          "unpack_ns": 61959
+        },
+        "head.8192": {
+          "calls": 1,
+          "pack_ns": 20334,
+          "upload_ns": 11375,
+          "submit_ns": 362752,
+          "download_ns": 16459,
+          "unpack_ns": 61750
+        },
+        "head.12288": {
+          "calls": 1,
+          "pack_ns": 20375,
+          "upload_ns": 8500,
+          "submit_ns": 366711,
+          "download_ns": 16250,
+          "unpack_ns": 62042
+        },
+        "head.16384": {
+          "calls": 1,
+          "pack_ns": 20250,
+          "upload_ns": 8458,
+          "submit_ns": 368211,
+          "download_ns": 16333,
+          "unpack_ns": 61918
+        },
+        "head.20480": {
+          "calls": 1,
+          "pack_ns": 20250,
+          "upload_ns": 8583,
+          "submit_ns": 366503,
+          "download_ns": 16292,
+          "unpack_ns": 61958
+        },
+        "head.24576": {
+          "calls": 1,
+          "pack_ns": 20334,
+          "upload_ns": 8416,
+          "submit_ns": 362461,
+          "download_ns": 17334,
+          "unpack_ns": 61958
+        },
+        "head.28672": {
+          "calls": 1,
+          "pack_ns": 20334,
+          "upload_ns": 8583,
+          "submit_ns": 374127,
+          "download_ns": 17792,
+          "unpack_ns": 62126
+        },
+        "head.32768": {
+          "calls": 1,
+          "pack_ns": 28500,
+          "upload_ns": 9084,
+          "submit_ns": 363877,
+          "download_ns": 18917,
+          "unpack_ns": 62001
+        },
+        "head.36864": {
+          "calls": 1,
+          "pack_ns": 20792,
+          "upload_ns": 12458,
+          "submit_ns": 365128,
+          "download_ns": 18708,
+          "unpack_ns": 73709
+        },
+        "head.40960": {
+          "calls": 1,
+          "pack_ns": 20542,
+          "upload_ns": 9125,
+          "submit_ns": 370378,
+          "download_ns": 17667,
+          "unpack_ns": 61917
+        },
+        "head.45056": {
+          "calls": 1,
+          "pack_ns": 20667,
+          "upload_ns": 9000,
+          "submit_ns": 367003,
+          "download_ns": 17666,
+          "unpack_ns": 62084
+        },
+        "head.49152": {
+          "calls": 1,
+          "pack_ns": 20458,
+          "upload_ns": 8501,
+          "submit_ns": 369169,
+          "download_ns": 17042,
+          "unpack_ns": 61917
+        },
+        "head.53248": {
+          "calls": 1,
+          "pack_ns": 20292,
+          "upload_ns": 11208,
+          "submit_ns": 361795,
+          "download_ns": 16333,
+          "unpack_ns": 62042
+        },
+        "head.57344": {
+          "calls": 1,
+          "pack_ns": 20250,
+          "upload_ns": 8584,
+          "submit_ns": 366502,
+          "download_ns": 16250,
+          "unpack_ns": 61959
+        },
+        "head.61440": {
+          "calls": 1,
+          "pack_ns": 20167,
+          "upload_ns": 8292,
+          "submit_ns": 370419,
+          "download_ns": 16292,
+          "unpack_ns": 62000
+        },
+        "head.65536": {
+          "calls": 1,
+          "pack_ns": 20250,
+          "upload_ns": 10958,
+          "submit_ns": 364836,
+          "download_ns": 16292,
+          "unpack_ns": 62084
+        },
+        "head.69632": {
+          "calls": 1,
+          "pack_ns": 20250,
+          "upload_ns": 8584,
+          "submit_ns": 365544,
+          "download_ns": 16458,
+          "unpack_ns": 61917
+        },
+        "head.73728": {
+          "calls": 1,
+          "pack_ns": 20291,
+          "upload_ns": 8417,
+          "submit_ns": 366586,
+          "download_ns": 20625,
+          "unpack_ns": 61917
+        },
+        "head.77824": {
+          "calls": 1,
+          "pack_ns": 20167,
+          "upload_ns": 8791,
+          "submit_ns": 364795,
+          "download_ns": 16333,
+          "unpack_ns": 61917
+        },
+        "head.81920": {
+          "calls": 1,
+          "pack_ns": 20250,
+          "upload_ns": 8500,
+          "submit_ns": 366253,
+          "download_ns": 16458,
+          "unpack_ns": 61834
+        },
+        "head.86016": {
+          "calls": 1,
+          "pack_ns": 20291,
+          "upload_ns": 8500,
+          "submit_ns": 365545,
+          "download_ns": 16416,
+          "unpack_ns": 61876
+        },
+        "head.90112": {
+          "calls": 1,
+          "pack_ns": 20250,
+          "upload_ns": 8750,
+          "submit_ns": 367628,
+          "download_ns": 16375,
+          "unpack_ns": 61875
+        },
+        "head.94208": {
+          "calls": 1,
+          "pack_ns": 20292,
+          "upload_ns": 8208,
+          "submit_ns": 364753,
+          "download_ns": 16292,
+          "unpack_ns": 61792
+        },
+        "head.98304": {
+          "calls": 1,
+          "pack_ns": 20250,
+          "upload_ns": 8500,
+          "submit_ns": 313127,
+          "download_ns": 16417,
+          "unpack_ns": 61875
+        },
+        "head.102400": {
+          "calls": 1,
+          "pack_ns": 20208,
+          "upload_ns": 11375,
+          "submit_ns": 237794,
+          "download_ns": 16208,
+          "unpack_ns": 62001
+        },
+        "head.106496": {
+          "calls": 1,
+          "pack_ns": 20291,
+          "upload_ns": 8459,
+          "submit_ns": 242751,
+          "download_ns": 16292,
+          "unpack_ns": 61834
+        },
+        "head.110592": {
+          "calls": 1,
+          "pack_ns": 20209,
+          "upload_ns": 8291,
+          "submit_ns": 233919,
+          "download_ns": 16458,
+          "unpack_ns": 61834
+        },
+        "head.114688": {
+          "calls": 1,
+          "pack_ns": 20375,
+          "upload_ns": 8667,
+          "submit_ns": 234376,
+          "download_ns": 16417,
+          "unpack_ns": 61834
+        },
+        "head.118784": {
+          "calls": 1,
+          "pack_ns": 20209,
+          "upload_ns": 11375,
+          "submit_ns": 240502,
+          "download_ns": 17166,
+          "unpack_ns": 61876
+        },
+        "head.122880": {
+          "calls": 1,
+          "pack_ns": 20333,
+          "upload_ns": 8500,
+          "submit_ns": 238252,
+          "download_ns": 17083,
+          "unpack_ns": 62042
+        },
+        "head.126976": {
+          "calls": 1,
+          "pack_ns": 20334,
+          "upload_ns": 8500,
+          "submit_ns": 238793,
+          "download_ns": 16542,
+          "unpack_ns": 61875
+        },
+        "head.131072": {
+          "calls": 1,
+          "pack_ns": 20583,
+          "upload_ns": 8542,
+          "submit_ns": 241251,
+          "download_ns": 17167,
+          "unpack_ns": 61834
+        },
+        "head.135168": {
+          "calls": 1,
+          "pack_ns": 20167,
+          "upload_ns": 8625,
+          "submit_ns": 242752,
+          "download_ns": 17333,
+          "unpack_ns": 62000
+        },
+        "head.139264": {
+          "calls": 1,
+          "pack_ns": 20791,
+          "upload_ns": 8501,
+          "submit_ns": 362377,
+          "download_ns": 16458,
+          "unpack_ns": 62001
+        },
+        "head.143360": {
+          "calls": 1,
+          "pack_ns": 20375,
+          "upload_ns": 11042,
+          "submit_ns": 366127,
+          "download_ns": 25876,
+          "unpack_ns": 62042
+        },
+        "head.147456": {
+          "calls": 1,
+          "pack_ns": 20333,
+          "upload_ns": 8542,
+          "submit_ns": 364002,
+          "download_ns": 16334,
+          "unpack_ns": 61792
+        },
+        "head.151552": {
+          "calls": 1,
+          "pack_ns": 20375,
+          "upload_ns": 7166,
+          "submit_ns": 63293,
+          "download_ns": 1708,
+          "unpack_ns": 6000
+        }
+      },
+      "proposals": [
+        12095,
+        13,
+        13,
+        13,
+        13,
+        13,
+        374
+      ]
+    },
+    {
+      "name": "fibonacci",
+      "repeat": 0,
+      "context_tokens": 70,
+      "wall_ms": 39.99827499501407,
+      "draft_phase_s": {
+        "context": 0.0,
+        "body": 0.017726830003084615,
+        "head": 0.022250110996537842
+      },
+      "native": {
+        "calls": 59,
+        "pack_ns": 1870890,
+        "upload_ns": 709169,
+        "submit_ns": 17961458,
+        "download_ns": 896507,
+        "unpack_ns": 3822061
+      },
+      "kernels": {
+        "layers.0.self_attn.q_proj.weight": {
+          "calls": 1,
+          "pack_ns": 23125,
+          "upload_ns": 9667,
+          "submit_ns": 197084,
+          "download_ns": 12709,
+          "unpack_ns": 62333
+        },
+        "layers.0.self_attn.k_proj.weight": {
+          "calls": 1,
+          "pack_ns": 23000,
+          "upload_ns": 5500,
+          "submit_ns": 114251,
+          "download_ns": 4750,
+          "unpack_ns": 17833
+        },
+        "layers.0.self_attn.v_proj.weight": {
+          "calls": 1,
+          "pack_ns": 23250,
+          "upload_ns": 5542,
+          "submit_ns": 119334,
+          "download_ns": 6417,
+          "unpack_ns": 31208
+        },
+        "layers.0.self_attn.o_proj.weight": {
+          "calls": 1,
+          "pack_ns": 58917,
+          "upload_ns": 11792,
+          "submit_ns": 210960,
+          "download_ns": 6750,
+          "unpack_ns": 31250
+        },
+        "layers.0.mlp.gate_proj.weight": {
+          "calls": 1,
+          "pack_ns": 40542,
+          "upload_ns": 13625,
+          "submit_ns": 282710,
+          "download_ns": 16625,
+          "unpack_ns": 68376
+        },
+        "layers.0.mlp.up_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29417,
+          "upload_ns": 9916,
+          "submit_ns": 279044,
+          "download_ns": 16125,
+          "unpack_ns": 67917
+        },
+        "layers.0.mlp.down_proj.weight": {
+          "calls": 1,
+          "pack_ns": 88418,
+          "upload_ns": 16583,
+          "submit_ns": 287419,
+          "download_ns": 5708,
+          "unpack_ns": 23042
+        },
+        "layers.1.self_attn.q_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29917,
+          "upload_ns": 8708,
+          "submit_ns": 201085,
+          "download_ns": 10708,
+          "unpack_ns": 45626
+        },
+        "layers.1.self_attn.k_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29583,
+          "upload_ns": 7000,
+          "submit_ns": 113876,
+          "download_ns": 5417,
+          "unpack_ns": 22708
+        },
+        "layers.1.self_attn.v_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29500,
+          "upload_ns": 6792,
+          "submit_ns": 118709,
+          "download_ns": 5584,
+          "unpack_ns": 22708
+        },
+        "layers.1.self_attn.o_proj.weight": {
+          "calls": 1,
+          "pack_ns": 59000,
+          "upload_ns": 12751,
+          "submit_ns": 201334,
+          "download_ns": 5459,
+          "unpack_ns": 22875
+        },
+        "layers.1.mlp.gate_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29917,
+          "upload_ns": 9959,
+          "submit_ns": 277668,
+          "download_ns": 16750,
+          "unpack_ns": 68001
+        },
+        "layers.1.mlp.up_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29459,
+          "upload_ns": 10292,
+          "submit_ns": 283168,
+          "download_ns": 15709,
+          "unpack_ns": 68250
+        },
+        "layers.1.mlp.down_proj.weight": {
+          "calls": 1,
+          "pack_ns": 95667,
+          "upload_ns": 19042,
+          "submit_ns": 276877,
+          "download_ns": 5333,
+          "unpack_ns": 22709
+        },
+        "layers.2.self_attn.q_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29334,
+          "upload_ns": 10875,
+          "submit_ns": 199168,
+          "download_ns": 10417,
+          "unpack_ns": 45375
+        },
+        "layers.2.self_attn.k_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29334,
+          "upload_ns": 6500,
+          "submit_ns": 112251,
+          "download_ns": 5333,
+          "unpack_ns": 22917
+        },
+        "layers.2.self_attn.v_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29542,
+          "upload_ns": 9292,
+          "submit_ns": 114334,
+          "download_ns": 5333,
+          "unpack_ns": 22667
+        },
+        "layers.2.self_attn.o_proj.weight": {
+          "calls": 1,
+          "pack_ns": 58584,
+          "upload_ns": 11625,
+          "submit_ns": 199335,
+          "download_ns": 5333,
+          "unpack_ns": 22667
+        },
+        "layers.2.mlp.gate_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29500,
+          "upload_ns": 9917,
+          "submit_ns": 186501,
+          "download_ns": 15834,
+          "unpack_ns": 67959
+        },
+        "layers.2.mlp.up_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29417,
+          "upload_ns": 10125,
+          "submit_ns": 186751,
+          "download_ns": 15709,
+          "unpack_ns": 67917
+        },
+        "layers.2.mlp.down_proj.weight": {
+          "calls": 1,
+          "pack_ns": 88376,
+          "upload_ns": 16167,
+          "submit_ns": 275376,
+          "download_ns": 5292,
+          "unpack_ns": 22875
+        },
+        "head.0": {
+          "calls": 1,
+          "pack_ns": 25833,
+          "upload_ns": 10917,
+          "submit_ns": 365919,
+          "download_ns": 18334,
+          "unpack_ns": 79125
+        },
+        "head.4096": {
+          "calls": 1,
+          "pack_ns": 26001,
+          "upload_ns": 10708,
+          "submit_ns": 366169,
+          "download_ns": 19125,
+          "unpack_ns": 86334
+        },
+        "head.8192": {
+          "calls": 1,
+          "pack_ns": 26042,
+          "upload_ns": 12208,
+          "submit_ns": 370586,
+          "download_ns": 18750,
+          "unpack_ns": 79251
+        },
+        "head.12288": {
+          "calls": 1,
+          "pack_ns": 25834,
+          "upload_ns": 10750,
+          "submit_ns": 363169,
+          "download_ns": 19000,
+          "unpack_ns": 79334
+        },
+        "head.16384": {
+          "calls": 1,
+          "pack_ns": 25917,
+          "upload_ns": 10833,
+          "submit_ns": 367420,
+          "download_ns": 18833,
+          "unpack_ns": 79459
+        },
+        "head.20480": {
+          "calls": 1,
+          "pack_ns": 25876,
+          "upload_ns": 10750,
+          "submit_ns": 368419,
+          "download_ns": 20958,
+          "unpack_ns": 79418
+        },
+        "head.24576": {
+          "calls": 1,
+          "pack_ns": 26208,
+          "upload_ns": 11042,
+          "submit_ns": 364711,
+          "download_ns": 18833,
+          "unpack_ns": 87709
+        },
+        "head.28672": {
+          "calls": 1,
+          "pack_ns": 26001,
+          "upload_ns": 10583,
+          "submit_ns": 366419,
+          "download_ns": 19209,
+          "unpack_ns": 79209
+        },
+        "head.32768": {
+          "calls": 1,
+          "pack_ns": 26000,
+          "upload_ns": 10958,
+          "submit_ns": 372753,
+          "download_ns": 19167,
+          "unpack_ns": 79250
+        },
+        "head.36864": {
+          "calls": 1,
+          "pack_ns": 26208,
+          "upload_ns": 14417,
+          "submit_ns": 365961,
+          "download_ns": 18667,
+          "unpack_ns": 79250
+        },
+        "head.40960": {
+          "calls": 1,
+          "pack_ns": 26042,
+          "upload_ns": 10583,
+          "submit_ns": 369503,
+          "download_ns": 18875,
+          "unpack_ns": 79375
+        },
+        "head.45056": {
+          "calls": 1,
+          "pack_ns": 25833,
+          "upload_ns": 10792,
+          "submit_ns": 370211,
+          "download_ns": 19667,
+          "unpack_ns": 79167
+        },
+        "head.49152": {
+          "calls": 1,
+          "pack_ns": 26042,
+          "upload_ns": 10833,
+          "submit_ns": 364378,
+          "download_ns": 18208,
+          "unpack_ns": 79334
+        },
+        "head.53248": {
+          "calls": 1,
+          "pack_ns": 26042,
+          "upload_ns": 10833,
+          "submit_ns": 369920,
+          "download_ns": 18333,
+          "unpack_ns": 79292
+        },
+        "head.57344": {
+          "calls": 1,
+          "pack_ns": 25792,
+          "upload_ns": 13125,
+          "submit_ns": 368377,
+          "download_ns": 18375,
+          "unpack_ns": 79209
+        },
+        "head.61440": {
+          "calls": 1,
+          "pack_ns": 25875,
+          "upload_ns": 10833,
+          "submit_ns": 366045,
+          "download_ns": 18250,
+          "unpack_ns": 79250
+        },
+        "head.65536": {
+          "calls": 1,
+          "pack_ns": 25875,
+          "upload_ns": 10875,
+          "submit_ns": 369211,
+          "download_ns": 18250,
+          "unpack_ns": 79167
+        },
+        "head.69632": {
+          "calls": 1,
+          "pack_ns": 25875,
+          "upload_ns": 13417,
+          "submit_ns": 368169,
+          "download_ns": 18250,
+          "unpack_ns": 79125
+        },
+        "head.73728": {
+          "calls": 1,
+          "pack_ns": 26042,
+          "upload_ns": 11084,
+          "submit_ns": 372169,
+          "download_ns": 18417,
+          "unpack_ns": 79208
+        },
+        "head.77824": {
+          "calls": 1,
+          "pack_ns": 26000,
+          "upload_ns": 11042,
+          "submit_ns": 368294,
+          "download_ns": 18417,
+          "unpack_ns": 79250
+        },
+        "head.81920": {
+          "calls": 1,
+          "pack_ns": 25959,
+          "upload_ns": 10875,
+          "submit_ns": 364836,
+          "download_ns": 18458,
+          "unpack_ns": 79167
+        },
+        "head.86016": {
+          "calls": 1,
+          "pack_ns": 25833,
+          "upload_ns": 10625,
+          "submit_ns": 372086,
+          "download_ns": 18292,
+          "unpack_ns": 79292
+        },
+        "head.90112": {
+          "calls": 1,
+          "pack_ns": 25833,
+          "upload_ns": 42667,
+          "submit_ns": 386336,
+          "download_ns": 19084,
+          "unpack_ns": 79250
+        },
+        "head.94208": {
+          "calls": 1,
+          "pack_ns": 26208,
+          "upload_ns": 10542,
+          "submit_ns": 366044,
+          "download_ns": 19376,
+          "unpack_ns": 79083
+        },
+        "head.98304": {
+          "calls": 1,
+          "pack_ns": 25916,
+          "upload_ns": 10834,
+          "submit_ns": 371502,
+          "download_ns": 18376,
+          "unpack_ns": 79292
+        },
+        "head.102400": {
+          "calls": 1,
+          "pack_ns": 25834,
+          "upload_ns": 10833,
+          "submit_ns": 370836,
+          "download_ns": 18792,
+          "unpack_ns": 79333
+        },
+        "head.106496": {
+          "calls": 1,
+          "pack_ns": 25792,
+          "upload_ns": 10708,
+          "submit_ns": 373086,
+          "download_ns": 18583,
+          "unpack_ns": 79251
+        },
+        "head.110592": {
+          "calls": 1,
+          "pack_ns": 26001,
+          "upload_ns": 22583,
+          "submit_ns": 366628,
+          "download_ns": 18333,
+          "unpack_ns": 79167
+        },
+        "head.114688": {
+          "calls": 1,
+          "pack_ns": 25959,
+          "upload_ns": 13667,
+          "submit_ns": 366252,
+          "download_ns": 18375,
+          "unpack_ns": 88209
+        },
+        "head.118784": {
+          "calls": 1,
+          "pack_ns": 26000,
+          "upload_ns": 13166,
+          "submit_ns": 367753,
+          "download_ns": 18208,
+          "unpack_ns": 79293
+        },
+        "head.122880": {
+          "calls": 1,
+          "pack_ns": 25958,
+          "upload_ns": 10834,
+          "submit_ns": 370586,
+          "download_ns": 18666,
+          "unpack_ns": 79334
+        },
+        "head.126976": {
+          "calls": 1,
+          "pack_ns": 25958,
+          "upload_ns": 13625,
+          "submit_ns": 367794,
+          "download_ns": 19292,
+          "unpack_ns": 79251
+        },
+        "head.131072": {
+          "calls": 1,
+          "pack_ns": 26000,
+          "upload_ns": 10625,
+          "submit_ns": 370669,
+          "download_ns": 19042,
+          "unpack_ns": 79417
+        },
+        "head.135168": {
+          "calls": 1,
+          "pack_ns": 25792,
+          "upload_ns": 10750,
+          "submit_ns": 371002,
+          "download_ns": 19751,
+          "unpack_ns": 89209
+        },
+        "head.139264": {
+          "calls": 1,
+          "pack_ns": 26375,
+          "upload_ns": 10917,
+          "submit_ns": 370461,
+          "download_ns": 19625,
+          "unpack_ns": 79250
+        },
+        "head.143360": {
+          "calls": 1,
+          "pack_ns": 26042,
+          "upload_ns": 13833,
+          "submit_ns": 367878,
+          "download_ns": 19375,
+          "unpack_ns": 79042
+        },
+        "head.147456": {
+          "calls": 1,
+          "pack_ns": 25959,
+          "upload_ns": 11041,
+          "submit_ns": 368628,
+          "download_ns": 19500,
+          "unpack_ns": 79417
+        },
+        "head.151552": {
+          "calls": 1,
+          "pack_ns": 26334,
+          "upload_ns": 22791,
+          "submit_ns": 74043,
+          "download_ns": 2166,
+          "unpack_ns": 7875
+        }
+      },
+      "proposals": [
+        17,
+        8,
+        284,
+        220,
+        16,
+        16,
+        220
+      ]
+    },
+    {
+      "name": "fibonacci",
+      "repeat": 1,
+      "context_tokens": 70,
+      "wall_ms": 39.80769000190776,
+      "draft_phase_s": {
+        "context": 0.0,
+        "body": 0.017691996996290982,
+        "head": 0.022088652003731113
+      },
+      "native": {
+        "calls": 59,
+        "pack_ns": 1848264,
+        "upload_ns": 637379,
+        "submit_ns": 18099621,
+        "download_ns": 888590,
+        "unpack_ns": 3807194
+      },
+      "kernels": {
+        "layers.0.self_attn.q_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29958,
+          "upload_ns": 9709,
+          "submit_ns": 206418,
+          "download_ns": 10542,
+          "unpack_ns": 49250
+        },
+        "layers.0.self_attn.k_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29583,
+          "upload_ns": 6875,
+          "submit_ns": 117501,
+          "download_ns": 5583,
+          "unpack_ns": 22750
+        },
+        "layers.0.self_attn.v_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29375,
+          "upload_ns": 6834,
+          "submit_ns": 117167,
+          "download_ns": 5292,
+          "unpack_ns": 22750
+        },
+        "layers.0.self_attn.o_proj.weight": {
+          "calls": 1,
+          "pack_ns": 58709,
+          "upload_ns": 11583,
+          "submit_ns": 195710,
+          "download_ns": 5417,
+          "unpack_ns": 22667
+        },
+        "layers.0.mlp.gate_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29501,
+          "upload_ns": 10166,
+          "submit_ns": 285586,
+          "download_ns": 15666,
+          "unpack_ns": 67918
+        },
+        "layers.0.mlp.up_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29417,
+          "upload_ns": 10458,
+          "submit_ns": 282752,
+          "download_ns": 15709,
+          "unpack_ns": 67917
+        },
+        "layers.0.mlp.down_proj.weight": {
+          "calls": 1,
+          "pack_ns": 88500,
+          "upload_ns": 16209,
+          "submit_ns": 274835,
+          "download_ns": 5500,
+          "unpack_ns": 22750
+        },
+        "layers.1.self_attn.q_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29542,
+          "upload_ns": 11041,
+          "submit_ns": 195918,
+          "download_ns": 10917,
+          "unpack_ns": 45542
+        },
+        "layers.1.self_attn.k_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29542,
+          "upload_ns": 9083,
+          "submit_ns": 114459,
+          "download_ns": 5333,
+          "unpack_ns": 22792
+        },
+        "layers.1.self_attn.v_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29542,
+          "upload_ns": 6792,
+          "submit_ns": 120667,
+          "download_ns": 5417,
+          "unpack_ns": 22750
+        },
+        "layers.1.self_attn.o_proj.weight": {
+          "calls": 1,
+          "pack_ns": 58834,
+          "upload_ns": 11667,
+          "submit_ns": 197376,
+          "download_ns": 5417,
+          "unpack_ns": 22791
+        },
+        "layers.1.mlp.gate_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29751,
+          "upload_ns": 9958,
+          "submit_ns": 284377,
+          "download_ns": 15708,
+          "unpack_ns": 76251
+        },
+        "layers.1.mlp.up_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29666,
+          "upload_ns": 9792,
+          "submit_ns": 284335,
+          "download_ns": 15667,
+          "unpack_ns": 67876
+        },
+        "layers.1.mlp.down_proj.weight": {
+          "calls": 1,
+          "pack_ns": 88001,
+          "upload_ns": 16250,
+          "submit_ns": 274585,
+          "download_ns": 5583,
+          "unpack_ns": 22834
+        },
+        "layers.2.self_attn.q_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29500,
+          "upload_ns": 8625,
+          "submit_ns": 195043,
+          "download_ns": 10792,
+          "unpack_ns": 45292
+        },
+        "layers.2.self_attn.k_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29666,
+          "upload_ns": 6750,
+          "submit_ns": 116001,
+          "download_ns": 5625,
+          "unpack_ns": 22750
+        },
+        "layers.2.self_attn.v_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29417,
+          "upload_ns": 6750,
+          "submit_ns": 120209,
+          "download_ns": 6084,
+          "unpack_ns": 22667
+        },
+        "layers.2.self_attn.o_proj.weight": {
+          "calls": 1,
+          "pack_ns": 59167,
+          "upload_ns": 12417,
+          "submit_ns": 199668,
+          "download_ns": 5625,
+          "unpack_ns": 22875
+        },
+        "layers.2.mlp.gate_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29583,
+          "upload_ns": 10125,
+          "submit_ns": 280502,
+          "download_ns": 19375,
+          "unpack_ns": 80209
+        },
+        "layers.2.mlp.up_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29584,
+          "upload_ns": 10208,
+          "submit_ns": 285169,
+          "download_ns": 16042,
+          "unpack_ns": 68000
+        },
+        "layers.2.mlp.down_proj.weight": {
+          "calls": 1,
+          "pack_ns": 57000,
+          "upload_ns": 11376,
+          "submit_ns": 277501,
+          "download_ns": 5292,
+          "unpack_ns": 22917
+        },
+        "head.0": {
+          "calls": 1,
+          "pack_ns": 26125,
+          "upload_ns": 13292,
+          "submit_ns": 365211,
+          "download_ns": 18333,
+          "unpack_ns": 79001
+        },
+        "head.4096": {
+          "calls": 1,
+          "pack_ns": 25875,
+          "upload_ns": 10791,
+          "submit_ns": 367211,
+          "download_ns": 18292,
+          "unpack_ns": 79209
+        },
+        "head.8192": {
+          "calls": 1,
+          "pack_ns": 25834,
+          "upload_ns": 13791,
+          "submit_ns": 369920,
+          "download_ns": 18250,
+          "unpack_ns": 79292
+        },
+        "head.12288": {
+          "calls": 1,
+          "pack_ns": 26000,
+          "upload_ns": 10876,
+          "submit_ns": 369502,
+          "download_ns": 18334,
+          "unpack_ns": 85208
+        },
+        "head.16384": {
+          "calls": 1,
+          "pack_ns": 26126,
+          "upload_ns": 10625,
+          "submit_ns": 369169,
+          "download_ns": 18375,
+          "unpack_ns": 79167
+        },
+        "head.20480": {
+          "calls": 1,
+          "pack_ns": 25875,
+          "upload_ns": 10792,
+          "submit_ns": 369419,
+          "download_ns": 18250,
+          "unpack_ns": 79084
+        },
+        "head.24576": {
+          "calls": 1,
+          "pack_ns": 26042,
+          "upload_ns": 11209,
+          "submit_ns": 366877,
+          "download_ns": 18292,
+          "unpack_ns": 79209
+        },
+        "head.28672": {
+          "calls": 1,
+          "pack_ns": 26000,
+          "upload_ns": 10583,
+          "submit_ns": 366836,
+          "download_ns": 18375,
+          "unpack_ns": 79417
+        },
+        "head.32768": {
+          "calls": 1,
+          "pack_ns": 25876,
+          "upload_ns": 11208,
+          "submit_ns": 369919,
+          "download_ns": 18292,
+          "unpack_ns": 79167
+        },
+        "head.36864": {
+          "calls": 1,
+          "pack_ns": 26042,
+          "upload_ns": 13125,
+          "submit_ns": 365669,
+          "download_ns": 18417,
+          "unpack_ns": 79334
+        },
+        "head.40960": {
+          "calls": 1,
+          "pack_ns": 26000,
+          "upload_ns": 10750,
+          "submit_ns": 368420,
+          "download_ns": 18291,
+          "unpack_ns": 79334
+        },
+        "head.45056": {
+          "calls": 1,
+          "pack_ns": 25917,
+          "upload_ns": 10625,
+          "submit_ns": 363086,
+          "download_ns": 19041,
+          "unpack_ns": 79293
+        },
+        "head.49152": {
+          "calls": 1,
+          "pack_ns": 26083,
+          "upload_ns": 10667,
+          "submit_ns": 371294,
+          "download_ns": 18459,
+          "unpack_ns": 79250
+        },
+        "head.53248": {
+          "calls": 1,
+          "pack_ns": 25792,
+          "upload_ns": 13250,
+          "submit_ns": 368169,
+          "download_ns": 18375,
+          "unpack_ns": 79209
+        },
+        "head.57344": {
+          "calls": 1,
+          "pack_ns": 25958,
+          "upload_ns": 10625,
+          "submit_ns": 378045,
+          "download_ns": 18375,
+          "unpack_ns": 79250
+        },
+        "head.61440": {
+          "calls": 1,
+          "pack_ns": 25959,
+          "upload_ns": 10791,
+          "submit_ns": 366211,
+          "download_ns": 18750,
+          "unpack_ns": 88626
+        },
+        "head.65536": {
+          "calls": 1,
+          "pack_ns": 26208,
+          "upload_ns": 10792,
+          "submit_ns": 370794,
+          "download_ns": 18917,
+          "unpack_ns": 79084
+        },
+        "head.69632": {
+          "calls": 1,
+          "pack_ns": 25875,
+          "upload_ns": 10542,
+          "submit_ns": 368128,
+          "download_ns": 19083,
+          "unpack_ns": 79251
+        },
+        "head.73728": {
+          "calls": 1,
+          "pack_ns": 25959,
+          "upload_ns": 11500,
+          "submit_ns": 364877,
+          "download_ns": 19167,
+          "unpack_ns": 79334
+        },
+        "head.77824": {
+          "calls": 1,
+          "pack_ns": 26000,
+          "upload_ns": 10709,
+          "submit_ns": 368461,
+          "download_ns": 20500,
+          "unpack_ns": 79250
+        },
+        "head.81920": {
+          "calls": 1,
+          "pack_ns": 25917,
+          "upload_ns": 11292,
+          "submit_ns": 367335,
+          "download_ns": 18917,
+          "unpack_ns": 90001
+        },
+        "head.86016": {
+          "calls": 1,
+          "pack_ns": 25958,
+          "upload_ns": 10750,
+          "submit_ns": 368586,
+          "download_ns": 19375,
+          "unpack_ns": 79376
+        },
+        "head.90112": {
+          "calls": 1,
+          "pack_ns": 26083,
+          "upload_ns": 10875,
+          "submit_ns": 365711,
+          "download_ns": 19250,
+          "unpack_ns": 79334
+        },
+        "head.94208": {
+          "calls": 1,
+          "pack_ns": 26292,
+          "upload_ns": 10833,
+          "submit_ns": 364044,
+          "download_ns": 18834,
+          "unpack_ns": 79333
+        },
+        "head.98304": {
+          "calls": 1,
+          "pack_ns": 26000,
+          "upload_ns": 10750,
+          "submit_ns": 367378,
+          "download_ns": 19208,
+          "unpack_ns": 79167
+        },
+        "head.102400": {
+          "calls": 1,
+          "pack_ns": 26292,
+          "upload_ns": 10959,
+          "submit_ns": 365210,
+          "download_ns": 19376,
+          "unpack_ns": 79250
+        },
+        "head.106496": {
+          "calls": 1,
+          "pack_ns": 26167,
+          "upload_ns": 11083,
+          "submit_ns": 363128,
+          "download_ns": 18625,
+          "unpack_ns": 79209
+        },
+        "head.110592": {
+          "calls": 1,
+          "pack_ns": 25792,
+          "upload_ns": 10917,
+          "submit_ns": 364669,
+          "download_ns": 18458,
+          "unpack_ns": 79459
+        },
+        "head.114688": {
+          "calls": 1,
+          "pack_ns": 26042,
+          "upload_ns": 11292,
+          "submit_ns": 368627,
+          "download_ns": 19042,
+          "unpack_ns": 79251
+        },
+        "head.118784": {
+          "calls": 1,
+          "pack_ns": 25959,
+          "upload_ns": 11333,
+          "submit_ns": 370919,
+          "download_ns": 18584,
+          "unpack_ns": 79292
+        },
+        "head.122880": {
+          "calls": 1,
+          "pack_ns": 26042,
+          "upload_ns": 10709,
+          "submit_ns": 366544,
+          "download_ns": 18250,
+          "unpack_ns": 79251
+        },
+        "head.126976": {
+          "calls": 1,
+          "pack_ns": 26000,
+          "upload_ns": 13292,
+          "submit_ns": 366377,
+          "download_ns": 18292,
+          "unpack_ns": 79376
+        },
+        "head.131072": {
+          "calls": 1,
+          "pack_ns": 26292,
+          "upload_ns": 10500,
+          "submit_ns": 369627,
+          "download_ns": 18417,
+          "unpack_ns": 78959
+        },
+        "head.135168": {
+          "calls": 1,
+          "pack_ns": 25709,
+          "upload_ns": 10833,
+          "submit_ns": 370086,
+          "download_ns": 18333,
+          "unpack_ns": 79084
+        },
+        "head.139264": {
+          "calls": 1,
+          "pack_ns": 26042,
+          "upload_ns": 10459,
+          "submit_ns": 369419,
+          "download_ns": 18375,
+          "unpack_ns": 79000
+        },
+        "head.143360": {
+          "calls": 1,
+          "pack_ns": 25834,
+          "upload_ns": 13250,
+          "submit_ns": 369669,
+          "download_ns": 18375,
+          "unpack_ns": 79209
+        },
+        "head.147456": {
+          "calls": 1,
+          "pack_ns": 32542,
+          "upload_ns": 10833,
+          "submit_ns": 368128,
+          "download_ns": 18292,
+          "unpack_ns": 79209
+        },
+        "head.151552": {
+          "calls": 1,
+          "pack_ns": 25917,
+          "upload_ns": 8208,
+          "submit_ns": 61167,
+          "download_ns": 1833,
+          "unpack_ns": 7917
+        }
+      },
+      "proposals": [
+        17,
+        8,
+        284,
+        220,
+        16,
+        16,
+        220
+      ]
+    },
+    {
+      "name": "fibonacci",
+      "repeat": 2,
+      "context_tokens": 70,
+      "wall_ms": 37.54534099425655,
+      "draft_phase_s": {
+        "context": 0.0,
+        "body": 0.01733795199834276,
+        "head": 0.020176472004095558
+      },
+      "native": {
+        "calls": 59,
+        "pack_ns": 1534053,
+        "upload_ns": 566839,
+        "submit_ns": 18063620,
+        "download_ns": 1111340,
+        "unpack_ns": 2850728
+      },
+      "kernels": {
+        "layers.0.self_attn.q_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29417,
+          "upload_ns": 11833,
+          "submit_ns": 206001,
+          "download_ns": 10501,
+          "unpack_ns": 45375
+        },
+        "layers.0.self_attn.k_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29542,
+          "upload_ns": 6625,
+          "submit_ns": 113251,
+          "download_ns": 5333,
+          "unpack_ns": 22750
+        },
+        "layers.0.self_attn.v_proj.weight": {
+          "calls": 1,
+          "pack_ns": 38125,
+          "upload_ns": 7000,
+          "submit_ns": 116709,
+          "download_ns": 5292,
+          "unpack_ns": 22750
+        },
+        "layers.0.self_attn.o_proj.weight": {
+          "calls": 1,
+          "pack_ns": 58834,
+          "upload_ns": 11917,
+          "submit_ns": 211543,
+          "download_ns": 5791,
+          "unpack_ns": 22792
+        },
+        "layers.0.mlp.gate_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29459,
+          "upload_ns": 10292,
+          "submit_ns": 281377,
+          "download_ns": 17583,
+          "unpack_ns": 67834
+        },
+        "layers.0.mlp.up_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29709,
+          "upload_ns": 10708,
+          "submit_ns": 279544,
+          "download_ns": 17750,
+          "unpack_ns": 68209
+        },
+        "layers.0.mlp.down_proj.weight": {
+          "calls": 1,
+          "pack_ns": 88792,
+          "upload_ns": 16917,
+          "submit_ns": 285877,
+          "download_ns": 5417,
+          "unpack_ns": 22875
+        },
+        "layers.1.self_attn.q_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29542,
+          "upload_ns": 8750,
+          "submit_ns": 208127,
+          "download_ns": 11333,
+          "unpack_ns": 45334
+        },
+        "layers.1.self_attn.k_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29500,
+          "upload_ns": 9584,
+          "submit_ns": 115625,
+          "download_ns": 5584,
+          "unpack_ns": 22833
+        },
+        "layers.1.self_attn.v_proj.weight": {
+          "calls": 1,
+          "pack_ns": 30084,
+          "upload_ns": 6833,
+          "submit_ns": 118334,
+          "download_ns": 5750,
+          "unpack_ns": 22751
+        },
+        "layers.1.self_attn.o_proj.weight": {
+          "calls": 1,
+          "pack_ns": 58584,
+          "upload_ns": 12208,
+          "submit_ns": 203377,
+          "download_ns": 7708,
+          "unpack_ns": 22875
+        },
+        "layers.1.mlp.gate_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29875,
+          "upload_ns": 13542,
+          "submit_ns": 282752,
+          "download_ns": 16208,
+          "unpack_ns": 68001
+        },
+        "layers.1.mlp.up_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29667,
+          "upload_ns": 9875,
+          "submit_ns": 292835,
+          "download_ns": 21292,
+          "unpack_ns": 68001
+        },
+        "layers.1.mlp.down_proj.weight": {
+          "calls": 1,
+          "pack_ns": 88209,
+          "upload_ns": 16542,
+          "submit_ns": 275335,
+          "download_ns": 4833,
+          "unpack_ns": 17834
+        },
+        "layers.2.self_attn.q_proj.weight": {
+          "calls": 1,
+          "pack_ns": 23000,
+          "upload_ns": 20375,
+          "submit_ns": 194043,
+          "download_ns": 9583,
+          "unpack_ns": 35459
+        },
+        "layers.2.self_attn.k_proj.weight": {
+          "calls": 1,
+          "pack_ns": 23292,
+          "upload_ns": 5667,
+          "submit_ns": 117250,
+          "download_ns": 5125,
+          "unpack_ns": 17876
+        },
+        "layers.2.self_attn.v_proj.weight": {
+          "calls": 1,
+          "pack_ns": 22959,
+          "upload_ns": 7833,
+          "submit_ns": 113251,
+          "download_ns": 5167,
+          "unpack_ns": 17791
+        },
+        "layers.2.self_attn.o_proj.weight": {
+          "calls": 1,
+          "pack_ns": 46167,
+          "upload_ns": 9708,
+          "submit_ns": 205460,
+          "download_ns": 18000,
+          "unpack_ns": 17792
+        },
+        "layers.2.mlp.gate_proj.weight": {
+          "calls": 1,
+          "pack_ns": 23042,
+          "upload_ns": 10875,
+          "submit_ns": 278210,
+          "download_ns": 14917,
+          "unpack_ns": 53167
+        },
+        "layers.2.mlp.up_proj.weight": {
+          "calls": 1,
+          "pack_ns": 23125,
+          "upload_ns": 7792,
+          "submit_ns": 279835,
+          "download_ns": 14375,
+          "unpack_ns": 53209
+        },
+        "layers.2.mlp.down_proj.weight": {
+          "calls": 1,
+          "pack_ns": 69209,
+          "upload_ns": 13250,
+          "submit_ns": 275169,
+          "download_ns": 5041,
+          "unpack_ns": 17875
+        },
+        "head.0": {
+          "calls": 1,
+          "pack_ns": 20333,
+          "upload_ns": 9000,
+          "submit_ns": 364836,
+          "download_ns": 17250,
+          "unpack_ns": 62042
+        },
+        "head.4096": {
+          "calls": 1,
+          "pack_ns": 20334,
+          "upload_ns": 8375,
+          "submit_ns": 385127,
+          "download_ns": 46459,
+          "unpack_ns": 62042
+        },
+        "head.8192": {
+          "calls": 1,
+          "pack_ns": 20334,
+          "upload_ns": 8875,
+          "submit_ns": 378961,
+          "download_ns": 21333,
+          "unpack_ns": 62042
+        },
+        "head.12288": {
+          "calls": 1,
+          "pack_ns": 20500,
+          "upload_ns": 9084,
+          "submit_ns": 372127,
+          "download_ns": 18459,
+          "unpack_ns": 61959
+        },
+        "head.16384": {
+          "calls": 1,
+          "pack_ns": 21208,
+          "upload_ns": 8667,
+          "submit_ns": 366627,
+          "download_ns": 18459,
+          "unpack_ns": 62084
+        },
+        "head.20480": {
+          "calls": 1,
+          "pack_ns": 20209,
+          "upload_ns": 22875,
+          "submit_ns": 366294,
+          "download_ns": 17667,
+          "unpack_ns": 61958
+        },
+        "head.24576": {
+          "calls": 1,
+          "pack_ns": 20292,
+          "upload_ns": 8625,
+          "submit_ns": 398711,
+          "download_ns": 54501,
+          "unpack_ns": 61708
+        },
+        "head.28672": {
+          "calls": 1,
+          "pack_ns": 20542,
+          "upload_ns": 9125,
+          "submit_ns": 374502,
+          "download_ns": 31375,
+          "unpack_ns": 62084
+        },
+        "head.32768": {
+          "calls": 1,
+          "pack_ns": 20250,
+          "upload_ns": 8626,
+          "submit_ns": 366877,
+          "download_ns": 17208,
+          "unpack_ns": 62043
+        },
+        "head.36864": {
+          "calls": 1,
+          "pack_ns": 20542,
+          "upload_ns": 11250,
+          "submit_ns": 368544,
+          "download_ns": 17958,
+          "unpack_ns": 61917
+        },
+        "head.40960": {
+          "calls": 1,
+          "pack_ns": 20375,
+          "upload_ns": 8375,
+          "submit_ns": 367252,
+          "download_ns": 17209,
+          "unpack_ns": 61958
+        },
+        "head.45056": {
+          "calls": 1,
+          "pack_ns": 20375,
+          "upload_ns": 8417,
+          "submit_ns": 362169,
+          "download_ns": 16917,
+          "unpack_ns": 62000
+        },
+        "head.49152": {
+          "calls": 1,
+          "pack_ns": 20250,
+          "upload_ns": 8666,
+          "submit_ns": 368211,
+          "download_ns": 16875,
+          "unpack_ns": 61876
+        },
+        "head.53248": {
+          "calls": 1,
+          "pack_ns": 20250,
+          "upload_ns": 11334,
+          "submit_ns": 365085,
+          "download_ns": 18000,
+          "unpack_ns": 62043
+        },
+        "head.57344": {
+          "calls": 1,
+          "pack_ns": 20708,
+          "upload_ns": 9042,
+          "submit_ns": 363544,
+          "download_ns": 17167,
+          "unpack_ns": 62083
+        },
+        "head.61440": {
+          "calls": 1,
+          "pack_ns": 20166,
+          "upload_ns": 8500,
+          "submit_ns": 370628,
+          "download_ns": 25459,
+          "unpack_ns": 61875
+        },
+        "head.65536": {
+          "calls": 1,
+          "pack_ns": 20292,
+          "upload_ns": 8792,
+          "submit_ns": 395752,
+          "download_ns": 54042,
+          "unpack_ns": 62042
+        },
+        "head.69632": {
+          "calls": 1,
+          "pack_ns": 20500,
+          "upload_ns": 8916,
+          "submit_ns": 367545,
+          "download_ns": 15708,
+          "unpack_ns": 51084
+        },
+        "head.73728": {
+          "calls": 1,
+          "pack_ns": 16958,
+          "upload_ns": 7542,
+          "submit_ns": 363628,
+          "download_ns": 16500,
+          "unpack_ns": 51208
+        },
+        "head.77824": {
+          "calls": 1,
+          "pack_ns": 16959,
+          "upload_ns": 7291,
+          "submit_ns": 362336,
+          "download_ns": 16375,
+          "unpack_ns": 51167
+        },
+        "head.81920": {
+          "calls": 1,
+          "pack_ns": 16708,
+          "upload_ns": 7167,
+          "submit_ns": 369877,
+          "download_ns": 15376,
+          "unpack_ns": 51125
+        },
+        "head.86016": {
+          "calls": 1,
+          "pack_ns": 16708,
+          "upload_ns": 7208,
+          "submit_ns": 409212,
+          "download_ns": 56208,
+          "unpack_ns": 51167
+        },
+        "head.90112": {
+          "calls": 1,
+          "pack_ns": 16667,
+          "upload_ns": 7459,
+          "submit_ns": 363002,
+          "download_ns": 16458,
+          "unpack_ns": 51126
+        },
+        "head.94208": {
+          "calls": 1,
+          "pack_ns": 16792,
+          "upload_ns": 7042,
+          "submit_ns": 360294,
+          "download_ns": 16375,
+          "unpack_ns": 51125
+        },
+        "head.98304": {
+          "calls": 1,
+          "pack_ns": 16750,
+          "upload_ns": 7375,
+          "submit_ns": 364961,
+          "download_ns": 15167,
+          "unpack_ns": 51208
+        },
+        "head.102400": {
+          "calls": 1,
+          "pack_ns": 16708,
+          "upload_ns": 10709,
+          "submit_ns": 364669,
+          "download_ns": 19250,
+          "unpack_ns": 51250
+        },
+        "head.106496": {
+          "calls": 1,
+          "pack_ns": 16875,
+          "upload_ns": 7584,
+          "submit_ns": 420086,
+          "download_ns": 33209,
+          "unpack_ns": 51083
+        },
+        "head.110592": {
+          "calls": 1,
+          "pack_ns": 16834,
+          "upload_ns": 7166,
+          "submit_ns": 367294,
+          "download_ns": 16417,
+          "unpack_ns": 51167
+        },
+        "head.114688": {
+          "calls": 1,
+          "pack_ns": 16875,
+          "upload_ns": 9667,
+          "submit_ns": 361419,
+          "download_ns": 16459,
+          "unpack_ns": 55917
+        },
+        "head.118784": {
+          "calls": 1,
+          "pack_ns": 16708,
+          "upload_ns": 9500,
+          "submit_ns": 365295,
+          "download_ns": 15833,
+          "unpack_ns": 51167
+        },
+        "head.122880": {
+          "calls": 1,
+          "pack_ns": 16792,
+          "upload_ns": 7083,
+          "submit_ns": 365419,
+          "download_ns": 51084,
+          "unpack_ns": 51084
+        },
+        "head.126976": {
+          "calls": 1,
+          "pack_ns": 16750,
+          "upload_ns": 10209,
+          "submit_ns": 404919,
+          "download_ns": 23542,
+          "unpack_ns": 51209
+        },
+        "head.131072": {
+          "calls": 1,
+          "pack_ns": 17041,
+          "upload_ns": 6959,
+          "submit_ns": 367211,
+          "download_ns": 17166,
+          "unpack_ns": 51251
+        },
+        "head.135168": {
+          "calls": 1,
+          "pack_ns": 16834,
+          "upload_ns": 7166,
+          "submit_ns": 233044,
+          "download_ns": 17041,
+          "unpack_ns": 51209
+        },
+        "head.139264": {
+          "calls": 1,
+          "pack_ns": 16917,
+          "upload_ns": 7042,
+          "submit_ns": 238501,
+          "download_ns": 16209,
+          "unpack_ns": 51208
+        },
+        "head.143360": {
+          "calls": 1,
+          "pack_ns": 16875,
+          "upload_ns": 16167,
+          "submit_ns": 372628,
+          "download_ns": 16708,
+          "unpack_ns": 51167
+        },
+        "head.147456": {
+          "calls": 1,
+          "pack_ns": 16750,
+          "upload_ns": 7333,
+          "submit_ns": 384086,
+          "download_ns": 59542,
+          "unpack_ns": 61501
+        },
+        "head.151552": {
+          "calls": 1,
+          "pack_ns": 16959,
+          "upload_ns": 4500,
+          "submit_ns": 69042,
+          "download_ns": 1792,
+          "unpack_ns": 5166
+        }
+      },
+      "proposals": [
+        17,
+        8,
+        284,
+        220,
+        16,
+        16,
+        220
+      ]
+    },
+    {
+      "name": "math",
+      "repeat": 0,
+      "context_tokens": 75,
+      "wall_ms": 46.473110996885225,
+      "draft_phase_s": {
+        "context": 0.0,
+        "body": 0.021907192000071518,
+        "head": 0.024539042999094818
+      },
+      "native": {
+        "calls": 59,
+        "pack_ns": 2583225,
+        "upload_ns": 840881,
+        "submit_ns": 17683955,
+        "download_ns": 1104299,
+        "unpack_ns": 5220078
+      },
+      "kernels": {
+        "layers.0.self_attn.q_proj.weight": {
+          "calls": 1,
+          "pack_ns": 40417,
+          "upload_ns": 11375,
+          "submit_ns": 206043,
+          "download_ns": 12625,
+          "unpack_ns": 62375
+        },
+        "layers.0.self_attn.k_proj.weight": {
+          "calls": 1,
+          "pack_ns": 40542,
+          "upload_ns": 9125,
+          "submit_ns": 120667,
+          "download_ns": 6667,
+          "unpack_ns": 30959
+        },
+        "layers.0.self_attn.v_proj.weight": {
+          "calls": 1,
+          "pack_ns": 40667,
+          "upload_ns": 9167,
+          "submit_ns": 121584,
+          "download_ns": 6791,
+          "unpack_ns": 31209
+        },
+        "layers.0.self_attn.o_proj.weight": {
+          "calls": 1,
+          "pack_ns": 81167,
+          "upload_ns": 16084,
+          "submit_ns": 150709,
+          "download_ns": 6584,
+          "unpack_ns": 31208
+        },
+        "layers.0.mlp.gate_proj.weight": {
+          "calls": 1,
+          "pack_ns": 40750,
+          "upload_ns": 14000,
+          "submit_ns": 291502,
+          "download_ns": 19667,
+          "unpack_ns": 93125
+        },
+        "layers.0.mlp.up_proj.weight": {
+          "calls": 1,
+          "pack_ns": 40292,
+          "upload_ns": 13292,
+          "submit_ns": 289211,
+          "download_ns": 19583,
+          "unpack_ns": 105459
+        },
+        "layers.0.mlp.down_proj.weight": {
+          "calls": 1,
+          "pack_ns": 120251,
+          "upload_ns": 22917,
+          "submit_ns": 281710,
+          "download_ns": 6958,
+          "unpack_ns": 31376
+        },
+        "layers.1.self_attn.q_proj.weight": {
+          "calls": 1,
+          "pack_ns": 40417,
+          "upload_ns": 11625,
+          "submit_ns": 206751,
+          "download_ns": 13417,
+          "unpack_ns": 62167
+        },
+        "layers.1.self_attn.k_proj.weight": {
+          "calls": 1,
+          "pack_ns": 40917,
+          "upload_ns": 11833,
+          "submit_ns": 118668,
+          "download_ns": 6458,
+          "unpack_ns": 33875
+        },
+        "layers.1.self_attn.v_proj.weight": {
+          "calls": 1,
+          "pack_ns": 40459,
+          "upload_ns": 8917,
+          "submit_ns": 123709,
+          "download_ns": 6458,
+          "unpack_ns": 31334
+        },
+        "layers.1.self_attn.o_proj.weight": {
+          "calls": 1,
+          "pack_ns": 88792,
+          "upload_ns": 7917,
+          "submit_ns": 289210,
+          "download_ns": 6542,
+          "unpack_ns": 31333
+        },
+        "layers.1.mlp.gate_proj.weight": {
+          "calls": 1,
+          "pack_ns": 40458,
+          "upload_ns": 15917,
+          "submit_ns": 289544,
+          "download_ns": 19041,
+          "unpack_ns": 75293
+        },
+        "layers.1.mlp.up_proj.weight": {
+          "calls": 1,
+          "pack_ns": 19125,
+          "upload_ns": 6458,
+          "submit_ns": 276669,
+          "download_ns": 12917,
+          "unpack_ns": 43875
+        },
+        "layers.1.mlp.down_proj.weight": {
+          "calls": 1,
+          "pack_ns": 130709,
+          "upload_ns": 21917,
+          "submit_ns": 275085,
+          "download_ns": 6500,
+          "unpack_ns": 31167
+        },
+        "layers.2.self_attn.q_proj.weight": {
+          "calls": 1,
+          "pack_ns": 40417,
+          "upload_ns": 11875,
+          "submit_ns": 202210,
+          "download_ns": 12667,
+          "unpack_ns": 62375
+        },
+        "layers.2.self_attn.k_proj.weight": {
+          "calls": 1,
+          "pack_ns": 40542,
+          "upload_ns": 9084,
+          "submit_ns": 123751,
+          "download_ns": 6375,
+          "unpack_ns": 31166
+        },
+        "layers.2.self_attn.v_proj.weight": {
+          "calls": 1,
+          "pack_ns": 40333,
+          "upload_ns": 11709,
+          "submit_ns": 119209,
+          "download_ns": 6417,
+          "unpack_ns": 31166
+        },
+        "layers.2.self_attn.o_proj.weight": {
+          "calls": 1,
+          "pack_ns": 80334,
+          "upload_ns": 15750,
+          "submit_ns": 206627,
+          "download_ns": 6666,
+          "unpack_ns": 31167
+        },
+        "layers.2.mlp.gate_proj.weight": {
+          "calls": 1,
+          "pack_ns": 40625,
+          "upload_ns": 13792,
+          "submit_ns": 288418,
+          "download_ns": 19375,
+          "unpack_ns": 92793
+        },
+        "layers.2.mlp.up_proj.weight": {
+          "calls": 1,
+          "pack_ns": 40376,
+          "upload_ns": 13166,
+          "submit_ns": 285086,
+          "download_ns": 19583,
+          "unpack_ns": 104584
+        },
+        "layers.2.mlp.down_proj.weight": {
+          "calls": 1,
+          "pack_ns": 120542,
+          "upload_ns": 22500,
+          "submit_ns": 282586,
+          "download_ns": 6750,
+          "unpack_ns": 31375
+        },
+        "head.0": {
+          "calls": 1,
+          "pack_ns": 35584,
+          "upload_ns": 15042,
+          "submit_ns": 376127,
+          "download_ns": 22917,
+          "unpack_ns": 108751
+        },
+        "head.4096": {
+          "calls": 1,
+          "pack_ns": 35417,
+          "upload_ns": 15209,
+          "submit_ns": 370044,
+          "download_ns": 23333,
+          "unpack_ns": 108793
+        },
+        "head.8192": {
+          "calls": 1,
+          "pack_ns": 35708,
+          "upload_ns": 14834,
+          "submit_ns": 373336,
+          "download_ns": 23583,
+          "unpack_ns": 122043
+        },
+        "head.12288": {
+          "calls": 1,
+          "pack_ns": 35750,
+          "upload_ns": 15042,
+          "submit_ns": 373127,
+          "download_ns": 23042,
+          "unpack_ns": 108418
+        },
+        "head.16384": {
+          "calls": 1,
+          "pack_ns": 35750,
+          "upload_ns": 15000,
+          "submit_ns": 376253,
+          "download_ns": 22834,
+          "unpack_ns": 108375
+        },
+        "head.20480": {
+          "calls": 1,
+          "pack_ns": 35376,
+          "upload_ns": 14541,
+          "submit_ns": 371336,
+          "download_ns": 22167,
+          "unpack_ns": 119459
+        },
+        "head.24576": {
+          "calls": 1,
+          "pack_ns": 35417,
+          "upload_ns": 14709,
+          "submit_ns": 375002,
+          "download_ns": 22584,
+          "unpack_ns": 108667
+        },
+        "head.28672": {
+          "calls": 1,
+          "pack_ns": 35542,
+          "upload_ns": 14417,
+          "submit_ns": 376211,
+          "download_ns": 22416,
+          "unpack_ns": 108543
+        },
+        "head.32768": {
+          "calls": 1,
+          "pack_ns": 35834,
+          "upload_ns": 14625,
+          "submit_ns": 373877,
+          "download_ns": 22126,
+          "unpack_ns": 120375
+        },
+        "head.36864": {
+          "calls": 1,
+          "pack_ns": 35417,
+          "upload_ns": 17292,
+          "submit_ns": 369669,
+          "download_ns": 22125,
+          "unpack_ns": 108543
+        },
+        "head.40960": {
+          "calls": 1,
+          "pack_ns": 35626,
+          "upload_ns": 14666,
+          "submit_ns": 367211,
+          "download_ns": 22167,
+          "unpack_ns": 108501
+        },
+        "head.45056": {
+          "calls": 1,
+          "pack_ns": 35251,
+          "upload_ns": 14375,
+          "submit_ns": 368419,
+          "download_ns": 22042,
+          "unpack_ns": 126209
+        },
+        "head.49152": {
+          "calls": 1,
+          "pack_ns": 35376,
+          "upload_ns": 14541,
+          "submit_ns": 370378,
+          "download_ns": 22042,
+          "unpack_ns": 108709
+        },
+        "head.53248": {
+          "calls": 1,
+          "pack_ns": 35625,
+          "upload_ns": 17000,
+          "submit_ns": 368044,
+          "download_ns": 22042,
+          "unpack_ns": 108709
+        },
+        "head.57344": {
+          "calls": 1,
+          "pack_ns": 35500,
+          "upload_ns": 14542,
+          "submit_ns": 369919,
+          "download_ns": 22083,
+          "unpack_ns": 118335
+        },
+        "head.61440": {
+          "calls": 1,
+          "pack_ns": 35500,
+          "upload_ns": 14625,
+          "submit_ns": 369669,
+          "download_ns": 22084,
+          "unpack_ns": 108709
+        },
+        "head.65536": {
+          "calls": 1,
+          "pack_ns": 35375,
+          "upload_ns": 16833,
+          "submit_ns": 377003,
+          "download_ns": 22583,
+          "unpack_ns": 108293
+        },
+        "head.69632": {
+          "calls": 1,
+          "pack_ns": 35625,
+          "upload_ns": 14500,
+          "submit_ns": 370378,
+          "download_ns": 22333,
+          "unpack_ns": 119668
+        },
+        "head.73728": {
+          "calls": 1,
+          "pack_ns": 35334,
+          "upload_ns": 14916,
+          "submit_ns": 370878,
+          "download_ns": 22792,
+          "unpack_ns": 108459
+        },
+        "head.77824": {
+          "calls": 1,
+          "pack_ns": 35500,
+          "upload_ns": 16292,
+          "submit_ns": 375461,
+          "download_ns": 22667,
+          "unpack_ns": 108875
+        },
+        "head.81920": {
+          "calls": 1,
+          "pack_ns": 35458,
+          "upload_ns": 14500,
+          "submit_ns": 373961,
+          "download_ns": 24292,
+          "unpack_ns": 119418
+        },
+        "head.86016": {
+          "calls": 1,
+          "pack_ns": 35417,
+          "upload_ns": 15291,
+          "submit_ns": 375461,
+          "download_ns": 22750,
+          "unpack_ns": 108709
+        },
+        "head.90112": {
+          "calls": 1,
+          "pack_ns": 35375,
+          "upload_ns": 14625,
+          "submit_ns": 371878,
+          "download_ns": 23250,
+          "unpack_ns": 108584
+        },
+        "head.94208": {
+          "calls": 1,
+          "pack_ns": 35750,
+          "upload_ns": 14625,
+          "submit_ns": 374794,
+          "download_ns": 34750,
+          "unpack_ns": 109209
+        },
+        "head.98304": {
+          "calls": 1,
+          "pack_ns": 35709,
+          "upload_ns": 14916,
+          "submit_ns": 370836,
+          "download_ns": 22375,
+          "unpack_ns": 108584
+        },
+        "head.102400": {
+          "calls": 1,
+          "pack_ns": 35583,
+          "upload_ns": 17126,
+          "submit_ns": 374835,
+          "download_ns": 22376,
+          "unpack_ns": 108584
+        },
+        "head.106496": {
+          "calls": 1,
+          "pack_ns": 35667,
+          "upload_ns": 14292,
+          "submit_ns": 370169,
+          "download_ns": 33667,
+          "unpack_ns": 108626
+        },
+        "head.110592": {
+          "calls": 1,
+          "pack_ns": 35667,
+          "upload_ns": 14500,
+          "submit_ns": 370794,
+          "download_ns": 22792,
+          "unpack_ns": 108584
+        },
+        "head.114688": {
+          "calls": 1,
+          "pack_ns": 35459,
+          "upload_ns": 14625,
+          "submit_ns": 371836,
+          "download_ns": 22750,
+          "unpack_ns": 108751
+        },
+        "head.118784": {
+          "calls": 1,
+          "pack_ns": 35750,
+          "upload_ns": 14500,
+          "submit_ns": 391253,
+          "download_ns": 23250,
+          "unpack_ns": 108542
+        },
+        "head.122880": {
+          "calls": 1,
+          "pack_ns": 35542,
+          "upload_ns": 15000,
+          "submit_ns": 379670,
+          "download_ns": 23166,
+          "unpack_ns": 108543
+        },
+        "head.126976": {
+          "calls": 1,
+          "pack_ns": 59334,
+          "upload_ns": 15042,
+          "submit_ns": 260293,
+          "download_ns": 23709,
+          "unpack_ns": 108751
+        },
+        "head.131072": {
+          "calls": 1,
+          "pack_ns": 35625,
+          "upload_ns": 15000,
+          "submit_ns": 257127,
+          "download_ns": 25542,
+          "unpack_ns": 122043
+        },
+        "head.135168": {
+          "calls": 1,
+          "pack_ns": 35333,
+          "upload_ns": 14459,
+          "submit_ns": 251043,
+          "download_ns": 24917,
+          "unpack_ns": 108792
+        },
+        "head.139264": {
+          "calls": 1,
+          "pack_ns": 35583,
+          "upload_ns": 14250,
+          "submit_ns": 241877,
+          "download_ns": 24709,
+          "unpack_ns": 121167
+        },
+        "head.143360": {
+          "calls": 1,
+          "pack_ns": 35292,
+          "upload_ns": 14542,
+          "submit_ns": 248002,
+          "download_ns": 25041,
+          "unpack_ns": 108376
+        },
+        "head.147456": {
+          "calls": 1,
+          "pack_ns": 36625,
+          "upload_ns": 14542,
+          "submit_ns": 251293,
+          "download_ns": 24501,
+          "unpack_ns": 108459
+        },
+        "head.151552": {
+          "calls": 1,
+          "pack_ns": 35417,
+          "upload_ns": 7625,
+          "submit_ns": 57542,
+          "download_ns": 2459,
+          "unpack_ns": 10541
+        }
+      },
+      "proposals": [
+        220,
+        16,
+        17,
+        220,
+        220,
+        220,
+        220
+      ]
+    },
+    {
+      "name": "math",
+      "repeat": 1,
+      "context_tokens": 75,
+      "wall_ms": 37.487548994249664,
+      "draft_phase_s": {
+        "context": 0.0,
+        "body": 0.018172415999288205,
+        "head": 0.019272548997832928
+      },
+      "native": {
+        "calls": 59,
+        "pack_ns": 1981559,
+        "upload_ns": 650546,
+        "submit_ns": 13890971,
+        "download_ns": 1346047,
+        "unpack_ns": 3839653
+      },
+      "kernels": {
+        "layers.0.self_attn.q_proj.weight": {
+          "calls": 1,
+          "pack_ns": 40584,
+          "upload_ns": 12292,
+          "submit_ns": 149959,
+          "download_ns": 14167,
+          "unpack_ns": 75417
+        },
+        "layers.0.self_attn.k_proj.weight": {
+          "calls": 1,
+          "pack_ns": 40417,
+          "upload_ns": 8875,
+          "submit_ns": 93125,
+          "download_ns": 7125,
+          "unpack_ns": 31251
+        },
+        "layers.0.self_attn.v_proj.weight": {
+          "calls": 1,
+          "pack_ns": 54792,
+          "upload_ns": 9167,
+          "submit_ns": 88167,
+          "download_ns": 7208,
+          "unpack_ns": 31334
+        },
+        "layers.0.self_attn.o_proj.weight": {
+          "calls": 1,
+          "pack_ns": 80793,
+          "upload_ns": 16625,
+          "submit_ns": 148501,
+          "download_ns": 5666,
+          "unpack_ns": 22792
+        },
+        "layers.0.mlp.gate_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29416,
+          "upload_ns": 10417,
+          "submit_ns": 190210,
+          "download_ns": 18250,
+          "unpack_ns": 67959
+        },
+        "layers.0.mlp.up_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29459,
+          "upload_ns": 9958,
+          "submit_ns": 198293,
+          "download_ns": 23500,
+          "unpack_ns": 75001
+        },
+        "layers.0.mlp.down_proj.weight": {
+          "calls": 1,
+          "pack_ns": 88751,
+          "upload_ns": 17375,
+          "submit_ns": 187043,
+          "download_ns": 5375,
+          "unpack_ns": 22708
+        },
+        "layers.1.self_attn.q_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29667,
+          "upload_ns": 8917,
+          "submit_ns": 133709,
+          "download_ns": 12042,
+          "unpack_ns": 45417
+        },
+        "layers.1.self_attn.k_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29916,
+          "upload_ns": 8709,
+          "submit_ns": 169668,
+          "download_ns": 15250,
+          "unpack_ns": 22750
+        },
+        "layers.1.self_attn.v_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29584,
+          "upload_ns": 6917,
+          "submit_ns": 90292,
+          "download_ns": 6250,
+          "unpack_ns": 22834
+        },
+        "layers.1.self_attn.o_proj.weight": {
+          "calls": 1,
+          "pack_ns": 87001,
+          "upload_ns": 13166,
+          "submit_ns": 149335,
+          "download_ns": 7667,
+          "unpack_ns": 23083
+        },
+        "layers.1.mlp.gate_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29500,
+          "upload_ns": 10417,
+          "submit_ns": 200377,
+          "download_ns": 18958,
+          "unpack_ns": 67959
+        },
+        "layers.1.mlp.up_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29583,
+          "upload_ns": 9917,
+          "submit_ns": 196001,
+          "download_ns": 16334,
+          "unpack_ns": 68084
+        },
+        "layers.1.mlp.down_proj.weight": {
+          "calls": 1,
+          "pack_ns": 90542,
+          "upload_ns": 25334,
+          "submit_ns": 279127,
+          "download_ns": 10416,
+          "unpack_ns": 22792
+        },
+        "layers.2.self_attn.q_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29500,
+          "upload_ns": 9000,
+          "submit_ns": 137293,
+          "download_ns": 12333,
+          "unpack_ns": 45417
+        },
+        "layers.2.self_attn.k_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29333,
+          "upload_ns": 6709,
+          "submit_ns": 101334,
+          "download_ns": 17625,
+          "unpack_ns": 22750
+        },
+        "layers.2.self_attn.v_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29584,
+          "upload_ns": 7416,
+          "submit_ns": 84376,
+          "download_ns": 5333,
+          "unpack_ns": 22959
+        },
+        "layers.2.self_attn.o_proj.weight": {
+          "calls": 1,
+          "pack_ns": 58417,
+          "upload_ns": 11833,
+          "submit_ns": 141584,
+          "download_ns": 6000,
+          "unpack_ns": 22751
+        },
+        "layers.2.mlp.gate_proj.weight": {
+          "calls": 1,
+          "pack_ns": 40333,
+          "upload_ns": 10792,
+          "submit_ns": 184918,
+          "download_ns": 17750,
+          "unpack_ns": 67959
+        },
+        "layers.2.mlp.up_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29376,
+          "upload_ns": 9708,
+          "submit_ns": 185376,
+          "download_ns": 19584,
+          "unpack_ns": 68042
+        },
+        "layers.2.mlp.down_proj.weight": {
+          "calls": 1,
+          "pack_ns": 87876,
+          "upload_ns": 16375,
+          "submit_ns": 181501,
+          "download_ns": 5833,
+          "unpack_ns": 22750
+        },
+        "head.0": {
+          "calls": 1,
+          "pack_ns": 26042,
+          "upload_ns": 11000,
+          "submit_ns": 245877,
+          "download_ns": 31375,
+          "unpack_ns": 79417
+        },
+        "head.4096": {
+          "calls": 1,
+          "pack_ns": 26084,
+          "upload_ns": 11083,
+          "submit_ns": 250085,
+          "download_ns": 21292,
+          "unpack_ns": 79167
+        },
+        "head.8192": {
+          "calls": 1,
+          "pack_ns": 26083,
+          "upload_ns": 10959,
+          "submit_ns": 244001,
+          "download_ns": 29667,
+          "unpack_ns": 79334
+        },
+        "head.12288": {
+          "calls": 1,
+          "pack_ns": 26042,
+          "upload_ns": 11041,
+          "submit_ns": 278002,
+          "download_ns": 23584,
+          "unpack_ns": 79042
+        },
+        "head.16384": {
+          "calls": 1,
+          "pack_ns": 26000,
+          "upload_ns": 10959,
+          "submit_ns": 243960,
+          "download_ns": 21208,
+          "unpack_ns": 88543
+        },
+        "head.20480": {
+          "calls": 1,
+          "pack_ns": 26083,
+          "upload_ns": 10875,
+          "submit_ns": 244252,
+          "download_ns": 21375,
+          "unpack_ns": 79168
+        },
+        "head.24576": {
+          "calls": 1,
+          "pack_ns": 25875,
+          "upload_ns": 10833,
+          "submit_ns": 245002,
+          "download_ns": 21708,
+          "unpack_ns": 89501
+        },
+        "head.28672": {
+          "calls": 1,
+          "pack_ns": 25875,
+          "upload_ns": 11042,
+          "submit_ns": 241626,
+          "download_ns": 21084,
+          "unpack_ns": 79250
+        },
+        "head.32768": {
+          "calls": 1,
+          "pack_ns": 26041,
+          "upload_ns": 10792,
+          "submit_ns": 241043,
+          "download_ns": 18626,
+          "unpack_ns": 79333
+        },
+        "head.36864": {
+          "calls": 1,
+          "pack_ns": 26084,
+          "upload_ns": 11208,
+          "submit_ns": 440378,
+          "download_ns": 76251,
+          "unpack_ns": 79375
+        },
+        "head.40960": {
+          "calls": 1,
+          "pack_ns": 26001,
+          "upload_ns": 10791,
+          "submit_ns": 244794,
+          "download_ns": 20833,
+          "unpack_ns": 79209
+        },
+        "head.45056": {
+          "calls": 1,
+          "pack_ns": 26000,
+          "upload_ns": 10625,
+          "submit_ns": 250210,
+          "download_ns": 19500,
+          "unpack_ns": 79209
+        },
+        "head.49152": {
+          "calls": 1,
+          "pack_ns": 25959,
+          "upload_ns": 11042,
+          "submit_ns": 344252,
+          "download_ns": 38042,
+          "unpack_ns": 79334
+        },
+        "head.53248": {
+          "calls": 1,
+          "pack_ns": 25959,
+          "upload_ns": 10791,
+          "submit_ns": 245085,
+          "download_ns": 18959,
+          "unpack_ns": 79250
+        },
+        "head.57344": {
+          "calls": 1,
+          "pack_ns": 25917,
+          "upload_ns": 11042,
+          "submit_ns": 463878,
+          "download_ns": 61875,
+          "unpack_ns": 79168
+        },
+        "head.61440": {
+          "calls": 1,
+          "pack_ns": 25958,
+          "upload_ns": 10751,
+          "submit_ns": 243293,
+          "download_ns": 20667,
+          "unpack_ns": 79292
+        },
+        "head.65536": {
+          "calls": 1,
+          "pack_ns": 26001,
+          "upload_ns": 10875,
+          "submit_ns": 244835,
+          "download_ns": 19125,
+          "unpack_ns": 79250
+        },
+        "head.69632": {
+          "calls": 1,
+          "pack_ns": 26084,
+          "upload_ns": 11625,
+          "submit_ns": 457795,
+          "download_ns": 37208,
+          "unpack_ns": 79293
+        },
+        "head.73728": {
+          "calls": 1,
+          "pack_ns": 26084,
+          "upload_ns": 11000,
+          "submit_ns": 242877,
+          "download_ns": 21125,
+          "unpack_ns": 79292
+        },
+        "head.77824": {
+          "calls": 1,
+          "pack_ns": 25917,
+          "upload_ns": 10750,
+          "submit_ns": 258252,
+          "download_ns": 27625,
+          "unpack_ns": 79084
+        },
+        "head.81920": {
+          "calls": 1,
+          "pack_ns": 25958,
+          "upload_ns": 10709,
+          "submit_ns": 358169,
+          "download_ns": 67542,
+          "unpack_ns": 79209
+        },
+        "head.86016": {
+          "calls": 1,
+          "pack_ns": 25917,
+          "upload_ns": 10709,
+          "submit_ns": 244835,
+          "download_ns": 21000,
+          "unpack_ns": 87750
+        },
+        "head.90112": {
+          "calls": 1,
+          "pack_ns": 26000,
+          "upload_ns": 10875,
+          "submit_ns": 241585,
+          "download_ns": 19750,
+          "unpack_ns": 79251
+        },
+        "head.94208": {
+          "calls": 1,
+          "pack_ns": 25917,
+          "upload_ns": 11166,
+          "submit_ns": 409045,
+          "download_ns": 42875,
+          "unpack_ns": 79292
+        },
+        "head.98304": {
+          "calls": 1,
+          "pack_ns": 25959,
+          "upload_ns": 10667,
+          "submit_ns": 240376,
+          "download_ns": 20750,
+          "unpack_ns": 79293
+        },
+        "head.102400": {
+          "calls": 1,
+          "pack_ns": 26042,
+          "upload_ns": 10833,
+          "submit_ns": 240460,
+          "download_ns": 26584,
+          "unpack_ns": 79208
+        },
+        "head.106496": {
+          "calls": 1,
+          "pack_ns": 25875,
+          "upload_ns": 11208,
+          "submit_ns": 431087,
+          "download_ns": 61250,
+          "unpack_ns": 79250
+        },
+        "head.110592": {
+          "calls": 1,
+          "pack_ns": 25875,
+          "upload_ns": 10708,
+          "submit_ns": 239669,
+          "download_ns": 20708,
+          "unpack_ns": 79167
+        },
+        "head.114688": {
+          "calls": 1,
+          "pack_ns": 25959,
+          "upload_ns": 10958,
+          "submit_ns": 241335,
+          "download_ns": 18667,
+          "unpack_ns": 79292
+        },
+        "head.118784": {
+          "calls": 1,
+          "pack_ns": 25709,
+          "upload_ns": 11458,
+          "submit_ns": 438545,
+          "download_ns": 43917,
+          "unpack_ns": 79292
+        },
+        "head.122880": {
+          "calls": 1,
+          "pack_ns": 26041,
+          "upload_ns": 10751,
+          "submit_ns": 241335,
+          "download_ns": 21208,
+          "unpack_ns": 79209
+        },
+        "head.126976": {
+          "calls": 1,
+          "pack_ns": 25917,
+          "upload_ns": 10750,
+          "submit_ns": 239793,
+          "download_ns": 21667,
+          "unpack_ns": 79251
+        },
+        "head.131072": {
+          "calls": 1,
+          "pack_ns": 25875,
+          "upload_ns": 10667,
+          "submit_ns": 251668,
+          "download_ns": 22209,
+          "unpack_ns": 79209
+        },
+        "head.135168": {
+          "calls": 1,
+          "pack_ns": 26001,
+          "upload_ns": 11250,
+          "submit_ns": 248668,
+          "download_ns": 20917,
+          "unpack_ns": 79250
+        },
+        "head.139264": {
+          "calls": 1,
+          "pack_ns": 26125,
+          "upload_ns": 10959,
+          "submit_ns": 244835,
+          "download_ns": 20875,
+          "unpack_ns": 79292
+        },
+        "head.143360": {
+          "calls": 1,
+          "pack_ns": 26000,
+          "upload_ns": 10834,
+          "submit_ns": 310210,
+          "download_ns": 44917,
+          "unpack_ns": 79167
+        },
+        "head.147456": {
+          "calls": 1,
+          "pack_ns": 26042,
+          "upload_ns": 11125,
+          "submit_ns": 253002,
+          "download_ns": 24875,
+          "unpack_ns": 79209
+        },
+        "head.151552": {
+          "calls": 1,
+          "pack_ns": 25834,
+          "upload_ns": 5916,
+          "submit_ns": 56668,
+          "download_ns": 2541,
+          "unpack_ns": 7542
+        }
+      },
+      "proposals": [
+        220,
+        16,
+        17,
+        220,
+        220,
+        220,
+        220
+      ]
+    },
+    {
+      "name": "math",
+      "repeat": 2,
+      "context_tokens": 75,
+      "wall_ms": 37.996844999725,
+      "draft_phase_s": {
+        "context": 0.0,
+        "body": 0.018769586997223087,
+        "head": 0.019201923998480197
+      },
+      "native": {
+        "calls": 59,
+        "pack_ns": 1890594,
+        "upload_ns": 670590,
+        "submit_ns": 14068726,
+        "download_ns": 1462547,
+        "unpack_ns": 3749152
+      },
+      "kernels": {
+        "layers.0.self_attn.q_proj.weight": {
+          "calls": 1,
+          "pack_ns": 31834,
+          "upload_ns": 14291,
+          "submit_ns": 281669,
+          "download_ns": 38417,
+          "unpack_ns": 45709
+        },
+        "layers.0.self_attn.k_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29834,
+          "upload_ns": 6958,
+          "submit_ns": 91334,
+          "download_ns": 6833,
+          "unpack_ns": 22834
+        },
+        "layers.0.self_attn.v_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29792,
+          "upload_ns": 7125,
+          "submit_ns": 88209,
+          "download_ns": 5667,
+          "unpack_ns": 22667
+        },
+        "layers.0.self_attn.o_proj.weight": {
+          "calls": 1,
+          "pack_ns": 60333,
+          "upload_ns": 13625,
+          "submit_ns": 183210,
+          "download_ns": 8750,
+          "unpack_ns": 23084
+        },
+        "layers.0.mlp.gate_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29458,
+          "upload_ns": 10459,
+          "submit_ns": 190334,
+          "download_ns": 17834,
+          "unpack_ns": 67917
+        },
+        "layers.0.mlp.up_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29417,
+          "upload_ns": 10333,
+          "submit_ns": 187835,
+          "download_ns": 15750,
+          "unpack_ns": 67958
+        },
+        "layers.0.mlp.down_proj.weight": {
+          "calls": 1,
+          "pack_ns": 91000,
+          "upload_ns": 22334,
+          "submit_ns": 309294,
+          "download_ns": 10208,
+          "unpack_ns": 22750
+        },
+        "layers.1.self_attn.q_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29583,
+          "upload_ns": 8542,
+          "submit_ns": 134751,
+          "download_ns": 11958,
+          "unpack_ns": 45417
+        },
+        "layers.1.self_attn.k_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29667,
+          "upload_ns": 6792,
+          "submit_ns": 84792,
+          "download_ns": 5625,
+          "unpack_ns": 22667
+        },
+        "layers.1.self_attn.v_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29667,
+          "upload_ns": 6792,
+          "submit_ns": 88126,
+          "download_ns": 6208,
+          "unpack_ns": 22708
+        },
+        "layers.1.self_attn.o_proj.weight": {
+          "calls": 1,
+          "pack_ns": 59417,
+          "upload_ns": 12875,
+          "submit_ns": 142751,
+          "download_ns": 6001,
+          "unpack_ns": 22875
+        },
+        "layers.1.mlp.gate_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29750,
+          "upload_ns": 10417,
+          "submit_ns": 185251,
+          "download_ns": 15708,
+          "unpack_ns": 68168
+        },
+        "layers.1.mlp.up_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29501,
+          "upload_ns": 9666,
+          "submit_ns": 292419,
+          "download_ns": 59292,
+          "unpack_ns": 67959
+        },
+        "layers.1.mlp.down_proj.weight": {
+          "calls": 1,
+          "pack_ns": 88209,
+          "upload_ns": 17042,
+          "submit_ns": 190834,
+          "download_ns": 6125,
+          "unpack_ns": 22834
+        },
+        "layers.2.self_attn.q_proj.weight": {
+          "calls": 1,
+          "pack_ns": 43917,
+          "upload_ns": 8708,
+          "submit_ns": 143210,
+          "download_ns": 28292,
+          "unpack_ns": 45375
+        },
+        "layers.2.self_attn.k_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29459,
+          "upload_ns": 6708,
+          "submit_ns": 89042,
+          "download_ns": 6459,
+          "unpack_ns": 22750
+        },
+        "layers.2.self_attn.v_proj.weight": {
+          "calls": 1,
+          "pack_ns": 41792,
+          "upload_ns": 7166,
+          "submit_ns": 87459,
+          "download_ns": 5750,
+          "unpack_ns": 22750
+        },
+        "layers.2.self_attn.o_proj.weight": {
+          "calls": 1,
+          "pack_ns": 59875,
+          "upload_ns": 13792,
+          "submit_ns": 154210,
+          "download_ns": 5875,
+          "unpack_ns": 22791
+        },
+        "layers.2.mlp.gate_proj.weight": {
+          "calls": 1,
+          "pack_ns": 30500,
+          "upload_ns": 15251,
+          "submit_ns": 267585,
+          "download_ns": 47375,
+          "unpack_ns": 69084
+        },
+        "layers.2.mlp.up_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29834,
+          "upload_ns": 11417,
+          "submit_ns": 243126,
+          "download_ns": 21542,
+          "unpack_ns": 68334
+        },
+        "layers.2.mlp.down_proj.weight": {
+          "calls": 1,
+          "pack_ns": 87667,
+          "upload_ns": 16792,
+          "submit_ns": 193668,
+          "download_ns": 6083,
+          "unpack_ns": 22709
+        },
+        "head.0": {
+          "calls": 1,
+          "pack_ns": 26333,
+          "upload_ns": 39417,
+          "submit_ns": 272794,
+          "download_ns": 36291,
+          "unpack_ns": 79334
+        },
+        "head.4096": {
+          "calls": 1,
+          "pack_ns": 25833,
+          "upload_ns": 10959,
+          "submit_ns": 283793,
+          "download_ns": 29542,
+          "unpack_ns": 79376
+        },
+        "head.8192": {
+          "calls": 1,
+          "pack_ns": 25875,
+          "upload_ns": 10875,
+          "submit_ns": 238043,
+          "download_ns": 20709,
+          "unpack_ns": 79042
+        },
+        "head.12288": {
+          "calls": 1,
+          "pack_ns": 25834,
+          "upload_ns": 11125,
+          "submit_ns": 295294,
+          "download_ns": 66917,
+          "unpack_ns": 79334
+        },
+        "head.16384": {
+          "calls": 1,
+          "pack_ns": 25875,
+          "upload_ns": 11292,
+          "submit_ns": 271919,
+          "download_ns": 23667,
+          "unpack_ns": 79250
+        },
+        "head.20480": {
+          "calls": 1,
+          "pack_ns": 25875,
+          "upload_ns": 10667,
+          "submit_ns": 240669,
+          "download_ns": 21875,
+          "unpack_ns": 79334
+        },
+        "head.24576": {
+          "calls": 1,
+          "pack_ns": 25917,
+          "upload_ns": 10791,
+          "submit_ns": 246960,
+          "download_ns": 41042,
+          "unpack_ns": 79251
+        },
+        "head.28672": {
+          "calls": 1,
+          "pack_ns": 25917,
+          "upload_ns": 11083,
+          "submit_ns": 359753,
+          "download_ns": 37083,
+          "unpack_ns": 79126
+        },
+        "head.32768": {
+          "calls": 1,
+          "pack_ns": 25917,
+          "upload_ns": 11417,
+          "submit_ns": 237960,
+          "download_ns": 20833,
+          "unpack_ns": 79167
+        },
+        "head.36864": {
+          "calls": 1,
+          "pack_ns": 25791,
+          "upload_ns": 10626,
+          "submit_ns": 243085,
+          "download_ns": 24333,
+          "unpack_ns": 79292
+        },
+        "head.40960": {
+          "calls": 1,
+          "pack_ns": 25833,
+          "upload_ns": 10667,
+          "submit_ns": 336544,
+          "download_ns": 34625,
+          "unpack_ns": 79334
+        },
+        "head.45056": {
+          "calls": 1,
+          "pack_ns": 26042,
+          "upload_ns": 10625,
+          "submit_ns": 272377,
+          "download_ns": 19125,
+          "unpack_ns": 79293
+        },
+        "head.49152": {
+          "calls": 1,
+          "pack_ns": 25959,
+          "upload_ns": 10625,
+          "submit_ns": 242960,
+          "download_ns": 21042,
+          "unpack_ns": 79292
+        },
+        "head.53248": {
+          "calls": 1,
+          "pack_ns": 25750,
+          "upload_ns": 10959,
+          "submit_ns": 241585,
+          "download_ns": 21083,
+          "unpack_ns": 79168
+        },
+        "head.57344": {
+          "calls": 1,
+          "pack_ns": 25917,
+          "upload_ns": 10625,
+          "submit_ns": 239127,
+          "download_ns": 20958,
+          "unpack_ns": 79251
+        },
+        "head.61440": {
+          "calls": 1,
+          "pack_ns": 20417,
+          "upload_ns": 8542,
+          "submit_ns": 242585,
+          "download_ns": 19083,
+          "unpack_ns": 79292
+        },
+        "head.65536": {
+          "calls": 1,
+          "pack_ns": 25958,
+          "upload_ns": 12376,
+          "submit_ns": 480086,
+          "download_ns": 54709,
+          "unpack_ns": 51292
+        },
+        "head.69632": {
+          "calls": 1,
+          "pack_ns": 16625,
+          "upload_ns": 7083,
+          "submit_ns": 243877,
+          "download_ns": 20959,
+          "unpack_ns": 79417
+        },
+        "head.73728": {
+          "calls": 1,
+          "pack_ns": 26000,
+          "upload_ns": 10750,
+          "submit_ns": 253460,
+          "download_ns": 20500,
+          "unpack_ns": 79209
+        },
+        "head.77824": {
+          "calls": 1,
+          "pack_ns": 26000,
+          "upload_ns": 11000,
+          "submit_ns": 408503,
+          "download_ns": 70167,
+          "unpack_ns": 87917
+        },
+        "head.81920": {
+          "calls": 1,
+          "pack_ns": 25834,
+          "upload_ns": 10792,
+          "submit_ns": 298502,
+          "download_ns": 21041,
+          "unpack_ns": 79334
+        },
+        "head.86016": {
+          "calls": 1,
+          "pack_ns": 25916,
+          "upload_ns": 11084,
+          "submit_ns": 253085,
+          "download_ns": 21708,
+          "unpack_ns": 87543
+        },
+        "head.90112": {
+          "calls": 1,
+          "pack_ns": 25792,
+          "upload_ns": 10875,
+          "submit_ns": 243918,
+          "download_ns": 21792,
+          "unpack_ns": 79167
+        },
+        "head.94208": {
+          "calls": 1,
+          "pack_ns": 25959,
+          "upload_ns": 10875,
+          "submit_ns": 244085,
+          "download_ns": 19041,
+          "unpack_ns": 79126
+        },
+        "head.98304": {
+          "calls": 1,
+          "pack_ns": 26084,
+          "upload_ns": 11291,
+          "submit_ns": 429337,
+          "download_ns": 39958,
+          "unpack_ns": 79417
+        },
+        "head.102400": {
+          "calls": 1,
+          "pack_ns": 25834,
+          "upload_ns": 10875,
+          "submit_ns": 248418,
+          "download_ns": 22417,
+          "unpack_ns": 79417
+        },
+        "head.106496": {
+          "calls": 1,
+          "pack_ns": 26334,
+          "upload_ns": 11208,
+          "submit_ns": 247085,
+          "download_ns": 21834,
+          "unpack_ns": 79459
+        },
+        "head.110592": {
+          "calls": 1,
+          "pack_ns": 26083,
+          "upload_ns": 10875,
+          "submit_ns": 245877,
+          "download_ns": 48125,
+          "unpack_ns": 79417
+        },
+        "head.114688": {
+          "calls": 1,
+          "pack_ns": 25792,
+          "upload_ns": 11667,
+          "submit_ns": 355836,
+          "download_ns": 41917,
+          "unpack_ns": 79209
+        },
+        "head.118784": {
+          "calls": 1,
+          "pack_ns": 25958,
+          "upload_ns": 10875,
+          "submit_ns": 259211,
+          "download_ns": 20125,
+          "unpack_ns": 79375
+        },
+        "head.122880": {
+          "calls": 1,
+          "pack_ns": 25834,
+          "upload_ns": 10750,
+          "submit_ns": 320877,
+          "download_ns": 60084,
+          "unpack_ns": 79167
+        },
+        "head.126976": {
+          "calls": 1,
+          "pack_ns": 25792,
+          "upload_ns": 11333,
+          "submit_ns": 252668,
+          "download_ns": 18417,
+          "unpack_ns": 79334
+        },
+        "head.131072": {
+          "calls": 1,
+          "pack_ns": 25958,
+          "upload_ns": 10667,
+          "submit_ns": 241502,
+          "download_ns": 21167,
+          "unpack_ns": 79250
+        },
+        "head.135168": {
+          "calls": 1,
+          "pack_ns": 25875,
+          "upload_ns": 10667,
+          "submit_ns": 240502,
+          "download_ns": 18375,
+          "unpack_ns": 79292
+        },
+        "head.139264": {
+          "calls": 1,
+          "pack_ns": 25917,
+          "upload_ns": 10583,
+          "submit_ns": 347919,
+          "download_ns": 61834,
+          "unpack_ns": 79209
+        },
+        "head.143360": {
+          "calls": 1,
+          "pack_ns": 25708,
+          "upload_ns": 10959,
+          "submit_ns": 263085,
+          "download_ns": 21292,
+          "unpack_ns": 79333
+        },
+        "head.147456": {
+          "calls": 1,
+          "pack_ns": 25875,
+          "upload_ns": 10708,
+          "submit_ns": 241169,
+          "download_ns": 21000,
+          "unpack_ns": 79209
+        },
+        "head.151552": {
+          "calls": 1,
+          "pack_ns": 25875,
+          "upload_ns": 5917,
+          "submit_ns": 55167,
+          "download_ns": 2125,
+          "unpack_ns": 7583
+        }
+      },
+      "proposals": [
+        220,
+        16,
+        17,
+        220,
+        220,
+        220,
+        220
+      ]
+    },
+    {
+      "name": "story",
+      "repeat": 0,
+      "context_tokens": 38,
+      "wall_ms": 46.379860999877565,
+      "draft_phase_s": {
+        "context": 0.0,
+        "body": 0.021313313001883216,
+        "head": 0.02504029699775856
+      },
+      "native": {
+        "calls": 59,
+        "pack_ns": 2590812,
+        "upload_ns": 842628,
+        "submit_ns": 18183585,
+        "download_ns": 1070545,
+        "unpack_ns": 5280334
+      },
+      "kernels": {
+        "layers.0.self_attn.q_proj.weight": {
+          "calls": 1,
+          "pack_ns": 40583,
+          "upload_ns": 11542,
+          "submit_ns": 203210,
+          "download_ns": 13041,
+          "unpack_ns": 62209
+        },
+        "layers.0.self_attn.k_proj.weight": {
+          "calls": 1,
+          "pack_ns": 40376,
+          "upload_ns": 9208,
+          "submit_ns": 124376,
+          "download_ns": 6708,
+          "unpack_ns": 31251
+        },
+        "layers.0.self_attn.v_proj.weight": {
+          "calls": 1,
+          "pack_ns": 40626,
+          "upload_ns": 9375,
+          "submit_ns": 119501,
+          "download_ns": 6875,
+          "unpack_ns": 31250
+        },
+        "layers.0.self_attn.o_proj.weight": {
+          "calls": 1,
+          "pack_ns": 80501,
+          "upload_ns": 16750,
+          "submit_ns": 206126,
+          "download_ns": 7125,
+          "unpack_ns": 31459
+        },
+        "layers.0.mlp.gate_proj.weight": {
+          "calls": 1,
+          "pack_ns": 40709,
+          "upload_ns": 13917,
+          "submit_ns": 286043,
+          "download_ns": 19209,
+          "unpack_ns": 93084
+        },
+        "layers.0.mlp.up_proj.weight": {
+          "calls": 1,
+          "pack_ns": 40334,
+          "upload_ns": 13500,
+          "submit_ns": 283919,
+          "download_ns": 19625,
+          "unpack_ns": 103625
+        },
+        "layers.0.mlp.down_proj.weight": {
+          "calls": 1,
+          "pack_ns": 120709,
+          "upload_ns": 22917,
+          "submit_ns": 277585,
+          "download_ns": 6750,
+          "unpack_ns": 31417
+        },
+        "layers.1.self_attn.q_proj.weight": {
+          "calls": 1,
+          "pack_ns": 40292,
+          "upload_ns": 11459,
+          "submit_ns": 206626,
+          "download_ns": 12750,
+          "unpack_ns": 62167
+        },
+        "layers.1.self_attn.k_proj.weight": {
+          "calls": 1,
+          "pack_ns": 40542,
+          "upload_ns": 11625,
+          "submit_ns": 122710,
+          "download_ns": 6458,
+          "unpack_ns": 31250
+        },
+        "layers.1.self_attn.v_proj.weight": {
+          "calls": 1,
+          "pack_ns": 40376,
+          "upload_ns": 9000,
+          "submit_ns": 125875,
+          "download_ns": 6500,
+          "unpack_ns": 31001
+        },
+        "layers.1.self_attn.o_proj.weight": {
+          "calls": 1,
+          "pack_ns": 80292,
+          "upload_ns": 16042,
+          "submit_ns": 206084,
+          "download_ns": 6459,
+          "unpack_ns": 31333
+        },
+        "layers.1.mlp.gate_proj.weight": {
+          "calls": 1,
+          "pack_ns": 40709,
+          "upload_ns": 16292,
+          "submit_ns": 285377,
+          "download_ns": 18958,
+          "unpack_ns": 93043
+        },
+        "layers.1.mlp.up_proj.weight": {
+          "calls": 1,
+          "pack_ns": 40834,
+          "upload_ns": 13416,
+          "submit_ns": 283086,
+          "download_ns": 18916,
+          "unpack_ns": 102209
+        },
+        "layers.1.mlp.down_proj.weight": {
+          "calls": 1,
+          "pack_ns": 120418,
+          "upload_ns": 21708,
+          "submit_ns": 276169,
+          "download_ns": 6416,
+          "unpack_ns": 31292
+        },
+        "layers.2.self_attn.q_proj.weight": {
+          "calls": 1,
+          "pack_ns": 40333,
+          "upload_ns": 11501,
+          "submit_ns": 204251,
+          "download_ns": 12625,
+          "unpack_ns": 62250
+        },
+        "layers.2.self_attn.k_proj.weight": {
+          "calls": 1,
+          "pack_ns": 40292,
+          "upload_ns": 8792,
+          "submit_ns": 121126,
+          "download_ns": 6458,
+          "unpack_ns": 31167
+        },
+        "layers.2.self_attn.v_proj.weight": {
+          "calls": 1,
+          "pack_ns": 40250,
+          "upload_ns": 11667,
+          "submit_ns": 117459,
+          "download_ns": 6416,
+          "unpack_ns": 31084
+        },
+        "layers.2.self_attn.o_proj.weight": {
+          "calls": 1,
+          "pack_ns": 99876,
+          "upload_ns": 15833,
+          "submit_ns": 196043,
+          "download_ns": 6834,
+          "unpack_ns": 31208
+        },
+        "layers.2.mlp.gate_proj.weight": {
+          "calls": 1,
+          "pack_ns": 40625,
+          "upload_ns": 13458,
+          "submit_ns": 283377,
+          "download_ns": 19209,
+          "unpack_ns": 93209
+        },
+        "layers.2.mlp.up_proj.weight": {
+          "calls": 1,
+          "pack_ns": 40292,
+          "upload_ns": 13250,
+          "submit_ns": 284335,
+          "download_ns": 20251,
+          "unpack_ns": 93042
+        },
+        "layers.2.mlp.down_proj.weight": {
+          "calls": 1,
+          "pack_ns": 129417,
+          "upload_ns": 22792,
+          "submit_ns": 282919,
+          "download_ns": 6916,
+          "unpack_ns": 31334
+        },
+        "head.0": {
+          "calls": 1,
+          "pack_ns": 58583,
+          "upload_ns": 14667,
+          "submit_ns": 369461,
+          "download_ns": 22042,
+          "unpack_ns": 108667
+        },
+        "head.4096": {
+          "calls": 1,
+          "pack_ns": 35501,
+          "upload_ns": 17125,
+          "submit_ns": 373002,
+          "download_ns": 22001,
+          "unpack_ns": 108500
+        },
+        "head.8192": {
+          "calls": 1,
+          "pack_ns": 35626,
+          "upload_ns": 18166,
+          "submit_ns": 376045,
+          "download_ns": 22000,
+          "unpack_ns": 108417
+        },
+        "head.12288": {
+          "calls": 1,
+          "pack_ns": 35334,
+          "upload_ns": 14542,
+          "submit_ns": 366836,
+          "download_ns": 22041,
+          "unpack_ns": 108418
+        },
+        "head.16384": {
+          "calls": 1,
+          "pack_ns": 35584,
+          "upload_ns": 14792,
+          "submit_ns": 368961,
+          "download_ns": 22000,
+          "unpack_ns": 108500
+        },
+        "head.20480": {
+          "calls": 1,
+          "pack_ns": 35583,
+          "upload_ns": 14501,
+          "submit_ns": 368835,
+          "download_ns": 22084,
+          "unpack_ns": 108626
+        },
+        "head.24576": {
+          "calls": 1,
+          "pack_ns": 35625,
+          "upload_ns": 14500,
+          "submit_ns": 375045,
+          "download_ns": 22083,
+          "unpack_ns": 108459
+        },
+        "head.28672": {
+          "calls": 1,
+          "pack_ns": 35709,
+          "upload_ns": 14333,
+          "submit_ns": 379794,
+          "download_ns": 22875,
+          "unpack_ns": 108585
+        },
+        "head.32768": {
+          "calls": 1,
+          "pack_ns": 35542,
+          "upload_ns": 14500,
+          "submit_ns": 371461,
+          "download_ns": 22334,
+          "unpack_ns": 108625
+        },
+        "head.36864": {
+          "calls": 1,
+          "pack_ns": 35625,
+          "upload_ns": 16958,
+          "submit_ns": 366711,
+          "download_ns": 22125,
+          "unpack_ns": 108668
+        },
+        "head.40960": {
+          "calls": 1,
+          "pack_ns": 35708,
+          "upload_ns": 14667,
+          "submit_ns": 370461,
+          "download_ns": 22500,
+          "unpack_ns": 182543
+        },
+        "head.45056": {
+          "calls": 1,
+          "pack_ns": 35792,
+          "upload_ns": 14458,
+          "submit_ns": 370836,
+          "download_ns": 22084,
+          "unpack_ns": 120250
+        },
+        "head.49152": {
+          "calls": 1,
+          "pack_ns": 35625,
+          "upload_ns": 14334,
+          "submit_ns": 374878,
+          "download_ns": 22041,
+          "unpack_ns": 108793
+        },
+        "head.53248": {
+          "calls": 1,
+          "pack_ns": 35500,
+          "upload_ns": 17084,
+          "submit_ns": 367960,
+          "download_ns": 22042,
+          "unpack_ns": 108501
+        },
+        "head.57344": {
+          "calls": 1,
+          "pack_ns": 35751,
+          "upload_ns": 14500,
+          "submit_ns": 367669,
+          "download_ns": 22083,
+          "unpack_ns": 128460
+        },
+        "head.61440": {
+          "calls": 1,
+          "pack_ns": 35625,
+          "upload_ns": 14625,
+          "submit_ns": 366253,
+          "download_ns": 22041,
+          "unpack_ns": 108626
+        },
+        "head.65536": {
+          "calls": 1,
+          "pack_ns": 16792,
+          "upload_ns": 7333,
+          "submit_ns": 371545,
+          "download_ns": 22250,
+          "unpack_ns": 108292
+        },
+        "head.69632": {
+          "calls": 1,
+          "pack_ns": 35666,
+          "upload_ns": 16917,
+          "submit_ns": 368419,
+          "download_ns": 22834,
+          "unpack_ns": 119251
+        },
+        "head.73728": {
+          "calls": 1,
+          "pack_ns": 48250,
+          "upload_ns": 14958,
+          "submit_ns": 368378,
+          "download_ns": 15542,
+          "unpack_ns": 51125
+        },
+        "head.77824": {
+          "calls": 1,
+          "pack_ns": 16833,
+          "upload_ns": 7167,
+          "submit_ns": 369294,
+          "download_ns": 23209,
+          "unpack_ns": 108542
+        },
+        "head.81920": {
+          "calls": 1,
+          "pack_ns": 35625,
+          "upload_ns": 14834,
+          "submit_ns": 375794,
+          "download_ns": 22459,
+          "unpack_ns": 108417
+        },
+        "head.86016": {
+          "calls": 1,
+          "pack_ns": 35792,
+          "upload_ns": 14583,
+          "submit_ns": 369336,
+          "download_ns": 26042,
+          "unpack_ns": 120209
+        },
+        "head.90112": {
+          "calls": 1,
+          "pack_ns": 35501,
+          "upload_ns": 14833,
+          "submit_ns": 374711,
+          "download_ns": 22583,
+          "unpack_ns": 108543
+        },
+        "head.94208": {
+          "calls": 1,
+          "pack_ns": 35417,
+          "upload_ns": 14542,
+          "submit_ns": 366711,
+          "download_ns": 23083,
+          "unpack_ns": 108418
+        },
+        "head.98304": {
+          "calls": 1,
+          "pack_ns": 35959,
+          "upload_ns": 14958,
+          "submit_ns": 376586,
+          "download_ns": 22250,
+          "unpack_ns": 108418
+        },
+        "head.102400": {
+          "calls": 1,
+          "pack_ns": 35833,
+          "upload_ns": 14792,
+          "submit_ns": 343711,
+          "download_ns": 22250,
+          "unpack_ns": 108751
+        },
+        "head.106496": {
+          "calls": 1,
+          "pack_ns": 35584,
+          "upload_ns": 14750,
+          "submit_ns": 242543,
+          "download_ns": 22333,
+          "unpack_ns": 108293
+        },
+        "head.110592": {
+          "calls": 1,
+          "pack_ns": 35708,
+          "upload_ns": 14375,
+          "submit_ns": 367919,
+          "download_ns": 22292,
+          "unpack_ns": 108501
+        },
+        "head.114688": {
+          "calls": 1,
+          "pack_ns": 35917,
+          "upload_ns": 14750,
+          "submit_ns": 367877,
+          "download_ns": 32542,
+          "unpack_ns": 108626
+        },
+        "head.118784": {
+          "calls": 1,
+          "pack_ns": 35626,
+          "upload_ns": 15041,
+          "submit_ns": 367461,
+          "download_ns": 22084,
+          "unpack_ns": 108376
+        },
+        "head.122880": {
+          "calls": 1,
+          "pack_ns": 35667,
+          "upload_ns": 14916,
+          "submit_ns": 387586,
+          "download_ns": 23292,
+          "unpack_ns": 108709
+        },
+        "head.126976": {
+          "calls": 1,
+          "pack_ns": 35792,
+          "upload_ns": 14750,
+          "submit_ns": 389253,
+          "download_ns": 23042,
+          "unpack_ns": 108709
+        },
+        "head.131072": {
+          "calls": 1,
+          "pack_ns": 35458,
+          "upload_ns": 14542,
+          "submit_ns": 378669,
+          "download_ns": 22125,
+          "unpack_ns": 108418
+        },
+        "head.135168": {
+          "calls": 1,
+          "pack_ns": 35542,
+          "upload_ns": 14583,
+          "submit_ns": 390378,
+          "download_ns": 22125,
+          "unpack_ns": 108501
+        },
+        "head.139264": {
+          "calls": 1,
+          "pack_ns": 35875,
+          "upload_ns": 14625,
+          "submit_ns": 370045,
+          "download_ns": 22416,
+          "unpack_ns": 108543
+        },
+        "head.143360": {
+          "calls": 1,
+          "pack_ns": 35875,
+          "upload_ns": 14667,
+          "submit_ns": 371544,
+          "download_ns": 22125,
+          "unpack_ns": 108210
+        },
+        "head.147456": {
+          "calls": 1,
+          "pack_ns": 35459,
+          "upload_ns": 15250,
+          "submit_ns": 367086,
+          "download_ns": 22542,
+          "unpack_ns": 108376
+        },
+        "head.151552": {
+          "calls": 1,
+          "pack_ns": 35542,
+          "upload_ns": 7666,
+          "submit_ns": 68334,
+          "download_ns": 2250,
+          "unpack_ns": 54584
+        }
+      },
+      "proposals": [
+        537,
+        553,
+        264,
+        11,
+        11,
+        13,
+        13
+      ]
+    },
+    {
+      "name": "story",
+      "repeat": 1,
+      "context_tokens": 38,
+      "wall_ms": 40.3446519994759,
+      "draft_phase_s": {
+        "context": 0.0,
+        "body": 0.018154916004277766,
+        "head": 0.022164693000377156
+      },
+      "native": {
+        "calls": 59,
+        "pack_ns": 2035396,
+        "upload_ns": 712330,
+        "submit_ns": 18148960,
+        "download_ns": 917676,
+        "unpack_ns": 3972271
+      },
+      "kernels": {
+        "layers.0.self_attn.q_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29708,
+          "upload_ns": 8709,
+          "submit_ns": 209626,
+          "download_ns": 13084,
+          "unpack_ns": 90667
+        },
+        "layers.0.self_attn.k_proj.weight": {
+          "calls": 1,
+          "pack_ns": 40416,
+          "upload_ns": 9251,
+          "submit_ns": 122584,
+          "download_ns": 6583,
+          "unpack_ns": 31209
+        },
+        "layers.0.self_attn.v_proj.weight": {
+          "calls": 1,
+          "pack_ns": 40375,
+          "upload_ns": 9167,
+          "submit_ns": 125126,
+          "download_ns": 6583,
+          "unpack_ns": 31084
+        },
+        "layers.0.self_attn.o_proj.weight": {
+          "calls": 1,
+          "pack_ns": 80917,
+          "upload_ns": 15875,
+          "submit_ns": 199918,
+          "download_ns": 6625,
+          "unpack_ns": 31250
+        },
+        "layers.0.mlp.gate_proj.weight": {
+          "calls": 1,
+          "pack_ns": 40500,
+          "upload_ns": 13625,
+          "submit_ns": 290544,
+          "download_ns": 19208,
+          "unpack_ns": 103543
+        },
+        "layers.0.mlp.up_proj.weight": {
+          "calls": 1,
+          "pack_ns": 40375,
+          "upload_ns": 13500,
+          "submit_ns": 283002,
+          "download_ns": 19459,
+          "unpack_ns": 93250
+        },
+        "layers.0.mlp.down_proj.weight": {
+          "calls": 1,
+          "pack_ns": 122126,
+          "upload_ns": 22125,
+          "submit_ns": 276377,
+          "download_ns": 5333,
+          "unpack_ns": 22750
+        },
+        "layers.1.self_attn.q_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29833,
+          "upload_ns": 8792,
+          "submit_ns": 196752,
+          "download_ns": 10541,
+          "unpack_ns": 45501
+        },
+        "layers.1.self_attn.k_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29459,
+          "upload_ns": 8875,
+          "submit_ns": 132251,
+          "download_ns": 5333,
+          "unpack_ns": 22667
+        },
+        "layers.1.self_attn.v_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29459,
+          "upload_ns": 6750,
+          "submit_ns": 117876,
+          "download_ns": 5291,
+          "unpack_ns": 22751
+        },
+        "layers.1.self_attn.o_proj.weight": {
+          "calls": 1,
+          "pack_ns": 58626,
+          "upload_ns": 11416,
+          "submit_ns": 197835,
+          "download_ns": 5334,
+          "unpack_ns": 22916
+        },
+        "layers.1.mlp.gate_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29584,
+          "upload_ns": 10000,
+          "submit_ns": 282627,
+          "download_ns": 15667,
+          "unpack_ns": 67833
+        },
+        "layers.1.mlp.up_proj.weight": {
+          "calls": 1,
+          "pack_ns": 45625,
+          "upload_ns": 52209,
+          "submit_ns": 280377,
+          "download_ns": 15708,
+          "unpack_ns": 67959
+        },
+        "layers.1.mlp.down_proj.weight": {
+          "calls": 1,
+          "pack_ns": 100917,
+          "upload_ns": 16375,
+          "submit_ns": 272002,
+          "download_ns": 5417,
+          "unpack_ns": 22791
+        },
+        "layers.2.self_attn.q_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29626,
+          "upload_ns": 8333,
+          "submit_ns": 195626,
+          "download_ns": 10959,
+          "unpack_ns": 45458
+        },
+        "layers.2.self_attn.k_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29500,
+          "upload_ns": 6709,
+          "submit_ns": 119334,
+          "download_ns": 5333,
+          "unpack_ns": 22792
+        },
+        "layers.2.self_attn.v_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29542,
+          "upload_ns": 9041,
+          "submit_ns": 115084,
+          "download_ns": 5376,
+          "unpack_ns": 22833
+        },
+        "layers.2.self_attn.o_proj.weight": {
+          "calls": 1,
+          "pack_ns": 58667,
+          "upload_ns": 11708,
+          "submit_ns": 201044,
+          "download_ns": 14583,
+          "unpack_ns": 22792
+        },
+        "layers.2.mlp.gate_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29376,
+          "upload_ns": 10041,
+          "submit_ns": 283627,
+          "download_ns": 15625,
+          "unpack_ns": 67876
+        },
+        "layers.2.mlp.up_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29459,
+          "upload_ns": 9916,
+          "submit_ns": 282544,
+          "download_ns": 16167,
+          "unpack_ns": 108834
+        },
+        "layers.2.mlp.down_proj.weight": {
+          "calls": 1,
+          "pack_ns": 88292,
+          "upload_ns": 16833,
+          "submit_ns": 277252,
+          "download_ns": 6334,
+          "unpack_ns": 23083
+        },
+        "head.0": {
+          "calls": 1,
+          "pack_ns": 26209,
+          "upload_ns": 11416,
+          "submit_ns": 370836,
+          "download_ns": 19125,
+          "unpack_ns": 79251
+        },
+        "head.4096": {
+          "calls": 1,
+          "pack_ns": 41333,
+          "upload_ns": 11167,
+          "submit_ns": 365919,
+          "download_ns": 18584,
+          "unpack_ns": 79333
+        },
+        "head.8192": {
+          "calls": 1,
+          "pack_ns": 25959,
+          "upload_ns": 11333,
+          "submit_ns": 389586,
+          "download_ns": 18834,
+          "unpack_ns": 79292
+        },
+        "head.12288": {
+          "calls": 1,
+          "pack_ns": 25917,
+          "upload_ns": 10834,
+          "submit_ns": 365585,
+          "download_ns": 18626,
+          "unpack_ns": 79375
+        },
+        "head.16384": {
+          "calls": 1,
+          "pack_ns": 25917,
+          "upload_ns": 10875,
+          "submit_ns": 367128,
+          "download_ns": 18833,
+          "unpack_ns": 79167
+        },
+        "head.20480": {
+          "calls": 1,
+          "pack_ns": 26042,
+          "upload_ns": 10750,
+          "submit_ns": 368544,
+          "download_ns": 19750,
+          "unpack_ns": 79376
+        },
+        "head.24576": {
+          "calls": 1,
+          "pack_ns": 36084,
+          "upload_ns": 11250,
+          "submit_ns": 369752,
+          "download_ns": 18375,
+          "unpack_ns": 79209
+        },
+        "head.28672": {
+          "calls": 1,
+          "pack_ns": 25875,
+          "upload_ns": 11125,
+          "submit_ns": 364586,
+          "download_ns": 18792,
+          "unpack_ns": 86917
+        },
+        "head.32768": {
+          "calls": 1,
+          "pack_ns": 25917,
+          "upload_ns": 10791,
+          "submit_ns": 363544,
+          "download_ns": 18292,
+          "unpack_ns": 79209
+        },
+        "head.36864": {
+          "calls": 1,
+          "pack_ns": 25834,
+          "upload_ns": 10916,
+          "submit_ns": 365878,
+          "download_ns": 18625,
+          "unpack_ns": 79250
+        },
+        "head.40960": {
+          "calls": 1,
+          "pack_ns": 25959,
+          "upload_ns": 10875,
+          "submit_ns": 368002,
+          "download_ns": 18251,
+          "unpack_ns": 79208
+        },
+        "head.45056": {
+          "calls": 1,
+          "pack_ns": 25751,
+          "upload_ns": 10833,
+          "submit_ns": 368752,
+          "download_ns": 18376,
+          "unpack_ns": 79250
+        },
+        "head.49152": {
+          "calls": 1,
+          "pack_ns": 25959,
+          "upload_ns": 10666,
+          "submit_ns": 369544,
+          "download_ns": 18292,
+          "unpack_ns": 87334
+        },
+        "head.53248": {
+          "calls": 1,
+          "pack_ns": 25959,
+          "upload_ns": 13666,
+          "submit_ns": 368461,
+          "download_ns": 18375,
+          "unpack_ns": 79293
+        },
+        "head.57344": {
+          "calls": 1,
+          "pack_ns": 25959,
+          "upload_ns": 10708,
+          "submit_ns": 369503,
+          "download_ns": 18750,
+          "unpack_ns": 79292
+        },
+        "head.61440": {
+          "calls": 1,
+          "pack_ns": 25833,
+          "upload_ns": 11250,
+          "submit_ns": 365045,
+          "download_ns": 18833,
+          "unpack_ns": 79042
+        },
+        "head.65536": {
+          "calls": 1,
+          "pack_ns": 25959,
+          "upload_ns": 13250,
+          "submit_ns": 369961,
+          "download_ns": 18375,
+          "unpack_ns": 79334
+        },
+        "head.69632": {
+          "calls": 1,
+          "pack_ns": 26041,
+          "upload_ns": 10876,
+          "submit_ns": 369002,
+          "download_ns": 19459,
+          "unpack_ns": 79333
+        },
+        "head.73728": {
+          "calls": 1,
+          "pack_ns": 26084,
+          "upload_ns": 10917,
+          "submit_ns": 366169,
+          "download_ns": 18375,
+          "unpack_ns": 79167
+        },
+        "head.77824": {
+          "calls": 1,
+          "pack_ns": 25750,
+          "upload_ns": 11333,
+          "submit_ns": 365336,
+          "download_ns": 18334,
+          "unpack_ns": 79250
+        },
+        "head.81920": {
+          "calls": 1,
+          "pack_ns": 26042,
+          "upload_ns": 11000,
+          "submit_ns": 364419,
+          "download_ns": 18376,
+          "unpack_ns": 79125
+        },
+        "head.86016": {
+          "calls": 1,
+          "pack_ns": 25959,
+          "upload_ns": 10833,
+          "submit_ns": 363336,
+          "download_ns": 18375,
+          "unpack_ns": 79251
+        },
+        "head.90112": {
+          "calls": 1,
+          "pack_ns": 26042,
+          "upload_ns": 11500,
+          "submit_ns": 365294,
+          "download_ns": 18375,
+          "unpack_ns": 78917
+        },
+        "head.94208": {
+          "calls": 1,
+          "pack_ns": 25959,
+          "upload_ns": 10666,
+          "submit_ns": 381003,
+          "download_ns": 19167,
+          "unpack_ns": 79250
+        },
+        "head.98304": {
+          "calls": 1,
+          "pack_ns": 26001,
+          "upload_ns": 10666,
+          "submit_ns": 366545,
+          "download_ns": 18416,
+          "unpack_ns": 86584
+        },
+        "head.102400": {
+          "calls": 1,
+          "pack_ns": 26083,
+          "upload_ns": 10917,
+          "submit_ns": 378003,
+          "download_ns": 19166,
+          "unpack_ns": 79251
+        },
+        "head.106496": {
+          "calls": 1,
+          "pack_ns": 26167,
+          "upload_ns": 10709,
+          "submit_ns": 370585,
+          "download_ns": 19542,
+          "unpack_ns": 79376
+        },
+        "head.110592": {
+          "calls": 1,
+          "pack_ns": 26084,
+          "upload_ns": 10958,
+          "submit_ns": 372086,
+          "download_ns": 19500,
+          "unpack_ns": 79167
+        },
+        "head.114688": {
+          "calls": 1,
+          "pack_ns": 26042,
+          "upload_ns": 11291,
+          "submit_ns": 364711,
+          "download_ns": 19584,
+          "unpack_ns": 79167
+        },
+        "head.118784": {
+          "calls": 1,
+          "pack_ns": 25959,
+          "upload_ns": 11250,
+          "submit_ns": 369752,
+          "download_ns": 27917,
+          "unpack_ns": 91834
+        },
+        "head.122880": {
+          "calls": 1,
+          "pack_ns": 26000,
+          "upload_ns": 11500,
+          "submit_ns": 367336,
+          "download_ns": 19000,
+          "unpack_ns": 79126
+        },
+        "head.126976": {
+          "calls": 1,
+          "pack_ns": 25959,
+          "upload_ns": 11375,
+          "submit_ns": 364711,
+          "download_ns": 19000,
+          "unpack_ns": 79500
+        },
+        "head.131072": {
+          "calls": 1,
+          "pack_ns": 36750,
+          "upload_ns": 11375,
+          "submit_ns": 366294,
+          "download_ns": 18292,
+          "unpack_ns": 79250
+        },
+        "head.135168": {
+          "calls": 1,
+          "pack_ns": 25916,
+          "upload_ns": 24417,
+          "submit_ns": 367253,
+          "download_ns": 18583,
+          "unpack_ns": 79251
+        },
+        "head.139264": {
+          "calls": 1,
+          "pack_ns": 26001,
+          "upload_ns": 10875,
+          "submit_ns": 364836,
+          "download_ns": 18250,
+          "unpack_ns": 86292
+        },
+        "head.143360": {
+          "calls": 1,
+          "pack_ns": 25917,
+          "upload_ns": 11167,
+          "submit_ns": 363169,
+          "download_ns": 18292,
+          "unpack_ns": 79292
+        },
+        "head.147456": {
+          "calls": 1,
+          "pack_ns": 25875,
+          "upload_ns": 11667,
+          "submit_ns": 364961,
+          "download_ns": 18208,
+          "unpack_ns": 79376
+        },
+        "head.151552": {
+          "calls": 1,
+          "pack_ns": 25917,
+          "upload_ns": 6083,
+          "submit_ns": 62125,
+          "download_ns": 1834,
+          "unpack_ns": 7541
+        }
+      },
+      "proposals": [
+        537,
+        553,
+        264,
+        11,
+        11,
+        13,
+        13
+      ]
+    },
+    {
+      "name": "story",
+      "repeat": 2,
+      "context_tokens": 38,
+      "wall_ms": 38.456848000350874,
+      "draft_phase_s": {
+        "context": 0.0,
+        "body": 0.016499572004249785,
+        "head": 0.021931359005975537
+      },
+      "native": {
+        "calls": 59,
+        "pack_ns": 1893679,
+        "upload_ns": 632923,
+        "submit_ns": 18139792,
+        "download_ns": 905086,
+        "unpack_ns": 3747071
+      },
+      "kernels": {
+        "layers.0.self_attn.q_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29875,
+          "upload_ns": 8834,
+          "submit_ns": 203834,
+          "download_ns": 10542,
+          "unpack_ns": 45625
+        },
+        "layers.0.self_attn.k_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29333,
+          "upload_ns": 6750,
+          "submit_ns": 118543,
+          "download_ns": 5333,
+          "unpack_ns": 22667
+        },
+        "layers.0.self_attn.v_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29334,
+          "upload_ns": 6875,
+          "submit_ns": 113709,
+          "download_ns": 5291,
+          "unpack_ns": 22751
+        },
+        "layers.0.self_attn.o_proj.weight": {
+          "calls": 1,
+          "pack_ns": 59209,
+          "upload_ns": 11375,
+          "submit_ns": 200168,
+          "download_ns": 5458,
+          "unpack_ns": 22667
+        },
+        "layers.0.mlp.gate_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29500,
+          "upload_ns": 9876,
+          "submit_ns": 289460,
+          "download_ns": 16583,
+          "unpack_ns": 67792
+        },
+        "layers.0.mlp.up_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29458,
+          "upload_ns": 10167,
+          "submit_ns": 282544,
+          "download_ns": 15750,
+          "unpack_ns": 68000
+        },
+        "layers.0.mlp.down_proj.weight": {
+          "calls": 1,
+          "pack_ns": 87917,
+          "upload_ns": 16501,
+          "submit_ns": 279710,
+          "download_ns": 5500,
+          "unpack_ns": 22792
+        },
+        "layers.1.self_attn.q_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29334,
+          "upload_ns": 8583,
+          "submit_ns": 200293,
+          "download_ns": 11667,
+          "unpack_ns": 57417
+        },
+        "layers.1.self_attn.k_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29875,
+          "upload_ns": 9584,
+          "submit_ns": 116917,
+          "download_ns": 5500,
+          "unpack_ns": 22792
+        },
+        "layers.1.self_attn.v_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29459,
+          "upload_ns": 6958,
+          "submit_ns": 119418,
+          "download_ns": 5500,
+          "unpack_ns": 22792
+        },
+        "layers.1.self_attn.o_proj.weight": {
+          "calls": 1,
+          "pack_ns": 58792,
+          "upload_ns": 11917,
+          "submit_ns": 200876,
+          "download_ns": 6750,
+          "unpack_ns": 22709
+        },
+        "layers.1.mlp.gate_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29667,
+          "upload_ns": 10708,
+          "submit_ns": 284044,
+          "download_ns": 16791,
+          "unpack_ns": 68001
+        },
+        "layers.1.mlp.up_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29542,
+          "upload_ns": 10208,
+          "submit_ns": 282169,
+          "download_ns": 15792,
+          "unpack_ns": 67959
+        },
+        "layers.1.mlp.down_proj.weight": {
+          "calls": 1,
+          "pack_ns": 87834,
+          "upload_ns": 16333,
+          "submit_ns": 272502,
+          "download_ns": 5792,
+          "unpack_ns": 22792
+        },
+        "layers.2.self_attn.q_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29583,
+          "upload_ns": 8459,
+          "submit_ns": 194293,
+          "download_ns": 20583,
+          "unpack_ns": 45459
+        },
+        "layers.2.self_attn.k_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29500,
+          "upload_ns": 6625,
+          "submit_ns": 114585,
+          "download_ns": 5291,
+          "unpack_ns": 22709
+        },
+        "layers.2.self_attn.v_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29375,
+          "upload_ns": 9292,
+          "submit_ns": 113542,
+          "download_ns": 5334,
+          "unpack_ns": 22708
+        },
+        "layers.2.self_attn.o_proj.weight": {
+          "calls": 1,
+          "pack_ns": 58792,
+          "upload_ns": 11625,
+          "submit_ns": 191418,
+          "download_ns": 5291,
+          "unpack_ns": 22709
+        },
+        "layers.2.mlp.gate_proj.weight": {
+          "calls": 1,
+          "pack_ns": 29375,
+          "upload_ns": 10083,
+          "submit_ns": 283252,
+          "download_ns": 15625,
+          "unpack_ns": 67876
+        },
+        "layers.2.mlp.up_proj.weight": {
+          "calls": 1,
+          "pack_ns": 39333,
+          "upload_ns": 10084,
+          "submit_ns": 294335,
+          "download_ns": 15667,
+          "unpack_ns": 67917
+        },
+        "layers.2.mlp.down_proj.weight": {
+          "calls": 1,
+          "pack_ns": 93959,
+          "upload_ns": 16208,
+          "submit_ns": 272419,
+          "download_ns": 5292,
+          "unpack_ns": 22750
+        },
+        "head.0": {
+          "calls": 1,
+          "pack_ns": 25875,
+          "upload_ns": 11584,
+          "submit_ns": 371752,
+          "download_ns": 18334,
+          "unpack_ns": 86792
+        },
+        "head.4096": {
+          "calls": 1,
+          "pack_ns": 25833,
+          "upload_ns": 10750,
+          "submit_ns": 367545,
+          "download_ns": 18333,
+          "unpack_ns": 79376
+        },
+        "head.8192": {
+          "calls": 1,
+          "pack_ns": 25876,
+          "upload_ns": 13458,
+          "submit_ns": 374378,
+          "download_ns": 19583,
+          "unpack_ns": 79334
+        },
+        "head.12288": {
+          "calls": 1,
+          "pack_ns": 25833,
+          "upload_ns": 10751,
+          "submit_ns": 364419,
+          "download_ns": 18791,
+          "unpack_ns": 79209
+        },
+        "head.16384": {
+          "calls": 1,
+          "pack_ns": 25833,
+          "upload_ns": 10792,
+          "submit_ns": 366294,
+          "download_ns": 18375,
+          "unpack_ns": 79168
+        },
+        "head.20480": {
+          "calls": 1,
+          "pack_ns": 25792,
+          "upload_ns": 10958,
+          "submit_ns": 369711,
+          "download_ns": 18542,
+          "unpack_ns": 85667
+        },
+        "head.24576": {
+          "calls": 1,
+          "pack_ns": 25875,
+          "upload_ns": 11167,
+          "submit_ns": 367378,
+          "download_ns": 18375,
+          "unpack_ns": 79250
+        },
+        "head.28672": {
+          "calls": 1,
+          "pack_ns": 26250,
+          "upload_ns": 10792,
+          "submit_ns": 367461,
+          "download_ns": 18375,
+          "unpack_ns": 79292
+        },
+        "head.32768": {
+          "calls": 1,
+          "pack_ns": 26042,
+          "upload_ns": 10750,
+          "submit_ns": 366252,
+          "download_ns": 19125,
+          "unpack_ns": 79292
+        },
+        "head.36864": {
+          "calls": 1,
+          "pack_ns": 26167,
+          "upload_ns": 13292,
+          "submit_ns": 365710,
+          "download_ns": 18876,
+          "unpack_ns": 79292
+        },
+        "head.40960": {
+          "calls": 1,
+          "pack_ns": 25959,
+          "upload_ns": 10791,
+          "submit_ns": 368461,
+          "download_ns": 19375,
+          "unpack_ns": 79417
+        },
+        "head.45056": {
+          "calls": 1,
+          "pack_ns": 25917,
+          "upload_ns": 10916,
+          "submit_ns": 365170,
+          "download_ns": 18875,
+          "unpack_ns": 85750
+        },
+        "head.49152": {
+          "calls": 1,
+          "pack_ns": 25917,
+          "upload_ns": 10750,
+          "submit_ns": 370794,
+          "download_ns": 20167,
+          "unpack_ns": 79376
+        },
+        "head.53248": {
+          "calls": 1,
+          "pack_ns": 26084,
+          "upload_ns": 11417,
+          "submit_ns": 370836,
+          "download_ns": 18958,
+          "unpack_ns": 79376
+        },
+        "head.57344": {
+          "calls": 1,
+          "pack_ns": 26042,
+          "upload_ns": 11000,
+          "submit_ns": 369461,
+          "download_ns": 19167,
+          "unpack_ns": 79167
+        },
+        "head.61440": {
+          "calls": 1,
+          "pack_ns": 25750,
+          "upload_ns": 10916,
+          "submit_ns": 370670,
+          "download_ns": 19375,
+          "unpack_ns": 79084
+        },
+        "head.65536": {
+          "calls": 1,
+          "pack_ns": 26042,
+          "upload_ns": 15209,
+          "submit_ns": 367336,
+          "download_ns": 18708,
+          "unpack_ns": 79334
+        },
+        "head.69632": {
+          "calls": 1,
+          "pack_ns": 25959,
+          "upload_ns": 10708,
+          "submit_ns": 364170,
+          "download_ns": 18708,
+          "unpack_ns": 79209
+        },
+        "head.73728": {
+          "calls": 1,
+          "pack_ns": 25959,
+          "upload_ns": 10750,
+          "submit_ns": 374211,
+          "download_ns": 18666,
+          "unpack_ns": 79376
+        },
+        "head.77824": {
+          "calls": 1,
+          "pack_ns": 26000,
+          "upload_ns": 10833,
+          "submit_ns": 366669,
+          "download_ns": 19042,
+          "unpack_ns": 79167
+        },
+        "head.81920": {
+          "calls": 1,
+          "pack_ns": 26000,
+          "upload_ns": 10667,
+          "submit_ns": 364169,
+          "download_ns": 19667,
+          "unpack_ns": 91751
+        },
+        "head.86016": {
+          "calls": 1,
+          "pack_ns": 35000,
+          "upload_ns": 11292,
+          "submit_ns": 363002,
+          "download_ns": 18375,
+          "unpack_ns": 79167
+        },
+        "head.90112": {
+          "calls": 1,
+          "pack_ns": 25958,
+          "upload_ns": 10625,
+          "submit_ns": 369503,
+          "download_ns": 26375,
+          "unpack_ns": 79251
+        },
+        "head.94208": {
+          "calls": 1,
+          "pack_ns": 43333,
+          "upload_ns": 10834,
+          "submit_ns": 379627,
+          "download_ns": 18292,
+          "unpack_ns": 79251
+        },
+        "head.98304": {
+          "calls": 1,
+          "pack_ns": 26000,
+          "upload_ns": 10875,
+          "submit_ns": 364586,
+          "download_ns": 18375,
+          "unpack_ns": 79209
+        },
+        "head.102400": {
+          "calls": 1,
+          "pack_ns": 25875,
+          "upload_ns": 13125,
+          "submit_ns": 365586,
+          "download_ns": 18333,
+          "unpack_ns": 79251
+        },
+        "head.106496": {
+          "calls": 1,
+          "pack_ns": 26125,
+          "upload_ns": 10875,
+          "submit_ns": 406336,
+          "download_ns": 18292,
+          "unpack_ns": 79376
+        },
+        "head.110592": {
+          "calls": 1,
+          "pack_ns": 26250,
+          "upload_ns": 10750,
+          "submit_ns": 365461,
+          "download_ns": 25834,
+          "unpack_ns": 79083
+        },
+        "head.114688": {
+          "calls": 1,
+          "pack_ns": 25792,
+          "upload_ns": 13209,
+          "submit_ns": 362585,
+          "download_ns": 18251,
+          "unpack_ns": 79292
+        },
+        "head.118784": {
+          "calls": 1,
+          "pack_ns": 25876,
+          "upload_ns": 11250,
+          "submit_ns": 366127,
+          "download_ns": 15834,
+          "unpack_ns": 72125
+        },
+        "head.122880": {
+          "calls": 1,
+          "pack_ns": 25916,
+          "upload_ns": 11292,
+          "submit_ns": 371836,
+          "download_ns": 18334,
+          "unpack_ns": 79208
+        },
+        "head.126976": {
+          "calls": 1,
+          "pack_ns": 25875,
+          "upload_ns": 10709,
+          "submit_ns": 363669,
+          "download_ns": 14958,
+          "unpack_ns": 51167
+        },
+        "head.131072": {
+          "calls": 1,
+          "pack_ns": 17042,
+          "upload_ns": 7000,
+          "submit_ns": 363127,
+          "download_ns": 14959,
+          "unpack_ns": 51167
+        },
+        "head.135168": {
+          "calls": 1,
+          "pack_ns": 16625,
+          "upload_ns": 7000,
+          "submit_ns": 371211,
+          "download_ns": 18333,
+          "unpack_ns": 79167
+        },
+        "head.139264": {
+          "calls": 1,
+          "pack_ns": 26084,
+          "upload_ns": 10917,
+          "submit_ns": 364710,
+          "download_ns": 18459,
+          "unpack_ns": 87792
+        },
+        "head.143360": {
+          "calls": 1,
+          "pack_ns": 25959,
+          "upload_ns": 10916,
+          "submit_ns": 368295,
+          "download_ns": 19000,
+          "unpack_ns": 79292
+        },
+        "head.147456": {
+          "calls": 1,
+          "pack_ns": 25876,
+          "upload_ns": 10833,
+          "submit_ns": 369336,
+          "download_ns": 18333,
+          "unpack_ns": 79168
+        },
+        "head.151552": {
+          "calls": 1,
+          "pack_ns": 26042,
+          "upload_ns": 6125,
+          "submit_ns": 63917,
+          "download_ns": 2000,
+          "unpack_ns": 7542
+        }
+      },
+      "proposals": [
+        537,
+        553,
+        264,
+        11,
+        11,
+        13,
+        13
+      ]
+    }
+  ],
+  "fixtures": {
+    "capital": {
+      "file": "capital.npz",
+      "sha256": "11fe192e2b979c3d37c04d9b77473e059bf818d6439ea08ae050dd414c896383"
+    },
+    "fibonacci": {
+      "file": "fibonacci.npz",
+      "sha256": "6f1b8175b712f7099bad50906eafce23cb2bc4ba3af12ffe561547c5b3a9c24e"
+    },
+    "math": {
+      "file": "math.npz",
+      "sha256": "1a47b6961518d68b877284437fa8c522dc02e093cdba5e56d6c41567586f0f84"
+    },
+    "story": {
+      "file": "story.npz",
+      "sha256": "ea1e4a4bd9d85452ec9b3a7be82eea0ce2a6a1e23506063497d53d114d4d7b7a"
+    }
+  },
+  "fixture_source": {
+    "draft": {
+      "model": "orestis-z/dflash-qwen3-0.6b-microcycle-dflash",
+      "revision": "4dd1e04078f993593338ef1f9403179e41e4580e"
+    },
+    "feature_ids": [
+      1,
+      13,
+      25
+    ],
+    "weights_sha256": "74a0b0f98b2a5b6a82c3c0bf8a4c7fbbe2a85f1920a7b6836ba6a9b716541a64"
+  }
+}
