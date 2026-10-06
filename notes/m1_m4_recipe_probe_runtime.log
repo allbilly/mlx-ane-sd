@@ -1,0 +1,5 @@
+{"name": "capital", "finite": true, "nonzero": 8192, "max_abs": 6.79296875, "cosine": 0.9994157552719116, "relative_rmse": 0.034259263426065445}
+{"name": "fibonacci", "finite": true, "nonzero": 8191, "max_abs": 5.15625, "cosine": 0.9994761943817139, "relative_rmse": 0.032542090862989426}
+{"name": "math", "finite": true, "nonzero": 8191, "max_abs": 5.859375, "cosine": 0.999412477016449, "relative_rmse": 0.034266795963048935}
+{"name": "story", "finite": true, "nonzero": 8192, "max_abs": 4.40625, "cosine": 0.9993047118186951, "relative_rmse": 0.03727741912007332}
+{"status": "complete", "predict_median_ms": 0.9747499971126672, "idle_counter": "ANE_RD_MB 16.60  ANE_WR_MB 6.15  ANE_DCS_RD_MB 1.25  ANE_DCS_WR_MB 0.79  secs 2.0", "active_counter": "ANE_RD_MB 22762.92  ANE_WR_MB 3459.38  ANE_DCS_RD_MB 17559.25  ANE_DCS_WR_MB 540.20  secs 2.0", "counter_predictions": 1454, "qualified": true}

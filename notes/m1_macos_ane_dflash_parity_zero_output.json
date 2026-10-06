@@ -1,0 +1,200 @@
+{
+  "status": "complete",
+  "rows": [
+    {
+      "name": "capital",
+      "anchor": 1181,
+      "native_ids": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "mlx_fp16_ids": [
+        6233,
+        323,
+        323,
+        323,
+        323,
+        323,
+        323
+      ],
+      "native_text": "!!!!!!!",
+      "mlx_text": " beautiful and and and and and and",
+      "native_nonzero": 0,
+      "native_abs_max": 0.0,
+      "expected_abs_max": 8.109375,
+      "rmse": 0.9999983310699463,
+      "cosine": 0.0
+    },
+    {
+      "name": "fibonacci",
+      "anchor": 198,
+      "native_ids": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "mlx_fp16_ids": [
+        13874,
+        3989,
+        77091,
+        2038,
+        11,
+        11,
+        11
+      ],
+      "native_text": "!!!!!!!",
+      "mlx_text": "```\nassistant code,,,",
+      "native_nonzero": 0,
+      "native_abs_max": 0.0,
+      "expected_abs_max": 4.6171875,
+      "rmse": 0.9999973177909851,
+      "cosine": 0.0
+    },
+    {
+      "name": "math",
+      "anchor": 220,
+      "native_ids": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "mlx_fp16_ids": [
+        17,
+        88,
+        284,
+        220,
+        220,
+        220,
+        220
+      ],
+      "native_text": "!!!!!!!",
+      "mlx_text": "2y =    ",
+      "native_nonzero": 0,
+      "native_abs_max": 0.0,
+      "expected_abs_max": 4.69921875,
+      "rmse": 1.000001311302185,
+      "cosine": 0.0
+    },
+    {
+      "name": "story",
+      "anchor": 572,
+      "native_ids": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "mlx_fp16_ids": [
+        2677,
+        304,
+        264,
+        264,
+        13,
+        13,
+        13
+      ],
+      "native_text": "!!!!!!!",
+      "mlx_text": " always in a a...",
+      "native_nonzero": 0,
+      "native_abs_max": 0.0,
+      "expected_abs_max": 8.4296875,
+      "rmse": 0.9999909400939941,
+      "cosine": 0.0
+    }
+  ],
+  "runtime": {
+    "path": "/Users/yeren/Desktop/ANEForge",
+    "commit": "d0c666192ebd8d0428e0647fc4d87f57c11759fa",
+    "runtime_library": "/Users/yeren/Desktop/ANEForge/aneforge/_lib/libane_e5rt_dispatch.dylib",
+    "runtime_sha256": "017fbc08675e8773e73f5c0c44f6e6b040c14257342fdf4c0f19914044008587"
+  },
+  "smoke": {
+    "mask": 4,
+    "max_error": 0.0,
+    "nonzero": 2047
+  },
+  "input_ports": {
+    "features": {
+      "port": "t6",
+      "shape": [
+        256,
+        3072
+      ],
+      "index": 1
+    },
+    "noise": {
+      "port": "t0",
+      "shape": [
+        32,
+        1024
+      ],
+      "index": 2
+    },
+    "cos_context": {
+      "port": "t49",
+      "shape": [
+        1,
+        1,
+        256,
+        128
+      ],
+      "index": 3
+    },
+    "sin_context": {
+      "port": "t36",
+      "shape": [
+        1,
+        1,
+        256,
+        128
+      ],
+      "index": 4
+    },
+    "cos_noise": {
+      "port": "t33",
+      "shape": [
+        1,
+        1,
+        32,
+        128
+      ],
+      "index": 5
+    },
+    "sin_noise": {
+      "port": "t20",
+      "shape": [
+        1,
+        1,
+        32,
+        128
+      ],
+      "index": 6
+    },
+    "mask": {
+      "port": "t19",
+      "shape": [
+        1,
+        1,
+        32,
+        288
+      ],
+      "index": 7
+    }
+  }
+}

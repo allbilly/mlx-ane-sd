@@ -1,0 +1,1064 @@
+{
+  "schema": 1,
+  "hardware": "Apple M1, 8 GB",
+  "macos": "ProductName:\t\tmacOS\nProductVersion:\t\t27.0.1\nBuildVersion:\t\t26A434\n",
+  "repo_commit": "bb4617f76df00fc66d1b4faef3ec638e7912559b",
+  "original_succeeded": 12,
+  "original_attempted": 20,
+  "final_finite_outputs": 20,
+  "all_coefficient_segments_identical": true,
+  "golden_provenance": "Evaluated runtime output. Offline exports remain separate, loaded executable is missing.",
+  "summaries": [
+    {
+      "graph": "rmsnorm",
+      "prompts": 4,
+      "mean_median_ms": 0.11499999997613486,
+      "max_median_ms": 0.1780000000144355,
+      "min_median_ms": 0.07099999999627471,
+      "max_relative_rmse_from_host": 0.0012228045697039321
+    },
+    {
+      "graph": "fused-ffn",
+      "prompts": 4,
+      "mean_median_ms": 0.455874999955995,
+      "max_median_ms": 0.47149999998509884,
+      "min_median_ms": 0.4354999999050051,
+      "max_relative_rmse_from_host": 0.0015743792327029508
+    },
+    {
+      "graph": "cached-attention",
+      "prompts": 4,
+      "mean_median_ms": 0.1663750000006985,
+      "max_median_ms": 0.20400000014342368,
+      "min_median_ms": 0.11799999990034848,
+      "max_relative_rmse_from_host": 0.0005923094445767962
+    },
+    {
+      "graph": "head4096",
+      "prompts": 4,
+      "mean_median_ms": 0.25950000002922025,
+      "max_median_ms": 0.31600000004982576,
+      "min_median_ms": 0.2285000000265427,
+      "max_relative_rmse_from_host": 0.00019494758481679975
+    },
+    {
+      "graph": "head8192",
+      "prompts": 4,
+      "mean_median_ms": 0.40350000000034925,
+      "max_median_ms": 0.4539999999688007,
+      "min_median_ms": 0.3614999999990687,
+      "max_relative_rmse_from_host": 0.00019171017740564775
+    }
+  ],
+  "selected_cases": [
+    {
+      "label": "capital-cached-attention",
+      "case": "supplemental/sorted-inputs/capital-cached-attention",
+      "golden": "goldens/capital-cached-attention.bin",
+      "golden_sha256": "a44853dac1ea88f56c55d6174a2a171f45f09980e4e66feab8be131edcff6f7e",
+      "finite": true,
+      "shape": [
+        1,
+        2048,
+        1,
+        32
+      ],
+      "receipt": {
+        "runtime_artifacts_retained": true,
+        "runtime_evaluated": true,
+        "samples": 20,
+        "output_checks": [
+          {
+            "max_abs_difference_from_host": 0.03125,
+            "file": "output-0.bin",
+            "relative_rmse_from_host": 0.0005923094445767962
+          }
+        ],
+        "offline_hwx_evaluated": false,
+        "offline_compile_result": 0,
+        "label": "capital-cached-attention",
+        "offline_hwx_exported": true,
+        "runtime_eval_median_ms": 0.20400000014342368,
+        "offline_compile_status": 0
+      },
+      "coefficient_segments_identical_to_original_export": true,
+      "task_stream_identical_to_original_export": true,
+      "runtime_files": [
+        "data",
+        "model.mil",
+        "net.plist",
+        "weights/mask.bin"
+      ],
+      "evaluated_executable_found": false,
+      "request_surface_capture": "supplemental/sorted-inputs/capital-cached-attention/capture/request-bindings.json",
+      "request_surface_output_byte_identical": true,
+      "runtime_data_is_input_blob": true
+    },
+    {
+      "label": "capital-fused-ffn",
+      "case": "supplemental/packed-weights-offsets/capital-fused-ffn",
+      "golden": "goldens/capital-fused-ffn.bin",
+      "golden_sha256": "252ebb2ff07bf7077a561eaa6b1467965d136be03aba5c3ff1c11dbe5b882d34",
+      "finite": true,
+      "shape": [
+        1,
+        1024,
+        1,
+        32
+      ],
+      "receipt": {
+        "runtime_artifacts_retained": true,
+        "runtime_evaluated": true,
+        "samples": 20,
+        "output_checks": [
+          {
+            "max_abs_difference_from_host": 12,
+            "file": "output-0.bin",
+            "relative_rmse_from_host": 0.0015743792327029508
+          }
+        ],
+        "offline_hwx_evaluated": false,
+        "offline_compile_result": 0,
+        "label": "capital-fused-ffn",
+        "offline_hwx_exported": true,
+        "runtime_eval_median_ms": 0.4599999999627471,
+        "offline_compile_status": 0
+      },
+      "coefficient_segments_identical_to_original_export": true,
+      "task_stream_identical_to_original_export": true,
+      "runtime_files": [
+        "data",
+        "model.mil",
+        "net.plist",
+        "weights/packed.bin"
+      ],
+      "evaluated_executable_found": false,
+      "request_surface_capture": "supplemental/packed-weights-offsets/capital-fused-ffn/capture/request-bindings.json",
+      "request_surface_output_byte_identical": true,
+      "runtime_data_is_input_blob": true
+    },
+    {
+      "label": "capital-head4096",
+      "case": "cases/capital-head4096",
+      "golden": "goldens/capital-head4096.bin",
+      "golden_sha256": "b2c6fd4a2846d2e66e8230ca4578ccc0f872b16d031e67ed4630148f878ef7e3",
+      "finite": true,
+      "shape": [
+        1,
+        4096,
+        1,
+        32
+      ],
+      "receipt": {
+        "runtime_artifacts_retained": true,
+        "runtime_evaluated": true,
+        "samples": 20,
+        "output_checks": [
+          {
+            "max_abs_difference_from_host": 0.00390625,
+            "file": "output-0.bin",
+            "relative_rmse_from_host": 0.00019494758481679975
+          }
+        ],
+        "offline_hwx_evaluated": false,
+        "offline_compile_result": 0,
+        "label": "capital-head4096",
+        "offline_hwx_exported": true,
+        "runtime_eval_median_ms": 0.2285000000265427,
+        "offline_compile_status": 0
+      },
+      "coefficient_segments_identical_to_original_export": true,
+      "task_stream_identical_to_original_export": true,
+      "runtime_files": [
+        "data",
+        "model.mil",
+        "net.plist",
+        "weights/head_weight.bin"
+      ],
+      "evaluated_executable_found": false,
+      "request_surface_capture": "supplemental/request-surfaces/capital-head4096/capture/request-bindings.json",
+      "request_surface_output_byte_identical": true,
+      "runtime_data_is_input_blob": true
+    },
+    {
+      "label": "capital-head8192",
+      "case": "cases/capital-head8192",
+      "golden": "goldens/capital-head8192.bin",
+      "golden_sha256": "966f7aa0cb730f057f998358088ebbe88397d3bb11efd9b906eb4dc30f3dde84",
+      "finite": true,
+      "shape": [
+        1,
+        8192,
+        1,
+        32
+      ],
+      "receipt": {
+        "runtime_artifacts_retained": true,
+        "runtime_evaluated": true,
+        "samples": 20,
+        "output_checks": [
+          {
+            "max_abs_difference_from_host": 0.00390625,
+            "file": "output-0.bin",
+            "relative_rmse_from_host": 0.00019171017740564775
+          }
+        ],
+        "offline_hwx_evaluated": false,
+        "offline_compile_result": 0,
+        "label": "capital-head8192",
+        "offline_hwx_exported": true,
+        "runtime_eval_median_ms": 0.375,
+        "offline_compile_status": 0
+      },
+      "coefficient_segments_identical_to_original_export": true,
+      "task_stream_identical_to_original_export": true,
+      "runtime_files": [
+        "data",
+        "model.mil",
+        "net.plist",
+        "weights/head_weight.bin"
+      ],
+      "evaluated_executable_found": false,
+      "request_surface_capture": "supplemental/request-surfaces/capital-head8192/capture/request-bindings.json",
+      "request_surface_output_byte_identical": true,
+      "runtime_data_is_input_blob": true
+    },
+    {
+      "label": "capital-rmsnorm",
+      "case": "cases/capital-rmsnorm",
+      "golden": "goldens/capital-rmsnorm.bin",
+      "golden_sha256": "5b96ce9106b98ffd546f39fd534531412709ca1c8cf721fd547df52430787189",
+      "finite": true,
+      "shape": [
+        1,
+        1024,
+        1,
+        32
+      ],
+      "receipt": {
+        "runtime_artifacts_retained": true,
+        "runtime_evaluated": true,
+        "samples": 20,
+        "output_checks": [
+          {
+            "max_abs_difference_from_host": 0.015625,
+            "file": "output-0.bin",
+            "relative_rmse_from_host": 0.001098050310363675
+          }
+        ],
+        "offline_hwx_evaluated": false,
+        "offline_compile_result": 0,
+        "label": "capital-rmsnorm",
+        "offline_hwx_exported": true,
+        "runtime_eval_median_ms": 0.07099999999627471,
+        "offline_compile_status": 0
+      },
+      "coefficient_segments_identical_to_original_export": true,
+      "task_stream_identical_to_original_export": true,
+      "runtime_files": [
+        "data",
+        "model.mil",
+        "net.plist",
+        "weights/norm_weight.bin"
+      ],
+      "evaluated_executable_found": false,
+      "request_surface_capture": "supplemental/request-surfaces/capital-rmsnorm/capture/request-bindings.json",
+      "request_surface_output_byte_identical": true,
+      "runtime_data_is_input_blob": true
+    },
+    {
+      "label": "fibonacci-cached-attention",
+      "case": "supplemental/sorted-inputs/fibonacci-cached-attention",
+      "golden": "goldens/fibonacci-cached-attention.bin",
+      "golden_sha256": "ac817619dfbe89ad495efea044937525f6bdd985d90a99c9dac98f048e1bddcd",
+      "finite": true,
+      "shape": [
+        1,
+        2048,
+        1,
+        32
+      ],
+      "receipt": {
+        "runtime_artifacts_retained": true,
+        "runtime_evaluated": true,
+        "samples": 20,
+        "output_checks": [
+          {
+            "max_abs_difference_from_host": 0.03125,
+            "file": "output-0.bin",
+            "relative_rmse_from_host": 0.0005319988570760508
+          }
+        ],
+        "offline_hwx_evaluated": false,
+        "offline_compile_result": 0,
+        "label": "fibonacci-cached-attention",
+        "offline_hwx_exported": true,
+        "runtime_eval_median_ms": 0.18299999996088445,
+        "offline_compile_status": 0
+      },
+      "coefficient_segments_identical_to_original_export": true,
+      "task_stream_identical_to_original_export": true,
+      "runtime_files": [
+        "data",
+        "model.mil",
+        "net.plist",
+        "weights/mask.bin"
+      ],
+      "evaluated_executable_found": false,
+      "request_surface_capture": "supplemental/sorted-inputs/fibonacci-cached-attention/capture/request-bindings.json",
+      "request_surface_output_byte_identical": true,
+      "runtime_data_is_input_blob": true
+    },
+    {
+      "label": "fibonacci-fused-ffn",
+      "case": "supplemental/packed-weights-offsets/fibonacci-fused-ffn",
+      "golden": "goldens/fibonacci-fused-ffn.bin",
+      "golden_sha256": "cbb29f347ff0581649adbd5e90e5ddca030c5bad6787fbea34cd688a7f16c2f5",
+      "finite": true,
+      "shape": [
+        1,
+        1024,
+        1,
+        32
+      ],
+      "receipt": {
+        "runtime_artifacts_retained": true,
+        "runtime_evaluated": true,
+        "samples": 20,
+        "output_checks": [
+          {
+            "max_abs_difference_from_host": 4,
+            "file": "output-0.bin",
+            "relative_rmse_from_host": 0.0007650655410489925
+          }
+        ],
+        "offline_hwx_evaluated": false,
+        "offline_compile_result": 0,
+        "label": "fibonacci-fused-ffn",
+        "offline_hwx_exported": true,
+        "runtime_eval_median_ms": 0.456499999971129,
+        "offline_compile_status": 0
+      },
+      "coefficient_segments_identical_to_original_export": true,
+      "task_stream_identical_to_original_export": true,
+      "runtime_files": [
+        "data",
+        "model.mil",
+        "net.plist",
+        "weights/packed.bin"
+      ],
+      "evaluated_executable_found": false,
+      "request_surface_capture": "supplemental/packed-weights-offsets/fibonacci-fused-ffn/capture/request-bindings.json",
+      "request_surface_output_byte_identical": true,
+      "runtime_data_is_input_blob": true
+    },
+    {
+      "label": "fibonacci-head4096",
+      "case": "cases/fibonacci-head4096",
+      "golden": "goldens/fibonacci-head4096.bin",
+      "golden_sha256": "3a81cee5eb7b20d06a544398b9793907c0e79fe02c870c98ce721cc4b5dfb30d",
+      "finite": true,
+      "shape": [
+        1,
+        4096,
+        1,
+        32
+      ],
+      "receipt": {
+        "runtime_artifacts_retained": true,
+        "runtime_evaluated": true,
+        "samples": 20,
+        "output_checks": [
+          {
+            "max_abs_difference_from_host": 0.00390625,
+            "file": "output-0.bin",
+            "relative_rmse_from_host": 0.00018734864508998186
+          }
+        ],
+        "offline_hwx_evaluated": false,
+        "offline_compile_result": 0,
+        "label": "fibonacci-head4096",
+        "offline_hwx_exported": true,
+        "runtime_eval_median_ms": 0.2465000000083819,
+        "offline_compile_status": 0
+      },
+      "coefficient_segments_identical_to_original_export": true,
+      "task_stream_identical_to_original_export": true,
+      "runtime_files": [
+        "data",
+        "model.mil",
+        "net.plist",
+        "weights/head_weight.bin"
+      ],
+      "evaluated_executable_found": false,
+      "request_surface_capture": "supplemental/request-surfaces/fibonacci-head4096/capture/request-bindings.json",
+      "request_surface_output_byte_identical": true,
+      "runtime_data_is_input_blob": true
+    },
+    {
+      "label": "fibonacci-head8192",
+      "case": "cases/fibonacci-head8192",
+      "golden": "goldens/fibonacci-head8192.bin",
+      "golden_sha256": "27e4694feec72aac43b2c1b049bce8006e880e0f5be089428452c22006737046",
+      "finite": true,
+      "shape": [
+        1,
+        8192,
+        1,
+        32
+      ],
+      "receipt": {
+        "runtime_artifacts_retained": true,
+        "runtime_evaluated": true,
+        "samples": 20,
+        "output_checks": [
+          {
+            "max_abs_difference_from_host": 0.00390625,
+            "file": "output-0.bin",
+            "relative_rmse_from_host": 0.00018389795599679698
+          }
+        ],
+        "offline_hwx_evaluated": false,
+        "offline_compile_result": 0,
+        "label": "fibonacci-head8192",
+        "offline_hwx_exported": true,
+        "runtime_eval_median_ms": 0.3614999999990687,
+        "offline_compile_status": 0
+      },
+      "coefficient_segments_identical_to_original_export": true,
+      "task_stream_identical_to_original_export": true,
+      "runtime_files": [
+        "data",
+        "model.mil",
+        "net.plist",
+        "weights/head_weight.bin"
+      ],
+      "evaluated_executable_found": false,
+      "request_surface_capture": "supplemental/request-surfaces/fibonacci-head8192/capture/request-bindings.json",
+      "request_surface_output_byte_identical": true,
+      "runtime_data_is_input_blob": true
+    },
+    {
+      "label": "fibonacci-rmsnorm",
+      "case": "cases/fibonacci-rmsnorm",
+      "golden": "goldens/fibonacci-rmsnorm.bin",
+      "golden_sha256": "8457626956006bf802fb798da272444c087ce7b091936a3db482cae33fec002c",
+      "finite": true,
+      "shape": [
+        1,
+        1024,
+        1,
+        32
+      ],
+      "receipt": {
+        "runtime_artifacts_retained": true,
+        "runtime_evaluated": true,
+        "samples": 20,
+        "output_checks": [
+          {
+            "max_abs_difference_from_host": 0.015625,
+            "file": "output-0.bin",
+            "relative_rmse_from_host": 0.0012228045697039321
+          }
+        ],
+        "offline_hwx_evaluated": false,
+        "offline_compile_result": 0,
+        "label": "fibonacci-rmsnorm",
+        "offline_hwx_exported": true,
+        "runtime_eval_median_ms": 0.08349999994970858,
+        "offline_compile_status": 0
+      },
+      "coefficient_segments_identical_to_original_export": true,
+      "task_stream_identical_to_original_export": true,
+      "runtime_files": [
+        "data",
+        "model.mil",
+        "net.plist",
+        "weights/norm_weight.bin"
+      ],
+      "evaluated_executable_found": false,
+      "request_surface_capture": "supplemental/request-surfaces/fibonacci-rmsnorm/capture/request-bindings.json",
+      "request_surface_output_byte_identical": true,
+      "runtime_data_is_input_blob": true
+    },
+    {
+      "label": "math-cached-attention",
+      "case": "supplemental/sorted-inputs/math-cached-attention",
+      "golden": "goldens/math-cached-attention.bin",
+      "golden_sha256": "2944853568f19bf9384c63f45b585d25762bf83bd63071aa68d0ed5575e44f45",
+      "finite": true,
+      "shape": [
+        1,
+        2048,
+        1,
+        32
+      ],
+      "receipt": {
+        "runtime_artifacts_retained": true,
+        "runtime_evaluated": true,
+        "samples": 20,
+        "output_checks": [
+          {
+            "max_abs_difference_from_host": 0.0322265625,
+            "file": "output-0.bin",
+            "relative_rmse_from_host": 0.000516549075671508
+          }
+        ],
+        "offline_hwx_evaluated": false,
+        "offline_compile_result": 0,
+        "label": "math-cached-attention",
+        "offline_hwx_exported": true,
+        "runtime_eval_median_ms": 0.16049999999813735,
+        "offline_compile_status": 0
+      },
+      "coefficient_segments_identical_to_original_export": true,
+      "task_stream_identical_to_original_export": true,
+      "runtime_files": [
+        "data",
+        "model.mil",
+        "net.plist",
+        "weights/mask.bin"
+      ],
+      "evaluated_executable_found": false,
+      "request_surface_capture": "supplemental/sorted-inputs/math-cached-attention/capture/request-bindings.json",
+      "request_surface_output_byte_identical": true,
+      "runtime_data_is_input_blob": true
+    },
+    {
+      "label": "math-fused-ffn",
+      "case": "supplemental/packed-weights-offsets/math-fused-ffn",
+      "golden": "goldens/math-fused-ffn.bin",
+      "golden_sha256": "d9c69fbeb45c666429ef27f62a3b4176e3d47056ed23c954402e6279acebbdc7",
+      "finite": true,
+      "shape": [
+        1,
+        1024,
+        1,
+        32
+      ],
+      "receipt": {
+        "runtime_artifacts_retained": true,
+        "runtime_evaluated": true,
+        "samples": 20,
+        "output_checks": [
+          {
+            "max_abs_difference_from_host": 8,
+            "file": "output-0.bin",
+            "relative_rmse_from_host": 0.0011249012255267106
+          }
+        ],
+        "offline_hwx_evaluated": false,
+        "offline_compile_result": 0,
+        "label": "math-fused-ffn",
+        "offline_hwx_exported": true,
+        "runtime_eval_median_ms": 0.4354999999050051,
+        "offline_compile_status": 0
+      },
+      "coefficient_segments_identical_to_original_export": true,
+      "task_stream_identical_to_original_export": true,
+      "runtime_files": [
+        "data",
+        "model.mil",
+        "net.plist",
+        "weights/packed.bin"
+      ],
+      "evaluated_executable_found": false,
+      "request_surface_capture": "supplemental/packed-weights-offsets/math-fused-ffn/capture/request-bindings.json",
+      "request_surface_output_byte_identical": true,
+      "runtime_data_is_input_blob": true
+    },
+    {
+      "label": "math-head4096",
+      "case": "cases/math-head4096",
+      "golden": "goldens/math-head4096.bin",
+      "golden_sha256": "50e8b252a2f395c9cc2b7413099c47ddf27d6a63d9c7ddc4e8ec2fc9a65f6f74",
+      "finite": true,
+      "shape": [
+        1,
+        4096,
+        1,
+        32
+      ],
+      "receipt": {
+        "runtime_artifacts_retained": true,
+        "runtime_evaluated": true,
+        "samples": 20,
+        "output_checks": [
+          {
+            "max_abs_difference_from_host": 0.015625,
+            "file": "output-0.bin",
+            "relative_rmse_from_host": 0.0001875306504452138
+          }
+        ],
+        "offline_hwx_evaluated": false,
+        "offline_compile_result": 0,
+        "label": "math-head4096",
+        "offline_hwx_exported": true,
+        "runtime_eval_median_ms": 0.24700000003213063,
+        "offline_compile_status": 0
+      },
+      "coefficient_segments_identical_to_original_export": true,
+      "task_stream_identical_to_original_export": true,
+      "runtime_files": [
+        "data",
+        "model.mil",
+        "net.plist",
+        "weights/head_weight.bin"
+      ],
+      "evaluated_executable_found": false,
+      "request_surface_capture": "supplemental/request-surfaces/math-head4096/capture/request-bindings.json",
+      "request_surface_output_byte_identical": true,
+      "runtime_data_is_input_blob": true
+    },
+    {
+      "label": "math-head8192",
+      "case": "cases/math-head8192",
+      "golden": "goldens/math-head8192.bin",
+      "golden_sha256": "805ef24abd49e64a2d7dd13b584f0327242fba9a00fb699c91f66f996aa8972f",
+      "finite": true,
+      "shape": [
+        1,
+        8192,
+        1,
+        32
+      ],
+      "receipt": {
+        "runtime_artifacts_retained": true,
+        "runtime_evaluated": true,
+        "samples": 20,
+        "output_checks": [
+          {
+            "max_abs_difference_from_host": 0.015625,
+            "file": "output-0.bin",
+            "relative_rmse_from_host": 0.00017624946405488787
+          }
+        ],
+        "offline_hwx_evaluated": false,
+        "offline_compile_result": 0,
+        "label": "math-head8192",
+        "offline_hwx_exported": true,
+        "runtime_eval_median_ms": 0.4539999999688007,
+        "offline_compile_status": 0
+      },
+      "coefficient_segments_identical_to_original_export": true,
+      "task_stream_identical_to_original_export": true,
+      "runtime_files": [
+        "data",
+        "model.mil",
+        "net.plist",
+        "weights/head_weight.bin"
+      ],
+      "evaluated_executable_found": false,
+      "request_surface_capture": "supplemental/request-surfaces/math-head8192/capture/request-bindings.json",
+      "request_surface_output_byte_identical": true,
+      "runtime_data_is_input_blob": true
+    },
+    {
+      "label": "math-rmsnorm",
+      "case": "cases/math-rmsnorm",
+      "golden": "goldens/math-rmsnorm.bin",
+      "golden_sha256": "c7e7d59b3bca679c3bb06b2575d79980f4f86226b3fd7f7976669fa73ee4f934",
+      "finite": true,
+      "shape": [
+        1,
+        1024,
+        1,
+        32
+      ],
+      "receipt": {
+        "runtime_artifacts_retained": true,
+        "runtime_evaluated": true,
+        "samples": 20,
+        "output_checks": [
+          {
+            "max_abs_difference_from_host": 0.015625,
+            "file": "output-0.bin",
+            "relative_rmse_from_host": 0.001106438523387784
+          }
+        ],
+        "offline_hwx_evaluated": false,
+        "offline_compile_result": 0,
+        "label": "math-rmsnorm",
+        "offline_hwx_exported": true,
+        "runtime_eval_median_ms": 0.12749999994412065,
+        "offline_compile_status": 0
+      },
+      "coefficient_segments_identical_to_original_export": true,
+      "task_stream_identical_to_original_export": true,
+      "runtime_files": [
+        "data",
+        "model.mil",
+        "net.plist",
+        "weights/norm_weight.bin"
+      ],
+      "evaluated_executable_found": false,
+      "request_surface_capture": "supplemental/request-surfaces/math-rmsnorm/capture/request-bindings.json",
+      "request_surface_output_byte_identical": true,
+      "runtime_data_is_input_blob": true
+    },
+    {
+      "label": "story-cached-attention",
+      "case": "supplemental/sorted-inputs/story-cached-attention",
+      "golden": "goldens/story-cached-attention.bin",
+      "golden_sha256": "4372eb0b0602e7f12ec6637640be9e661fea19585bcac1bfd302cd9de6b224dc",
+      "finite": true,
+      "shape": [
+        1,
+        2048,
+        1,
+        32
+      ],
+      "receipt": {
+        "runtime_artifacts_retained": true,
+        "runtime_evaluated": true,
+        "samples": 20,
+        "output_checks": [
+          {
+            "max_abs_difference_from_host": 0.03125,
+            "file": "output-0.bin",
+            "relative_rmse_from_host": 0.0005443909094478246
+          }
+        ],
+        "offline_hwx_evaluated": false,
+        "offline_compile_result": 0,
+        "label": "story-cached-attention",
+        "offline_hwx_exported": true,
+        "runtime_eval_median_ms": 0.11799999990034848,
+        "offline_compile_status": 0
+      },
+      "coefficient_segments_identical_to_original_export": true,
+      "task_stream_identical_to_original_export": true,
+      "runtime_files": [
+        "data",
+        "model.mil",
+        "net.plist",
+        "weights/mask.bin"
+      ],
+      "evaluated_executable_found": false,
+      "request_surface_capture": "supplemental/sorted-inputs/story-cached-attention/capture/request-bindings.json",
+      "request_surface_output_byte_identical": true,
+      "runtime_data_is_input_blob": true
+    },
+    {
+      "label": "story-fused-ffn",
+      "case": "supplemental/packed-weights-offsets/story-fused-ffn",
+      "golden": "goldens/story-fused-ffn.bin",
+      "golden_sha256": "e7f35cc538755b18c79d6ca9489257f727620530173f79ce56d772e071498b93",
+      "finite": true,
+      "shape": [
+        1,
+        1024,
+        1,
+        32
+      ],
+      "receipt": {
+        "runtime_artifacts_retained": true,
+        "runtime_evaluated": true,
+        "samples": 20,
+        "output_checks": [
+          {
+            "max_abs_difference_from_host": 2,
+            "file": "output-0.bin",
+            "relative_rmse_from_host": 0.0004335436411002134
+          }
+        ],
+        "offline_hwx_evaluated": false,
+        "offline_compile_result": 0,
+        "label": "story-fused-ffn",
+        "offline_hwx_exported": true,
+        "runtime_eval_median_ms": 0.47149999998509884,
+        "offline_compile_status": 0
+      },
+      "coefficient_segments_identical_to_original_export": true,
+      "task_stream_identical_to_original_export": true,
+      "runtime_files": [
+        "data",
+        "model.mil",
+        "net.plist",
+        "weights/packed.bin"
+      ],
+      "evaluated_executable_found": false,
+      "request_surface_capture": "supplemental/packed-weights-offsets/story-fused-ffn/capture/request-bindings.json",
+      "request_surface_output_byte_identical": true,
+      "runtime_data_is_input_blob": true
+    },
+    {
+      "label": "story-head4096",
+      "case": "cases/story-head4096",
+      "golden": "goldens/story-head4096.bin",
+      "golden_sha256": "d4a9771fb9ef1c39ba5e592b9bd606be7be75f863bd8833f1ebd190d7440c243",
+      "finite": true,
+      "shape": [
+        1,
+        4096,
+        1,
+        32
+      ],
+      "receipt": {
+        "runtime_artifacts_retained": true,
+        "runtime_evaluated": true,
+        "samples": 20,
+        "output_checks": [
+          {
+            "max_abs_difference_from_host": 0.00390625,
+            "file": "output-0.bin",
+            "relative_rmse_from_host": 0.00018831077981146949
+          }
+        ],
+        "offline_hwx_evaluated": false,
+        "offline_compile_result": 0,
+        "label": "story-head4096",
+        "offline_hwx_exported": true,
+        "runtime_eval_median_ms": 0.31600000004982576,
+        "offline_compile_status": 0
+      },
+      "coefficient_segments_identical_to_original_export": true,
+      "task_stream_identical_to_original_export": true,
+      "runtime_files": [
+        "data",
+        "model.mil",
+        "net.plist",
+        "weights/head_weight.bin"
+      ],
+      "evaluated_executable_found": false,
+      "request_surface_capture": "supplemental/request-surfaces/story-head4096/capture/request-bindings.json",
+      "request_surface_output_byte_identical": true,
+      "runtime_data_is_input_blob": true
+    },
+    {
+      "label": "story-head8192",
+      "case": "cases/story-head8192",
+      "golden": "goldens/story-head8192.bin",
+      "golden_sha256": "4aea57b898102ade243f3174603462594a569c136abbe3b40eea63086af3c932",
+      "finite": true,
+      "shape": [
+        1,
+        8192,
+        1,
+        32
+      ],
+      "receipt": {
+        "runtime_artifacts_retained": true,
+        "runtime_evaluated": true,
+        "samples": 20,
+        "output_checks": [
+          {
+            "max_abs_difference_from_host": 0.00390625,
+            "file": "output-0.bin",
+            "relative_rmse_from_host": 0.0001859648504777468
+          }
+        ],
+        "offline_hwx_evaluated": false,
+        "offline_compile_result": 0,
+        "label": "story-head8192",
+        "offline_hwx_exported": true,
+        "runtime_eval_median_ms": 0.4235000000335276,
+        "offline_compile_status": 0
+      },
+      "coefficient_segments_identical_to_original_export": true,
+      "task_stream_identical_to_original_export": true,
+      "runtime_files": [
+        "data",
+        "model.mil",
+        "net.plist",
+        "weights/head_weight.bin"
+      ],
+      "evaluated_executable_found": false,
+      "request_surface_capture": "supplemental/request-surfaces/story-head8192/capture/request-bindings.json",
+      "request_surface_output_byte_identical": true,
+      "runtime_data_is_input_blob": true
+    },
+    {
+      "label": "story-rmsnorm",
+      "case": "cases/story-rmsnorm",
+      "golden": "goldens/story-rmsnorm.bin",
+      "golden_sha256": "dec3ece94ab6d117770cb5a93d535b820efe6f10fcefc06c15bd74e61d172009",
+      "finite": true,
+      "shape": [
+        1,
+        1024,
+        1,
+        32
+      ],
+      "receipt": {
+        "runtime_artifacts_retained": true,
+        "runtime_evaluated": true,
+        "samples": 20,
+        "output_checks": [
+          {
+            "max_abs_difference_from_host": 0.015625,
+            "file": "output-0.bin",
+            "relative_rmse_from_host": 0.0011072889178994146
+          }
+        ],
+        "offline_hwx_evaluated": false,
+        "offline_compile_result": 0,
+        "label": "story-rmsnorm",
+        "offline_hwx_exported": true,
+        "runtime_eval_median_ms": 0.1780000000144355,
+        "offline_compile_status": 0
+      },
+      "coefficient_segments_identical_to_original_export": true,
+      "task_stream_identical_to_original_export": true,
+      "runtime_files": [
+        "data",
+        "model.mil",
+        "net.plist",
+        "weights/norm_weight.bin"
+      ],
+      "evaluated_executable_found": false,
+      "request_surface_capture": "supplemental/request-surfaces/story-rmsnorm/capture/request-bindings.json",
+      "request_surface_output_byte_identical": true,
+      "runtime_data_is_input_blob": true
+    }
+  ],
+  "original_cases": [
+    {
+      "label": "capital-cached-attention",
+      "succeeded": false,
+      "runtime_log": "cases/capital-cached-attention/macos.log",
+      "failure": "2026-10-06 00:00:22.018 capture[3634:35491] orion_eval ERROR [capital-cached-attention]: Error Domain=com.apple.appleneuralengine Code=42 \"processRequest:model:qos:qIndex:modelStringID:options:returnValue:error:: Inference failed \u2014 IOSurface smaller than the model expects (re-check inputBufferSize/outputBufferSize from the load reply) (underlying=0x1D)\" UserInfo={_ANEErrorUnderlyingStatus=29, NSLocalizedDescription=processRequest:model:qos:qIndex:modelStringID:options:returnValue:error:: Inference failed \u2014 IOSurface smaller than the model expects (re-check inputBufferSize/outputBufferSize from the load reply) (underlying=0x1D)}",
+      "offline_exported": true
+    },
+    {
+      "label": "capital-fused-ffn",
+      "succeeded": false,
+      "runtime_log": "cases/capital-fused-ffn/macos.log",
+      "failure": "2026-10-06 00:00:22.086 capture[3636:35516] ANE compile error: Error Domain=com.apple.appleneuralengine Code=10 \"verifyBundleAtPath: invalid model\" UserInfo={NSLocalizedDescription=verifyBundleAtPath: invalid model}",
+      "offline_exported": true
+    },
+    {
+      "label": "capital-head4096",
+      "succeeded": true,
+      "runtime_log": "cases/capital-head4096/macos.log",
+      "failure": null,
+      "offline_exported": true
+    },
+    {
+      "label": "capital-head8192",
+      "succeeded": true,
+      "runtime_log": "cases/capital-head8192/macos.log",
+      "failure": null,
+      "offline_exported": true
+    },
+    {
+      "label": "capital-rmsnorm",
+      "succeeded": true,
+      "runtime_log": "cases/capital-rmsnorm/macos.log",
+      "failure": null,
+      "offline_exported": true
+    },
+    {
+      "label": "fibonacci-cached-attention",
+      "succeeded": false,
+      "runtime_log": "cases/fibonacci-cached-attention/macos.log",
+      "failure": "2026-10-06 00:00:22.987 capture[3640:35541] orion_eval ERROR [fibonacci-cached-attention]: Error Domain=com.apple.appleneuralengine Code=42 \"processRequest:model:qos:qIndex:modelStringID:options:returnValue:error:: Inference failed \u2014 IOSurface smaller than the model expects (re-check inputBufferSize/outputBufferSize from the load reply) (underlying=0x1D)\" UserInfo={_ANEErrorUnderlyingStatus=29, NSLocalizedDescription=processRequest:model:qos:qIndex:modelStringID:options:returnValue:error:: Inference failed \u2014 IOSurface smaller than the model expects (re-check inputBufferSize/outputBufferSize from the load reply) (underlying=0x1D)}",
+      "offline_exported": true
+    },
+    {
+      "label": "fibonacci-fused-ffn",
+      "succeeded": false,
+      "runtime_log": "cases/fibonacci-fused-ffn/macos.log",
+      "failure": "2026-10-06 00:00:23.047 capture[3641:35550] ANE compile error: Error Domain=com.apple.appleneuralengine Code=10 \"verifyBundleAtPath: invalid model\" UserInfo={NSLocalizedDescription=verifyBundleAtPath: invalid model}",
+      "offline_exported": true
+    },
+    {
+      "label": "fibonacci-head4096",
+      "succeeded": true,
+      "runtime_log": "cases/fibonacci-head4096/macos.log",
+      "failure": null,
+      "offline_exported": true
+    },
+    {
+      "label": "fibonacci-head8192",
+      "succeeded": true,
+      "runtime_log": "cases/fibonacci-head8192/macos.log",
+      "failure": null,
+      "offline_exported": true
+    },
+    {
+      "label": "fibonacci-rmsnorm",
+      "succeeded": true,
+      "runtime_log": "cases/fibonacci-rmsnorm/macos.log",
+      "failure": null,
+      "offline_exported": true
+    },
+    {
+      "label": "math-cached-attention",
+      "succeeded": false,
+      "runtime_log": "cases/math-cached-attention/macos.log",
+      "failure": "2026-10-06 00:00:23.958 capture[3645:35582] orion_eval ERROR [math-cached-attention]: Error Domain=com.apple.appleneuralengine Code=42 \"processRequest:model:qos:qIndex:modelStringID:options:returnValue:error:: Inference failed \u2014 IOSurface smaller than the model expects (re-check inputBufferSize/outputBufferSize from the load reply) (underlying=0x1D)\" UserInfo={_ANEErrorUnderlyingStatus=29, NSLocalizedDescription=processRequest:model:qos:qIndex:modelStringID:options:returnValue:error:: Inference failed \u2014 IOSurface smaller than the model expects (re-check inputBufferSize/outputBufferSize from the load reply) (underlying=0x1D)}",
+      "offline_exported": true
+    },
+    {
+      "label": "math-fused-ffn",
+      "succeeded": false,
+      "runtime_log": "cases/math-fused-ffn/macos.log",
+      "failure": "2026-10-06 00:00:24.013 capture[3646:35589] ANE compile error: Error Domain=com.apple.appleneuralengine Code=10 \"verifyBundleAtPath: invalid model\" UserInfo={NSLocalizedDescription=verifyBundleAtPath: invalid model}",
+      "offline_exported": true
+    },
+    {
+      "label": "math-head4096",
+      "succeeded": true,
+      "runtime_log": "cases/math-head4096/macos.log",
+      "failure": null,
+      "offline_exported": true
+    },
+    {
+      "label": "math-head8192",
+      "succeeded": true,
+      "runtime_log": "cases/math-head8192/macos.log",
+      "failure": null,
+      "offline_exported": true
+    },
+    {
+      "label": "math-rmsnorm",
+      "succeeded": true,
+      "runtime_log": "cases/math-rmsnorm/macos.log",
+      "failure": null,
+      "offline_exported": true
+    },
+    {
+      "label": "story-cached-attention",
+      "succeeded": false,
+      "runtime_log": "cases/story-cached-attention/macos.log",
+      "failure": "2026-10-06 00:00:24.746 capture[3650:35612] orion_eval ERROR [story-cached-attention]: Error Domain=com.apple.appleneuralengine Code=42 \"processRequest:model:qos:qIndex:modelStringID:options:returnValue:error:: Inference failed \u2014 IOSurface smaller than the model expects (re-check inputBufferSize/outputBufferSize from the load reply) (underlying=0x1D)\" UserInfo={_ANEErrorUnderlyingStatus=29, NSLocalizedDescription=processRequest:model:qos:qIndex:modelStringID:options:returnValue:error:: Inference failed \u2014 IOSurface smaller than the model expects (re-check inputBufferSize/outputBufferSize from the load reply) (underlying=0x1D)}",
+      "offline_exported": true
+    },
+    {
+      "label": "story-fused-ffn",
+      "succeeded": false,
+      "runtime_log": "cases/story-fused-ffn/macos.log",
+      "failure": "2026-10-06 00:00:24.803 capture[3651:35618] ANE compile error: Error Domain=com.apple.appleneuralengine Code=10 \"verifyBundleAtPath: invalid model\" UserInfo={NSLocalizedDescription=verifyBundleAtPath: invalid model}",
+      "offline_exported": true
+    },
+    {
+      "label": "story-head4096",
+      "succeeded": true,
+      "runtime_log": "cases/story-head4096/macos.log",
+      "failure": null,
+      "offline_exported": true
+    },
+    {
+      "label": "story-head8192",
+      "succeeded": true,
+      "runtime_log": "cases/story-head8192/macos.log",
+      "failure": null,
+      "offline_exported": true
+    },
+    {
+      "label": "story-rmsnorm",
+      "succeeded": true,
+      "runtime_log": "cases/story-rmsnorm/macos.log",
+      "failure": null,
+      "offline_exported": true
+    }
+  ],
+  "missing": [
+    "Loaded executable/HWX for evaluated runtime",
+    "Device IOVA/BAR runtime mappings",
+    "Initial internal scratch buffers and aliases",
+    "Live Task Manager/Queue, DART mapping and power/clock register traces",
+    "Linux replay and SD integration"
+  ]
+}

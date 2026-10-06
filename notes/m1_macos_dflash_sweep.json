@@ -1,0 +1,414 @@
+{
+  "started_utc": "2026-10-06T02:49:34.281551+00:00",
+  "max_new": 100,
+  "repeats": 2,
+  "configs": [
+    {
+      "baseline_mean_tps": 37.48638096074726,
+      "dflash_mean_tps": 26.609560452837826,
+      "mean_speedup": 0.7092221922227477,
+      "max_speedup": 0.8803726404962976,
+      "all_token_identity": false,
+      "peak_mlx_memory_bytes": 2125683181,
+      "stock_mean_tps": 45.65539668136442,
+      "mean_speedup_vs_stock": 0.5833976922532839,
+      "all_stock_token_identity": true,
+      "receipt": "notes/m1_macos_dflash_sweep_p7_bf16_stock.json",
+      "identity_trials": 2,
+      "stock_identity_trials": 8,
+      "generated_tokens": 800,
+      "trials": 8,
+      "verification": "batch",
+      "max_speedup_vs_stock": 0.7566485404303487,
+      "qualified": false,
+      "tokens_per_cycle": 2.0154605263157896,
+      "mean_phase_ms_per_cycle": {
+        "verify": 55.15956986175459,
+        "context": 1.838415626885943,
+        "body": 5.380051191980395,
+        "head": 13.239571905602501
+      },
+      "zero_draft_cost_speedup_bound_vs_scalar": 0.9732621825189217,
+      "zero_draft_cost_speedup_bound_vs_stock": 0.8005763856618898,
+      "prompts": [
+        {
+          "name": "capital",
+          "baseline_tps": 45.55447220266658,
+          "dflash_tps": 23.236909010922368,
+          "speedup": 0.5101751480928427,
+          "max_speedup": 0.5183986557465594,
+          "tokens_per_cycle": 1.736842105263158,
+          "identity": false
+        },
+        {
+          "name": "fibonacci",
+          "baseline_tps": 45.02471414328744,
+          "dflash_tps": 32.58787710330188,
+          "speedup": 0.7250972463350196,
+          "max_speedup": 0.7566485404303487,
+          "tokens_per_cycle": 2.475,
+          "identity": true
+        },
+        {
+          "name": "math",
+          "baseline_tps": 46.52433852605596,
+          "dflash_tps": 28.779582226970177,
+          "speedup": 0.6186160035989625,
+          "max_speedup": 0.6210865323153815,
+          "tokens_per_cycle": 2.2,
+          "identity": false
+        },
+        {
+          "name": "story",
+          "baseline_tps": 45.51806185344769,
+          "dflash_tps": 21.83387347015688,
+          "speedup": 0.47970237098631097,
+          "max_speedup": 0.4814452158984657,
+          "tokens_per_cycle": 1.65,
+          "identity": false
+        }
+      ],
+      "name": "p7_bf16_stock"
+    },
+    {
+      "baseline_mean_tps": 36.34614878751356,
+      "dflash_mean_tps": 26.18593559072155,
+      "mean_speedup": 0.7203158387310549,
+      "max_speedup": 0.8698747004913184,
+      "all_token_identity": false,
+      "peak_mlx_memory_bytes": 2125683181,
+      "stock_mean_tps": 45.45651698627728,
+      "mean_speedup_vs_stock": 0.5764383420037724,
+      "all_stock_token_identity": true,
+      "receipt": "notes/m1_macos_dflash_sweep_p3_bf16_stock.json",
+      "identity_trials": 2,
+      "stock_identity_trials": 8,
+      "generated_tokens": 800,
+      "trials": 8,
+      "verification": "batch",
+      "max_speedup_vs_stock": 0.7096861706523402,
+      "qualified": false,
+      "tokens_per_cycle": 1.9492855336694515,
+      "mean_phase_ms_per_cycle": {
+        "verify": 54.00518993253358,
+        "context": 1.818126047759973,
+        "body": 5.195731375319452,
+        "head": 13.334093975688948
+      },
+      "zero_draft_cost_speedup_bound_vs_scalar": 0.9926912424872545,
+      "zero_draft_cost_speedup_bound_vs_stock": 0.7944035280777397,
+      "prompts": [
+        {
+          "name": "capital",
+          "baseline_tps": 45.44214602241321,
+          "dflash_tps": 23.630110797209028,
+          "speedup": 0.5201319556898287,
+          "max_speedup": 0.5277927495032143,
+          "tokens_per_cycle": 1.736842105263158,
+          "identity": false
+        },
+        {
+          "name": "fibonacci",
+          "baseline_tps": 44.89135609709595,
+          "dflash_tps": 31.4643312842907,
+          "speedup": 0.70098438928485,
+          "max_speedup": 0.7096861706523402,
+          "tokens_per_cycle": 2.357142857142857,
+          "identity": true
+        },
+        {
+          "name": "math",
+          "baseline_tps": 45.97723522251367,
+          "dflash_tps": 28.301681126061897,
+          "speedup": 0.6155585264449415,
+          "max_speedup": 0.6200779922563584,
+          "tokens_per_cycle": 2.106382978723404,
+          "identity": false
+        },
+        {
+          "name": "story",
+          "baseline_tps": 45.51533060308627,
+          "dflash_tps": 21.34761915532458,
+          "speedup": 0.4690784965954695,
+          "max_speedup": 0.4741114789310099,
+          "tokens_per_cycle": 1.596774193548387,
+          "identity": false
+        }
+      ],
+      "name": "p3_bf16_stock"
+    },
+    {
+      "baseline_mean_tps": 37.60828266679425,
+      "dflash_mean_tps": 24.84289988508378,
+      "mean_speedup": 0.6606136267286663,
+      "max_speedup": 0.7255363439409956,
+      "all_token_identity": false,
+      "peak_mlx_memory_bytes": 2125683181,
+      "stock_mean_tps": 46.863456238881305,
+      "mean_speedup_vs_stock": 0.5302122628218235,
+      "all_stock_token_identity": true,
+      "receipt": "notes/m1_macos_dflash_sweep_p1_bf16_stock.json",
+      "identity_trials": 2,
+      "stock_identity_trials": 8,
+      "generated_tokens": 800,
+      "trials": 8,
+      "verification": "batch",
+      "max_speedup_vs_stock": 0.5772994750287974,
+      "qualified": false,
+      "tokens_per_cycle": 1.613091408719947,
+      "mean_phase_ms_per_cycle": {
+        "verify": 52.66151108710721,
+        "context": 1.7852640357760337,
+        "body": 5.0206315817550475,
+        "head": 5.440940027219691
+      },
+      "zero_draft_cost_speedup_bound_vs_scalar": 0.8143709557798544,
+      "zero_draft_cost_speedup_bound_vs_stock": 0.65361638803189,
+      "prompts": [
+        {
+          "name": "capital",
+          "baseline_tps": 46.43471206061996,
+          "dflash_tps": 23.51233271870916,
+          "speedup": 0.5064525341338462,
+          "max_speedup": 0.5123880607802708,
+          "tokens_per_cycle": 1.5,
+          "identity": false
+        },
+        {
+          "name": "fibonacci",
+          "baseline_tps": 47.108711294993505,
+          "dflash_tps": 27.159346902835907,
+          "speedup": 0.5765262371663955,
+          "max_speedup": 0.5772994750287974,
+          "tokens_per_cycle": 1.7678571428571428,
+          "identity": true
+        },
+        {
+          "name": "math",
+          "baseline_tps": 46.57784055850718,
+          "dflash_tps": 25.968739901751036,
+          "speedup": 0.5576269011734132,
+          "max_speedup": 0.5659932324394553,
+          "tokens_per_cycle": 1.706896551724138,
+          "identity": false
+        },
+        {
+          "name": "story",
+          "baseline_tps": 47.33256104140459,
+          "dflash_tps": 22.73118001703903,
+          "speedup": 0.48024337881363927,
+          "max_speedup": 0.48209245111730814,
+          "tokens_per_cycle": 1.4776119402985075,
+          "identity": false
+        }
+      ],
+      "name": "p1_bf16_stock"
+    },
+    {
+      "baseline_mean_tps": 37.4751382727392,
+      "dflash_mean_tps": 33.31155318739073,
+      "mean_speedup": 0.8890951295520104,
+      "max_speedup": 1.1070881263766867,
+      "all_token_identity": false,
+      "peak_mlx_memory_bytes": 2125683181,
+      "stock_mean_tps": 46.06585161864687,
+      "mean_speedup_vs_stock": 0.7224490385599605,
+      "all_stock_token_identity": true,
+      "receipt": "notes/m1_macos_dflash_sweep_p7_bf16_small_metal.json",
+      "identity_trials": 4,
+      "stock_identity_trials": 8,
+      "generated_tokens": 800,
+      "trials": 8,
+      "verification": "batch",
+      "max_speedup_vs_stock": 0.8998283187147392,
+      "qualified": false,
+      "tokens_per_cycle": 2.0192934782608694,
+      "mean_phase_ms_per_cycle": {
+        "verify": 46.543455773511795,
+        "context": 1.6416645888802577,
+        "body": 4.748519976129346,
+        "head": 7.6547604835248935
+      },
+      "zero_draft_cost_speedup_bound_vs_scalar": 1.1621403661806649,
+      "zero_draft_cost_speedup_bound_vs_stock": 0.944313452435957,
+      "prompts": [
+        {
+          "name": "capital",
+          "baseline_tps": 45.67411846082118,
+          "dflash_tps": 30.06285628499277,
+          "speedup": 0.6576166510027284,
+          "max_speedup": 0.7040668365115393,
+          "tokens_per_cycle": 1.8,
+          "identity": true
+        },
+        {
+          "name": "fibonacci",
+          "baseline_tps": 46.38163736219879,
+          "dflash_tps": 41.538540143982864,
+          "speedup": 0.8955687053958749,
+          "max_speedup": 0.8998283187147392,
+          "tokens_per_cycle": 2.475,
+          "identity": true
+        },
+        {
+          "name": "math",
+          "baseline_tps": 46.40707744499119,
+          "dflash_tps": 34.28263883261167,
+          "speedup": 0.7387804758306651,
+          "max_speedup": 0.7641012144310133,
+          "tokens_per_cycle": 2.152173913043478,
+          "identity": false
+        },
+        {
+          "name": "story",
+          "baseline_tps": 45.80057320657631,
+          "dflash_tps": 27.36217748797561,
+          "speedup": 0.5978303220105734,
+          "max_speedup": 0.6160782270449092,
+          "tokens_per_cycle": 1.65,
+          "identity": false
+        }
+      ],
+      "name": "p7_bf16_small_metal"
+    },
+    {
+      "baseline_mean_tps": 36.45636748960724,
+      "dflash_mean_tps": 33.87669180742646,
+      "mean_speedup": 0.9312795747962035,
+      "max_speedup": 1.1841737230022213,
+      "all_token_identity": false,
+      "peak_mlx_memory_bytes": 2125683181,
+      "stock_mean_tps": 46.252950810492706,
+      "mean_speedup_vs_stock": 0.7333119909581054,
+      "all_stock_token_identity": true,
+      "receipt": "notes/m1_macos_dflash_sweep_p7_fp16_draft_small_metal.json",
+      "identity_trials": 4,
+      "stock_identity_trials": 8,
+      "generated_tokens": 800,
+      "trials": 8,
+      "verification": "batch",
+      "max_speedup_vs_stock": 0.9091897379154497,
+      "qualified": false,
+      "tokens_per_cycle": 2.0192934782608694,
+      "mean_phase_ms_per_cycle": {
+        "verify": 45.220625891550526,
+        "context": 2.7839830649379094,
+        "body": 4.597112304727806,
+        "head": 6.802682168148843
+      },
+      "zero_draft_cost_speedup_bound_vs_scalar": 1.2298566725029445,
+      "zero_draft_cost_speedup_bound_vs_stock": 0.968718202569001,
+      "prompts": [
+        {
+          "name": "capital",
+          "baseline_tps": 46.85258756944839,
+          "dflash_tps": 30.06813594880311,
+          "speedup": 0.6418043059626201,
+          "max_speedup": 0.654810239095715,
+          "tokens_per_cycle": 1.8,
+          "identity": true
+        },
+        {
+          "name": "fibonacci",
+          "baseline_tps": 45.6380878537599,
+          "dflash_tps": 40.71317256997277,
+          "speedup": 0.8918174569852446,
+          "max_speedup": 0.9091897379154497,
+          "tokens_per_cycle": 2.475,
+          "identity": true
+        },
+        {
+          "name": "math",
+          "baseline_tps": 46.197303567984335,
+          "dflash_tps": 36.65106695164949,
+          "speedup": 0.793593146683829,
+          "max_speedup": 0.8106179799795056,
+          "tokens_per_cycle": 2.152173913043478,
+          "identity": false
+        },
+        {
+          "name": "story",
+          "baseline_tps": 46.323824250778216,
+          "dflash_tps": 28.074391759280466,
+          "speedup": 0.6060330542007277,
+          "max_speedup": 0.610301481312672,
+          "tokens_per_cycle": 1.65,
+          "identity": false
+        }
+      ],
+      "name": "p7_fp16_draft_small_metal"
+    },
+    {
+      "baseline_mean_tps": 36.88492434209507,
+      "dflash_mean_tps": 26.198309803989048,
+      "mean_speedup": 0.7107560154993083,
+      "max_speedup": 0.7512245894496213,
+      "all_token_identity": true,
+      "peak_mlx_memory_bytes": 2125683181,
+      "stock_mean_tps": 45.97985104352902,
+      "mean_speedup_vs_stock": 0.5699658412105228,
+      "all_stock_token_identity": true,
+      "receipt": "notes/m1_macos_dflash_sweep_p7_bf16_serial_reference.json",
+      "identity_trials": 8,
+      "stock_identity_trials": 8,
+      "generated_tokens": 800,
+      "trials": 8,
+      "verification": "serial",
+      "max_speedup_vs_stock": 0.6114930595572766,
+      "qualified": true,
+      "tokens_per_cycle": 2.104044117647059,
+      "mean_phase_ms_per_cycle": {
+        "verify": 60.264875197248344,
+        "context": 1.563391122402536,
+        "body": 5.105976015805049,
+        "head": 13.238217573856971
+      },
+      "zero_draft_cost_speedup_bound_vs_scalar": 0.9478791556709297,
+      "zero_draft_cost_speedup_bound_vs_stock": 0.7602565596986599,
+      "prompts": [
+        {
+          "name": "capital",
+          "baseline_tps": 45.485371078821956,
+          "dflash_tps": 25.456476105366676,
+          "speedup": 0.5595454205354752,
+          "max_speedup": 0.5650430213525877,
+          "tokens_per_cycle": 1.8,
+          "identity": true
+        },
+        {
+          "name": "fibonacci",
+          "baseline_tps": 45.40984977638465,
+          "dflash_tps": 27.298733149353644,
+          "speedup": 0.601503511144304,
+          "max_speedup": 0.6114930595572766,
+          "tokens_per_cycle": 2.475,
+          "identity": true
+        },
+        {
+          "name": "math",
+          "baseline_tps": 46.742859937828314,
+          "dflash_tps": 26.33229956955141,
+          "speedup": 0.5633368844430537,
+          "max_speedup": 0.5706823449596572,
+          "tokens_per_cycle": 2.2,
+          "identity": true
+        },
+        {
+          "name": "story",
+          "baseline_tps": 46.281323381081144,
+          "dflash_tps": 25.70573039168446,
+          "speedup": 0.5554775487192587,
+          "max_speedup": 0.5619727013392776,
+          "tokens_per_cycle": 1.9411764705882353,
+          "identity": true
+        }
+      ],
+      "name": "p7_bf16_serial_reference"
+    }
+  ],
+  "status": "complete",
+  "best_qualified_config": "p7_bf16_serial_reference",
+  "reproduced_3x_mean": false,
+  "best_qualified_mean_speedup": 0.5699658412105228,
+  "finished_utc": "2026-10-06T02:57:11.329677+00:00"
+}

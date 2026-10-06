@@ -1,0 +1,245 @@
+[configuration] p7_bf16_stock
+test_accept_all_and_short_tail (test_macos_dflash.CacheTests.test_accept_all_and_short_tail) ... ok
+test_eos_inside_accepted_block (test_macos_dflash.CacheTests.test_eos_inside_accepted_block) ... ok
+test_partial_and_full_blocks (test_macos_dflash.CacheTests.test_partial_and_full_blocks) ... ok
+test_reject_first (test_macos_dflash.CacheTests.test_reject_first) ... ok
+test_serial_reference (test_macos_dflash.CacheTests.test_serial_reference) ... ok
+test_install_disable_preserves_original_linear (test_macos_dflash.SmallMatmulTests.test_install_disable_preserves_original_linear) ... ok
+test_nonmultiple_dimensions_and_all_block_widths (test_macos_dflash.SmallMatmulTests.test_nonmultiple_dimensions_and_all_block_widths) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.135s
+
+OK
+[load] bf16 target + public Speculators DFlash, native Metal
+[warmup] both complete generation paths
+0 capital baseline: 38.27 tok/s
+0 capital dflash: 23.10 tok/s
+  identity=False speedup=0.604x tokens/cycle=1.74
+0 fibonacci baseline: 39.74 tok/s
+0 fibonacci dflash: 32.53 tok/s
+  identity=True speedup=0.819x tokens/cycle=2.48
+0 math baseline: 37.63 tok/s
+0 math dflash: 28.94 tok/s
+  identity=False speedup=0.769x tokens/cycle=2.20
+0 story baseline: 37.77 tok/s
+0 story dflash: 21.57 tok/s
+  identity=False speedup=0.571x tokens/cycle=1.65
+1 capital dflash: 23.37 tok/s
+1 capital baseline: 35.75 tok/s
+  identity=False speedup=0.654x tokens/cycle=1.74
+1 fibonacci dflash: 32.64 tok/s
+1 fibonacci baseline: 37.08 tok/s
+  identity=True speedup=0.880x tokens/cycle=2.48
+1 math dflash: 28.61 tok/s
+1 math baseline: 36.83 tok/s
+  identity=False speedup=0.777x tokens/cycle=2.20
+1 story dflash: 22.10 tok/s
+1 story baseline: 36.83 tok/s
+  identity=False speedup=0.600x tokens/cycle=1.65
+{
+  "baseline_mean_tps": 37.48638096074726,
+  "dflash_mean_tps": 26.609560452837826,
+  "mean_speedup": 0.7092221922227477,
+  "max_speedup": 0.8803726404962976,
+  "all_token_identity": false,
+  "peak_mlx_memory_bytes": 2125683181,
+  "stock_mean_tps": 45.65539668136442,
+  "mean_speedup_vs_stock": 0.5833976922532839,
+  "all_stock_token_identity": true
+}
+[configuration] p3_bf16_stock
+[load] bf16 target + public Speculators DFlash, native Metal
+[warmup] both complete generation paths
+0 capital baseline: 37.04 tok/s
+0 capital dflash: 23.58 tok/s
+  identity=False speedup=0.637x tokens/cycle=1.74
+0 fibonacci baseline: 36.27 tok/s
+0 fibonacci dflash: 31.55 tok/s
+  identity=True speedup=0.870x tokens/cycle=2.36
+0 math baseline: 36.53 tok/s
+0 math dflash: 28.51 tok/s
+  identity=False speedup=0.780x tokens/cycle=2.11
+0 story baseline: 36.05 tok/s
+0 story dflash: 21.36 tok/s
+  identity=False speedup=0.593x tokens/cycle=1.60
+1 capital dflash: 23.68 tok/s
+1 capital baseline: 35.98 tok/s
+  identity=False speedup=0.658x tokens/cycle=1.74
+1 fibonacci dflash: 31.38 tok/s
+1 fibonacci baseline: 37.72 tok/s
+  identity=True speedup=0.832x tokens/cycle=2.36
+1 math dflash: 28.09 tok/s
+1 math baseline: 34.90 tok/s
+  identity=False speedup=0.805x tokens/cycle=2.11
+1 story dflash: 21.33 tok/s
+1 story baseline: 36.28 tok/s
+  identity=False speedup=0.588x tokens/cycle=1.60
+{
+  "baseline_mean_tps": 36.34614878751356,
+  "dflash_mean_tps": 26.18593559072155,
+  "mean_speedup": 0.7203158387310549,
+  "max_speedup": 0.8698747004913184,
+  "all_token_identity": false,
+  "peak_mlx_memory_bytes": 2125683181,
+  "stock_mean_tps": 45.45651698627728,
+  "mean_speedup_vs_stock": 0.5764383420037724,
+  "all_stock_token_identity": true
+}
+[configuration] p1_bf16_stock
+[load] bf16 target + public Speculators DFlash, native Metal
+[warmup] both complete generation paths
+0 capital baseline: 37.81 tok/s
+0 capital dflash: 23.63 tok/s
+  identity=False speedup=0.625x tokens/cycle=1.50
+0 fibonacci baseline: 37.68 tok/s
+0 fibonacci dflash: 27.15 tok/s
+  identity=True speedup=0.721x tokens/cycle=1.77
+0 math baseline: 37.85 tok/s
+0 math dflash: 26.07 tok/s
+  identity=False speedup=0.689x tokens/cycle=1.71
+0 story baseline: 37.28 tok/s
+0 story dflash: 22.64 tok/s
+  identity=False speedup=0.607x tokens/cycle=1.48
+1 capital dflash: 23.39 tok/s
+1 capital baseline: 37.84 tok/s
+  identity=False speedup=0.618x tokens/cycle=1.50
+1 fibonacci dflash: 27.17 tok/s
+1 fibonacci baseline: 37.45 tok/s
+  identity=True speedup=0.726x tokens/cycle=1.77
+1 math dflash: 25.87 tok/s
+1 math baseline: 37.29 tok/s
+  identity=False speedup=0.694x tokens/cycle=1.71
+1 story dflash: 22.83 tok/s
+1 story baseline: 37.67 tok/s
+  identity=False speedup=0.606x tokens/cycle=1.48
+{
+  "baseline_mean_tps": 37.60828266679425,
+  "dflash_mean_tps": 24.84289988508378,
+  "mean_speedup": 0.6606136267286663,
+  "max_speedup": 0.7255363439409956,
+  "all_token_identity": false,
+  "peak_mlx_memory_bytes": 2125683181,
+  "stock_mean_tps": 46.863456238881305,
+  "mean_speedup_vs_stock": 0.5302122628218235,
+  "all_stock_token_identity": true
+}
+[configuration] p7_bf16_small_metal
+[load] bf16 target + public Speculators DFlash, native Metal
+[warmup] both complete generation paths
+0 capital baseline: 37.55 tok/s
+0 capital dflash: 27.56 tok/s
+  identity=True speedup=0.734x tokens/cycle=1.80
+0 fibonacci baseline: 38.11 tok/s
+0 fibonacci dflash: 41.86 tok/s
+  identity=True speedup=1.099x tokens/cycle=2.48
+0 math baseline: 36.94 tok/s
+0 math dflash: 33.17 tok/s
+  identity=False speedup=0.898x tokens/cycle=2.15
+0 story baseline: 36.96 tok/s
+0 story dflash: 27.58 tok/s
+  identity=False speedup=0.746x tokens/cycle=1.65
+1 capital dflash: 32.56 tok/s
+1 capital baseline: 37.95 tok/s
+  identity=True speedup=0.858x tokens/cycle=1.80
+1 fibonacci dflash: 41.22 tok/s
+1 fibonacci baseline: 37.23 tok/s
+  identity=True speedup=1.107x tokens/cycle=2.48
+1 math dflash: 35.40 tok/s
+1 math baseline: 36.84 tok/s
+  identity=False speedup=0.961x tokens/cycle=2.15
+1 story dflash: 27.14 tok/s
+1 story baseline: 38.23 tok/s
+  identity=False speedup=0.710x tokens/cycle=1.65
+{
+  "baseline_mean_tps": 37.4751382727392,
+  "dflash_mean_tps": 33.31155318739073,
+  "mean_speedup": 0.8890951295520104,
+  "max_speedup": 1.1070881263766867,
+  "all_token_identity": false,
+  "peak_mlx_memory_bytes": 2125683181,
+  "stock_mean_tps": 46.06585161864687,
+  "mean_speedup_vs_stock": 0.7224490385599605,
+  "all_stock_token_identity": true
+}
+[configuration] p7_fp16_draft_small_metal
+[load] bf16 target + public Speculators DFlash, native Metal
+[warmup] both complete generation paths
+0 capital baseline: 38.01 tok/s
+0 capital dflash: 29.56 tok/s
+  identity=True speedup=0.778x tokens/cycle=1.80
+0 fibonacci baseline: 35.74 tok/s
+0 fibonacci dflash: 39.29 tok/s
+  identity=True speedup=1.099x tokens/cycle=2.48
+0 math baseline: 36.77 tok/s
+0 math dflash: 36.93 tok/s
+  identity=False speedup=1.004x tokens/cycle=2.15
+0 story baseline: 35.70 tok/s
+0 story dflash: 27.79 tok/s
+  identity=False speedup=0.778x tokens/cycle=1.65
+1 capital dflash: 30.58 tok/s
+1 capital baseline: 36.81 tok/s
+  identity=True speedup=0.831x tokens/cycle=1.80
+1 fibonacci dflash: 42.14 tok/s
+1 fibonacci baseline: 35.59 tok/s
+  identity=True speedup=1.184x tokens/cycle=2.48
+1 math dflash: 36.37 tok/s
+1 math baseline: 36.05 tok/s
+  identity=False speedup=1.009x tokens/cycle=2.15
+1 story dflash: 28.36 tok/s
+1 story baseline: 36.98 tok/s
+  identity=False speedup=0.767x tokens/cycle=1.65
+{
+  "baseline_mean_tps": 36.45636748960724,
+  "dflash_mean_tps": 33.87669180742646,
+  "mean_speedup": 0.9312795747962035,
+  "max_speedup": 1.1841737230022213,
+  "all_token_identity": false,
+  "peak_mlx_memory_bytes": 2125683181,
+  "stock_mean_tps": 46.252950810492706,
+  "mean_speedup_vs_stock": 0.7333119909581054,
+  "all_stock_token_identity": true
+}
+[configuration] p7_bf16_serial_reference
+[load] bf16 target + public Speculators DFlash, native Metal
+[warmup] both complete generation paths
+0 capital baseline: 37.40 tok/s
+0 capital dflash: 24.66 tok/s
+  identity=True speedup=0.659x tokens/cycle=1.80
+0 fibonacci baseline: 35.70 tok/s
+0 fibonacci dflash: 26.82 tok/s
+  identity=True speedup=0.751x tokens/cycle=2.48
+0 math baseline: 35.81 tok/s
+0 math dflash: 26.70 tok/s
+  identity=True speedup=0.746x tokens/cycle=2.20
+0 story baseline: 36.81 tok/s
+0 story dflash: 25.79 tok/s
+  identity=True speedup=0.701x tokens/cycle=1.94
+1 capital dflash: 26.25 tok/s
+1 capital baseline: 38.04 tok/s
+  identity=True speedup=0.690x tokens/cycle=1.80
+1 fibonacci dflash: 27.78 tok/s
+1 fibonacci baseline: 37.48 tok/s
+  identity=True speedup=0.741x tokens/cycle=2.48
+1 math dflash: 25.96 tok/s
+1 math baseline: 37.87 tok/s
+  identity=True speedup=0.686x tokens/cycle=2.20
+1 story dflash: 25.62 tok/s
+1 story baseline: 35.96 tok/s
+  identity=True speedup=0.712x tokens/cycle=1.94
+{
+  "baseline_mean_tps": 36.88492434209507,
+  "dflash_mean_tps": 26.198309803989048,
+  "mean_speedup": 0.7107560154993083,
+  "max_speedup": 0.7512245894496213,
+  "all_token_identity": true,
+  "peak_mlx_memory_bytes": 2125683181,
+  "stock_mean_tps": 45.97985104352902,
+  "mean_speedup_vs_stock": 0.5699658412105228,
+  "all_stock_token_identity": true
+}
+{
+  "best_qualified_config": "p7_bf16_serial_reference",
+  "best_qualified_mean_speedup": 0.5699658412105228,
+  "reproduced_3x_mean": false
+}

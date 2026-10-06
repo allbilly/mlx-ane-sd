@@ -1,0 +1,60 @@
+[wait] another workload holds ane.lock
+[validate] {"name": "capital", "prompt_tokens": 11, "target_next_token": {"ane": 1181, "mlx": 1181}, "draft_cosine": 0.9993950128555298, "draft_ids_agree": 7, "finite": true, "nonzero": 7168}
+[validate] {"name": "fibonacci", "prompt_tokens": 54, "target_next_token": {"ane": 4710, "mlx": 198}, "draft_cosine": 0.9991350769996643, "draft_ids_agree": 7, "finite": true, "nonzero": 7166}
+[validate] {"name": "math", "prompt_tokens": 59, "target_next_token": {"ane": 220, "mlx": 220}, "draft_cosine": 0.9983881711959839, "draft_ids_agree": 7, "finite": true, "nonzero": 7168}
+[validate] {"name": "story", "prompt_tokens": 22, "target_next_token": {"ane": 572, "mlx": 572}, "draft_cosine": 0.9992417097091675, "draft_ids_agree": 6, "finite": true, "nonzero": 7168}
+[native parity] capital: True
+[native parity] fibonacci: True
+[native parity] math: True
+[native parity] story: True
+[trial] {"impl": "mlx_bf16", "name": "capital", "repeat": 1, "tokens": 100, "tok_s": 43.994322245848, "cycles": null, "accepted": null, "profile_s": null}
+[trial] {"impl": "ane_lut6_ar", "name": "capital", "repeat": 1, "tokens": 100, "tok_s": 49.57216740915369, "cycles": 99, "accepted": 0, "profile_s": {"host_argmax": 0.018211537986644544, "target_head": 0.7126297049908317, "target0": 0.6309200439718552, "target14": 0.6302967950250604}}
+[trial] {"impl": "ane_lut6_sd", "name": "capital", "repeat": 1, "tokens": 100, "tok_s": 52.18971859530665, "cycles": 44, "accepted": 55, "profile_s": {"draft": 0.07055491800565505, "draft_head": 0.5408150830262457, "host_argmax": 0.09786741001880728, "projector": 0.03703779100032989, "target_head": 0.5584898360029911, "target0": 0.29602212693862384, "target14": 0.2960190390003845}}
+[trial] {"impl": "mlx_bf16", "name": "fibonacci", "repeat": 1, "tokens": 100, "tok_s": 45.68315678307395, "cycles": null, "accepted": null, "profile_s": null}
+[trial] {"impl": "ane_lut6_ar", "name": "fibonacci", "repeat": 1, "tokens": 100, "tok_s": 26.574875275835712, "cycles": 99, "accepted": 0, "profile_s": {"host_argmax": 0.0188938749852241, "target_head": 2.310633829983999, "target0": 0.6919135009957245, "target14": 0.7132629620173248}}
+[trial] {"impl": "ane_lut6_sd", "name": "fibonacci", "repeat": 1, "tokens": 100, "tok_s": 32.954875424568186, "cycles": 42, "accepted": 57, "profile_s": {"draft": 0.06822841496614274, "draft_head": 1.0673325059833587, "host_argmax": 0.08973945498291869, "projector": 0.03969867001433158, "target_head": 1.1662359970068792, "target0": 0.29252075297699776, "target14": 0.29149995902116643}}
+[trial] {"impl": "mlx_bf16", "name": "math", "repeat": 1, "tokens": 100, "tok_s": 42.64706872132306, "cycles": null, "accepted": null, "profile_s": null}
+[trial] {"impl": "ane_lut6_ar", "name": "math", "repeat": 1, "tokens": 100, "tok_s": 19.817341906872297, "cycles": 99, "accepted": 0, "profile_s": {"host_argmax": 0.0181418800202664, "target_head": 3.6085132909502136, "target0": 0.697402375015372, "target14": 0.6954660840056022}}
+*** Terminating app due to uncaught exception 'NSGenericException', reason: 'Failed to allocate E5 buffer object. E5RT: Failed to allocate memory IOSurface object. (3)'
+*** First throw call stack:
+(
+	0   CoreFoundation                      0x0000000197c9e8c0 __exceptionPreprocess + 176
+	1   libobjc.A.dylib                     0x00000001976fc60c objc_exception_throw + 88
+	2   CoreFoundation                      0x0000000197c9e7b0 +[NSException exceptionWithName:reason:userInfo:] + 0
+	3   CoreML                              0x00000001a3527f00 MLE5BindEmptyMemoryObjectToPort + 1728
+	4   CoreML                              0x00000001a352d61c -[MLE5OutputPortBinder bindAndReturnError:] + 192
+	5   CoreML                              0x00000001a35a1288 -[MLE5OutputPort prepareWithOptions:error:] + 160
+	6   CoreML                              0x00000001a35b276c -[MLE5ExecutionStreamOperation _bindOutputPortsWithOptions:error:] + 276
+	7   CoreML                              0x00000001a35ae740 -[MLE5ExecutionStreamOperation prepareForInputFeatures:options:error:] + 136
+	8   CoreML                              0x00000001a3594f10 -[MLE5ExecutionStream _prepareForInputFeatures:options:error:] + 196
+	9   CoreML                              0x00000001a35956b4 -[MLE5ExecutionStream executeForInputFeatures:options:error:] + 76
+	10  CoreML                              0x00000001a353fe7c -[MLE5Engine _predictionFromFeatures:stream:options:error:] + 88
+	11  CoreML                              0x00000001a353fc84 -[MLE5Engine _predictionFromFeatures:options:error:] + 224
+	12  CoreML                              0x00000001a353f340 -[MLE5Engine _predictionFromFeatures:usingState:options:error:] + 420
+	13  CoreML                              0x00000001a353f0d8 -[MLE5Engine predictionFromFeatures:options:error:] + 104
+	14  CoreML                              0x00000001a35189ec -[MLDelegateModel _predictionFromFeatures:usingState:options:error:] + 748
+	15  CoreML                              0x00000001a3518500 -[MLDelegateModel predictionFromFeatures:options:error:] + 132
+	16  CoreML                              0x00000001a3546708 -[MLModel predictionFromFeatures:error:] + 100
+	17  m1-full-ane                         0x00000001009ef6ac $s4main7ProgramC7predictySDySSSo12MLMultiArrayCGAG_AA5StackCSSSgtKF + 636
+	18  m1-full-ane                         0x00000001009f2f10 $s4main5StackC3idsySaySiGSo12MLMultiArrayC_SnySiGSStKF + 272
+	19  m1-full-ane                         0x00000001009f48c0 $s4main5StackC7proposeySaySiGSiKF + 896
+	20  m1-full-ane                         0x00000001009ee238 $s4main5StackC8generateySDySSypGSaySiG_SiSbShySiGtKF + 1584
+	21  m1-full-ane                         0x00000001009ed490 main + 1672
+	22  dyld                                0x0000000197797e80 start + 6688
+)
+libc++abi: terminating due to uncaught exception of type NSException
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/Users/yeren/Desktop/mlx-ane-sd/scripts/bench_macos_m4_recipe.py", line 193, in main
+    else: row=run_ane(prompt,args.max_new,label=="ane_lut6_sd")
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yeren/Desktop/mlx-ane-sd/scripts/bench_macos_m4_recipe.py", line 169, in run_ane
+    def run_ane(prompt,limit,speculative): return native.generate(prompt,limit,speculative)
+                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yeren/Desktop/mlx-ane-sd/scripts/macos_m4_native_runtime.py", line 29, in generate
+    result=self.read();result["text"]=tok.decode(result["tokens"])
+           ^^^^^^^^^^^
+  File "/Users/yeren/Desktop/mlx-ane-sd/scripts/macos_m4_native_runtime.py", line 19, in read
+    if not line: raise RuntimeError(f"Swift runner exited: {self.process.poll()}")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Swift runner exited: -6

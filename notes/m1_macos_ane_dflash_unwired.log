@@ -1,0 +1,70 @@
+[wait] another workload holds ane.lock
+[configuration] body_ane_head_gpu_batch
+[ANE compile] complete three-layer draft body
+/Users/yeren/Desktop/mlx-ane-sd/scripts/dflash_macos_ane.py:129: DispatchFloorWarning: aneforge.compile: dispatch-floor-bound program (predicted ~82us, ~all of it the fixed per-call cost). Every ANE call pays a fixed dispatch + firmware round-trip (~0.2 ms on M1) regardless of how small the work is, and dispatch is single-in-flight (threads/concurrency do NOT amortize it). To amortize, do more work per call: increase batch N (per-sample cost falls ~linearly toward the compute rate) or chain more ops into one program (share_buffer keeps state resident). Silence: filter aneforge.DispatchFloorWarning.
+  self.body = af.compile(out, build_dir=build, opt=0)
+/Users/yeren/Desktop/ANEForge/aneforge/_compile.py:1347: UserWarning: aneforge: last-axis-offset slice_by_size(begin=[0, 0, 0, 64]) on a pre-A16 ANE (family 2) saturates any sliced |value| > 4094 (=65504/16) to +/-inf via the Q.4 crop-DMA. Safe if the data stays under 4094; otherwise slice with a zero last-axis begin or on the host.
+  out = _retarget_for(out, target)  # gate ops/shapes for the target ANE family
+[placement] ANE mask=0x4, body ops=263, head=gpu
+[parity] real-input ANE draft passed on four prompts
+0 capital baseline: 34.99 tok/s
+0 capital dflash: 10.15 tok/s
+  identity=False ANE calls=56 stock_speedup=0.237x
+0 fibonacci baseline: 28.32 tok/s
+0 fibonacci dflash: 17.10 tok/s
+  identity=True ANE calls=39 stock_speedup=0.422x
+0 math baseline: 28.29 tok/s
+0 math dflash: 15.61 tok/s
+  identity=False ANE calls=44 stock_speedup=0.347x
+0 story baseline: 35.15 tok/s
+0 story dflash: 11.89 tok/s
+  identity=False ANE calls=60 stock_speedup=0.271x
+1 capital dflash: 12.60 tok/s
+1 capital baseline: 33.57 tok/s
+  identity=False ANE calls=56 stock_speedup=0.288x
+1 fibonacci dflash: 12.06 tok/s
+1 fibonacci baseline: 31.41 tok/s
+  identity=True ANE calls=39 stock_speedup=0.290x
+1 math dflash: 12.71 tok/s
+1 math baseline: 33.64 tok/s
+  identity=False ANE calls=44 stock_speedup=0.286x
+1 story dflash: 9.73 tok/s
+1 story baseline: 32.30 tok/s
+  identity=False ANE calls=60 stock_speedup=0.217x
+{
+  "stock_mean_tps": 43.34093336313645,
+  "dflash_mean_tps": 12.730987055249232,
+  "mean_speedup_vs_stock": 0.2948620059124291,
+  "max_speedup_vs_stock": 0.42234770926039855,
+  "identity_trials": 2,
+  "trials": 8,
+  "qualified": false,
+  "ane_evaluations": 398
+}
+[configuration] body_ane_head_ane_batch
+[ANE compile] complete three-layer draft body
+/Users/yeren/Desktop/mlx-ane-sd/scripts/dflash_macos_ane.py:129: DispatchFloorWarning: aneforge.compile: dispatch-floor-bound program (predicted ~82us, ~all of it the fixed per-call cost). Every ANE call pays a fixed dispatch + firmware round-trip (~0.2 ms on M1) regardless of how small the work is, and dispatch is single-in-flight (threads/concurrency do NOT amortize it). To amortize, do more work per call: increase batch N (per-sample cost falls ~linearly toward the compute rate) or chain more ops into one program (share_buffer keeps state resident). Silence: filter aneforge.DispatchFloorWarning.
+  self.body = af.compile(out, build_dir=build, opt=0)
+/Users/yeren/Desktop/ANEForge/aneforge/_compile.py:1347: UserWarning: aneforge: last-axis-offset slice_by_size(begin=[0, 0, 0, 64]) on a pre-A16 ANE (family 2) saturates any sliced |value| > 4094 (=65504/16) to +/-inf via the Q.4 crop-DMA. Safe if the data stays under 4094; otherwise slice with a zero last-axis begin or on the host.
+  out = _retarget_for(out, target)  # gate ops/shapes for the target ANE family
+[ANE compile] tiled full-vocabulary draft head
+[placement] ANE mask=0x4, body ops=263, head=ane
+[parity] real-input ANE draft passed on four prompts
+0 capital baseline: 27.02 tok/s
+0 capital dflash: 12.54 tok/s
+  identity=False ANE calls=112 stock_speedup=0.298x
+0 fibonacci baseline: 20.90 tok/s
+0 fibonacci dflash: 16.86 tok/s
+  identity=True ANE calls=78 stock_speedup=0.420x
+0 math baseline: 24.91 tok/s
+0 math dflash: 14.57 tok/s
+  identity=False ANE calls=88 stock_speedup=0.366x
+0 story baseline: 20.89 tok/s
+0 story dflash: 11.01 tok/s
+  identity=False ANE calls=120 stock_speedup=0.271x
+1 capital dflash: 11.34 tok/s
+1 capital baseline: 33.02 tok/s
+  identity=False ANE calls=112 stock_speedup=0.377x
+1 fibonacci dflash: 15.62 tok/s
+1 fibonacci baseline: 33.01 tok/s
+  identity=True ANE calls=78 stock_speedup=0.530x

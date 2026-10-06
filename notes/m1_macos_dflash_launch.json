@@ -1,0 +1,9 @@
+{
+  "started_utc": "2026-10-05T19:36:18.614411+00:00",
+  "max_new": 100,
+  "repeats": 2,
+  "configs": [],
+  "status": "blocked",
+  "reason": "MLX cannot access Metal: [metal::load_device] No Metal device available. This typically occurs in headless, sandboxed, or virtualized macOS sessions where the GPU is not accessible.",
+  "checked_utc": "2026-10-05T19:36:18.672899+00:00"
+}

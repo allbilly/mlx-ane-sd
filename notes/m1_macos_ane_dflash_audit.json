@@ -1,0 +1,9 @@
+{
+  "receipt_sha256": "72e0e8cd2f21eb0f90c71fc429476b302d2e27741ba448dc8f3a076cfc45cd89",
+  "source_hashes_match": true,
+  "complete_trials": 24,
+  "native_ane_calls": 1946,
+  "serial_identity_tokens": 800,
+  "draft_parity_passed": true,
+  "speedup_3x_reproduced": false
+}

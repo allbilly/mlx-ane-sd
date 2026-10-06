@@ -1,0 +1,8 @@
+{
+  "checked_utc": "2026-10-06T02:59:29.007850+00:00",
+  "macos": "27.0.1",
+  "architecture": "arm64",
+  "native_metal_default_device_visible": true,
+  "native_metal_device_count": 1,
+  "compute_verified_by": "m1_macos_dflash_sweep_p7_bf16_stock.json: checks.tests_run=7, passed=true"
+}

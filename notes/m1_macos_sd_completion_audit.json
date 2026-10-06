@@ -1,0 +1,156 @@
+{
+  "objective": "Reproduce speculative-decoding speedup on macOS M1 following the M4 offload method",
+  "current_state_verified": true,
+  "receipt_sha256": "684c9460ced5e222eb2136ae0041cc13603e60af7cbf8cea3f868e3a628a495d",
+  "machine": {
+    "device_name": "Apple M1",
+    "max_recommended_working_set_size": 5726633984,
+    "memory_size": 8589934592,
+    "architecture": "applegpu_g13g",
+    "max_buffer_length": 4294967296,
+    "resource_limit": 499000
+  },
+  "macos": "27.0.1",
+  "model_scope": "Public Qwen3-0.6B DFlash pair; original Qwen3-4B stack is not reproduced",
+  "requirements": {
+    "native_swift_coreml_full_target_draft_and_heads": true,
+    "lut6_m4_compression_pattern": true,
+    "four_prompts_two_passes_100_tokens": true,
+    "same_compressed_target_token_identity": true,
+    "positive_gain_over_unchanged_metal_bf16_target": true,
+    "real_ane_hardware_counter_evidence": true,
+    "compiled_artifacts_present": true,
+    "source_and_binary_hashes_verified_by_report_audit": true,
+    "asahi_tracked_sources_unchanged": true,
+    "positive_gain_vs_padded_eight_row_ane_ar_control": true
+  },
+  "comparison_limits": {
+    "original_4b_result_reproduced": false,
+    "3x_mean_reproduced": false,
+    "lut6_matches_original_bf16_tokens": false,
+    "ane_ar_control_uses_padded_eight_row_target": true,
+    "optimized_one_row_ane_ar_baseline_measured": false
+  },
+  "artifacts": [
+    {
+      "role": "target",
+      "start": 0,
+      "files": 4,
+      "bytes": 167049208,
+      "math_counts": {
+        "MLNeuralEngineComputeDevice": 308
+      }
+    },
+    {
+      "role": "target",
+      "start": 14,
+      "files": 4,
+      "bytes": 167054564,
+      "math_counts": {
+        "MLNeuralEngineComputeDevice": 311
+      }
+    },
+    {
+      "role": "projector",
+      "start": null,
+      "files": 4,
+      "bytes": 7108071,
+      "math_counts": {
+        "MLNeuralEngineComputeDevice": 19
+      }
+    },
+    {
+      "role": "draft",
+      "start": null,
+      "files": 4,
+      "bytes": 35500591,
+      "math_counts": {
+        "MLNeuralEngineComputeDevice": 69
+      }
+    },
+    {
+      "role": "head",
+      "start": null,
+      "files": 4,
+      "bytes": 117943807,
+      "math_counts": {
+        "MLNeuralEngineComputeDevice": 19
+      }
+    }
+  ],
+  "trial_checks": [
+    {
+      "prompt": "capital",
+      "repeat": 1,
+      "same_target_identity": true,
+      "cache_offsets_verified": true,
+      "vs_metal": 1.7090350714530333,
+      "tokens_per_cycle": 2.25
+    },
+    {
+      "prompt": "fibonacci",
+      "repeat": 1,
+      "same_target_identity": true,
+      "cache_offsets_verified": true,
+      "vs_metal": 2.1308930616714545,
+      "tokens_per_cycle": 2.357142857142857
+    },
+    {
+      "prompt": "math",
+      "repeat": 1,
+      "same_target_identity": true,
+      "cache_offsets_verified": true,
+      "vs_metal": 1.4560541487026684,
+      "tokens_per_cycle": 2.106382978723404
+    },
+    {
+      "prompt": "story",
+      "repeat": 1,
+      "same_target_identity": true,
+      "cache_offsets_verified": true,
+      "vs_metal": 1.28471796731061,
+      "tokens_per_cycle": 1.6779661016949152
+    },
+    {
+      "prompt": "capital",
+      "repeat": 2,
+      "same_target_identity": true,
+      "cache_offsets_verified": true,
+      "vs_metal": 1.598558785071161,
+      "tokens_per_cycle": 2.25
+    },
+    {
+      "prompt": "fibonacci",
+      "repeat": 2,
+      "same_target_identity": true,
+      "cache_offsets_verified": true,
+      "vs_metal": 1.7642000139276321,
+      "tokens_per_cycle": 2.357142857142857
+    },
+    {
+      "prompt": "math",
+      "repeat": 2,
+      "same_target_identity": true,
+      "cache_offsets_verified": true,
+      "vs_metal": 1.6790324314893588,
+      "tokens_per_cycle": 2.106382978723404
+    },
+    {
+      "prompt": "story",
+      "repeat": 2,
+      "same_target_identity": true,
+      "cache_offsets_verified": true,
+      "vs_metal": 1.1748630176411197,
+      "tokens_per_cycle": 1.6779661016949152
+    }
+  ],
+  "mean_paired_speedup": 1.5996693121583796,
+  "source_verification": "Recorded hashes checked against current files or preserved exact benchmark-source snapshots after review fixes",
+  "review_fixes": {
+    "cache_requires_inputs_and_artifact_fingerprints": true,
+    "benchmark_fails_on_same_target_token_mismatch": true,
+    "padded_control_comparison_qualified": true,
+    "raw_benchmark_receipt_unchanged": true,
+    "revised_benchmark_rerun": false
+  }
+}

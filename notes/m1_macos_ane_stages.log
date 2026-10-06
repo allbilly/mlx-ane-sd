@@ -1,0 +1,39 @@
+[ANE compile] complete three-layer draft body
+/Users/yeren/Desktop/mlx-ane-sd/scripts/dflash_macos_ane.py:121: DispatchFloorWarning: aneforge.compile: dispatch-floor-bound program (predicted ~82us, ~all of it the fixed per-call cost). Every ANE call pays a fixed dispatch + firmware round-trip (~0.2 ms on M1) regardless of how small the work is, and dispatch is single-in-flight (threads/concurrency do NOT amortize it). To amortize, do more work per call: increase batch N (per-sample cost falls ~linearly toward the compute rate) or chain more ops into one program (share_buffer keeps state resident). Silence: filter aneforge.DispatchFloorWarning.
+  self.body = af.compile(out, build_dir=build, opt=0)
+/Users/yeren/Desktop/ANEForge/aneforge/_compile.py:1347: UserWarning: aneforge: last-axis-offset slice_by_size(begin=[0, 0, 0, 64]) on a pre-A16 ANE (family 2) saturates any sliced |value| > 4094 (=65504/16) to +/-inf via the Q.4 crop-DMA. Safe if the data stays under 4094; otherwise slice with a zero last-axis begin or on the host.
+  out = _retarget_for(out, target)  # gate ops/shapes for the target ANE family
+{"node": "t0", "op": "input", "shape": [32, 1024], "native_max": 0.0, "mlx_max": 0.0927734375, "nonzero": 0, "finite": true, "rmse": 0.007554159965366125}
+{"node": "t1", "op": "rms_norm", "shape": [32, 1024], "native_max": 8.21875, "mlx_max": 8.1875, "nonzero": 8192, "finite": true, "rmse": 0.0018303411779925227}
+{"node": "t3", "op": "matmul", "shape": [256, 1024], "native_max": 7968.0, "mlx_max": 7968.0, "nonzero": 11264, "finite": true, "rmse": 0.0007417764281854033}
+{"node": "t4", "op": "rms_norm", "shape": [256, 1024], "native_max": 0.0, "mlx_max": 4.9140625, "nonzero": 0, "finite": true, "rmse": 0.2072896659374237}
+{"node": "t7", "op": "reshape", "shape": [256, 128], "native_max": 52.46875, "mlx_max": 52.28125, "nonzero": 8192, "finite": true, "rmse": 0.01202811487019062}
+{"node": "t8", "op": "rms_norm", "shape": [256, 128], "native_max": 7.1875, "mlx_max": 7.1953125, "nonzero": 8192, "finite": true, "rmse": 0.00042807526187971234}
+{"node": "t11", "op": "reshape", "shape": [2048, 128], "native_max": 0.0, "mlx_max": 48.84375, "nonzero": 0, "finite": true, "rmse": 1.636346697807312}
+{"node": "t12", "op": "rms_norm", "shape": [2048, 128], "native_max": 0.0, "mlx_max": 5.73828125, "nonzero": 0, "finite": true, "rmse": 0.20728857815265656}
+{"node": "t15", "op": "reshape", "shape": [512, 128], "native_max": 31.390625, "mlx_max": 31.28125, "nonzero": 16384, "finite": true, "rmse": 0.008773867040872574}
+{"node": "t16", "op": "rms_norm", "shape": [512, 128], "native_max": 6.11328125, "mlx_max": 6.11328125, "nonzero": 16384, "finite": true, "rmse": 0.0003114034188911319}
+{"node": "t82", "op": "add", "shape": [32, 1024], "native_max": 599.5, "mlx_max": 726.5, "nonzero": 8192, "finite": true, "rmse": 52.861778259277344}
+{"node": "t83", "op": "rms_norm", "shape": [32, 1024], "native_max": 0.0, "mlx_max": 8.15625, "nonzero": 0, "finite": true, "rmse": 0.9999833106994629}
+{"node": "t89", "op": "add", "shape": [32, 1024], "native_max": 599.5, "mlx_max": 4464.0, "nonzero": 8192, "finite": true, "rmse": 653.1963500976562}
+{"node": "t90", "op": "rms_norm", "shape": [32, 1024], "native_max": 0.0, "mlx_max": 8.5625, "nonzero": 0, "finite": true, "rmse": 0.9999982118606567}
+{"node": "t93", "op": "reshape", "shape": [256, 128], "native_max": 0.0, "mlx_max": 91.25, "nonzero": 0, "finite": true, "rmse": 7.722194194793701}
+{"node": "t94", "op": "rms_norm", "shape": [256, 128], "native_max": 0.0, "mlx_max": 8.203125, "nonzero": 0, "finite": true, "rmse": 0.9999996423721313}
+{"node": "t97", "op": "reshape", "shape": [2048, 128], "native_max": 0.0, "mlx_max": 51.21875, "nonzero": 0, "finite": true, "rmse": 1.3975950479507446}
+{"node": "t98", "op": "rms_norm", "shape": [2048, 128], "native_max": 0.0, "mlx_max": 4.828125, "nonzero": 0, "finite": true, "rmse": 0.2072884887456894}
+{"node": "t101", "op": "reshape", "shape": [512, 128], "native_max": 0.0, "mlx_max": 56.75, "nonzero": 0, "finite": true, "rmse": 5.414920806884766}
+{"node": "t102", "op": "rms_norm", "shape": [512, 128], "native_max": 0.0, "mlx_max": 7.625, "nonzero": 0, "finite": true, "rmse": 0.9999979734420776}
+{"node": "t163", "op": "add", "shape": [32, 1024], "native_max": 599.5, "mlx_max": 4640.0, "nonzero": 8192, "finite": true, "rmse": 678.9393310546875}
+{"node": "t164", "op": "rms_norm", "shape": [32, 1024], "native_max": 0.0, "mlx_max": 10.375, "nonzero": 0, "finite": true, "rmse": 0.9999987483024597}
+{"node": "t170", "op": "add", "shape": [32, 1024], "native_max": 599.5, "mlx_max": 5384.0, "nonzero": 8192, "finite": true, "rmse": 755.6958618164062}
+{"node": "t171", "op": "rms_norm", "shape": [32, 1024], "native_max": 0.0, "mlx_max": 9.78125, "nonzero": 0, "finite": true, "rmse": 1.0000022649765015}
+{"node": "t174", "op": "reshape", "shape": [256, 128], "native_max": 0.0, "mlx_max": 63.6875, "nonzero": 0, "finite": true, "rmse": 5.622860431671143}
+{"node": "t175", "op": "rms_norm", "shape": [256, 128], "native_max": 0.0, "mlx_max": 8.1875, "nonzero": 0, "finite": true, "rmse": 1.0000005960464478}
+{"node": "t178", "op": "reshape", "shape": [2048, 128], "native_max": 0.0, "mlx_max": 34.90625, "nonzero": 0, "finite": true, "rmse": 1.3117924928665161}
+{"node": "t179", "op": "rms_norm", "shape": [2048, 128], "native_max": 0.0, "mlx_max": 4.40234375, "nonzero": 0, "finite": true, "rmse": 0.20728857815265656}
+{"node": "t182", "op": "reshape", "shape": [512, 128], "native_max": 0.0, "mlx_max": 43.90625, "nonzero": 0, "finite": true, "rmse": 5.046338081359863}
+{"node": "t183", "op": "rms_norm", "shape": [512, 128], "native_max": 0.0, "mlx_max": 6.12890625, "nonzero": 0, "finite": true, "rmse": 0.9999988675117493}
+{"node": "t244", "op": "add", "shape": [32, 1024], "native_max": 599.5, "mlx_max": 5348.0, "nonzero": 8192, "finite": true, "rmse": 774.0188598632812}
+{"node": "t245", "op": "rms_norm", "shape": [32, 1024], "native_max": 0.0, "mlx_max": 9.6328125, "nonzero": 0, "finite": true, "rmse": 0.9999988675117493}
+{"node": "t251", "op": "add", "shape": [32, 1024], "native_max": 599.5, "mlx_max": 5144.0, "nonzero": 8192, "finite": true, "rmse": 795.6288452148438}
+{"node": "t252", "op": "rms_norm", "shape": [32, 1024], "native_max": 0.0, "mlx_max": 8.109375, "nonzero": 0, "finite": true, "rmse": 0.9999979138374329}

@@ -1,0 +1,348 @@
+{
+  "scope": "Two diagnostic traces; performance table uses the original four-prompt captures.",
+  "cases": [
+    {
+      "case": "capital-fused-ffn",
+      "interface": "Xcode Instruments Neural Engine + Core ML with Time Profiler",
+      "process": {
+        "type": "attached",
+        "return-exit-status": "0",
+        "name": "capture-profile",
+        "pid": "28150",
+        "termination-reason": "exit(0)"
+      },
+      "trace": "supplemental/instruments-attached/capital-fused-ffn/capture-instruments.trace",
+      "instruments_version": "27.0 (27A266a)",
+      "timing_domain": "nanoseconds relative to recording start; host observation file uses system uptime milliseconds",
+      "events": [
+        {
+          "start_ns": 4733457250,
+          "duration_ns": 133434750,
+          "label": "Neural Engine Compile (QoS=Default)"
+        },
+        {
+          "start_ns": 4867819458,
+          "duration_ns": 19633875,
+          "label": "Neural Engine Load: cached"
+        },
+        {
+          "start_ns": 4893146291,
+          "duration_ns": 314292,
+          "label": "Neural Engine Prediction"
+        },
+        {
+          "start_ns": 4893672708,
+          "duration_ns": 285542,
+          "label": "Neural Engine Prediction"
+        },
+        {
+          "start_ns": 4894970416,
+          "duration_ns": 290792,
+          "label": "Neural Engine Prediction"
+        },
+        {
+          "start_ns": 4896322375,
+          "duration_ns": 292791,
+          "label": "Neural Engine Prediction"
+        },
+        {
+          "start_ns": 4896824416,
+          "duration_ns": 329584,
+          "label": "Neural Engine Prediction"
+        },
+        {
+          "start_ns": 4897346833,
+          "duration_ns": 350917,
+          "label": "Neural Engine Prediction"
+        },
+        {
+          "start_ns": 4897911791,
+          "duration_ns": 348542,
+          "label": "Neural Engine Prediction"
+        },
+        {
+          "start_ns": 4898467416,
+          "duration_ns": 304625,
+          "label": "Neural Engine Prediction"
+        },
+        {
+          "start_ns": 4898944458,
+          "duration_ns": 313250,
+          "label": "Neural Engine Prediction"
+        },
+        {
+          "start_ns": 4899459458,
+          "duration_ns": 284042,
+          "label": "Neural Engine Prediction"
+        },
+        {
+          "start_ns": 4899912833,
+          "duration_ns": 282833,
+          "label": "Neural Engine Prediction"
+        },
+        {
+          "start_ns": 4900360625,
+          "duration_ns": 328250,
+          "label": "Neural Engine Prediction"
+        },
+        {
+          "start_ns": 4900858541,
+          "duration_ns": 278834,
+          "label": "Neural Engine Prediction"
+        },
+        {
+          "start_ns": 4901305500,
+          "duration_ns": 267333,
+          "label": "Neural Engine Prediction"
+        },
+        {
+          "start_ns": 4901757458,
+          "duration_ns": 267875,
+          "label": "Neural Engine Prediction"
+        },
+        {
+          "start_ns": 4902193583,
+          "duration_ns": 268458,
+          "label": "Neural Engine Prediction"
+        },
+        {
+          "start_ns": 4902618041,
+          "duration_ns": 262834,
+          "label": "Neural Engine Prediction"
+        },
+        {
+          "start_ns": 4903045416,
+          "duration_ns": 260834,
+          "label": "Neural Engine Prediction"
+        },
+        {
+          "start_ns": 4903468791,
+          "duration_ns": 263250,
+          "label": "Neural Engine Prediction"
+        },
+        {
+          "start_ns": 4903895291,
+          "duration_ns": 260375,
+          "label": "Neural Engine Prediction"
+        },
+        {
+          "start_ns": 4904316958,
+          "duration_ns": 262667,
+          "label": "Neural Engine Prediction"
+        },
+        {
+          "start_ns": 4904737125,
+          "duration_ns": 265583,
+          "label": "Neural Engine Prediction"
+        }
+      ],
+      "raw_kdebug_files": [
+        "kdebug-all.xml"
+      ],
+      "missing": [
+        "loaded executable readback",
+        "Task Manager/Queue MMIO",
+        "DART IOVAs",
+        "runtime BAR relocation",
+        "clock/power registers"
+      ],
+      "prediction_intervals": 22,
+      "warmup_intervals": 2,
+      "warmed_interval_median_ms": 0.2808335,
+      "host_call_median_ms": 0.44799999985843897,
+      "output_equal_to_selected_golden": true,
+      "output_sha256": "252ebb2ff07bf7077a561eaa6b1467965d136be03aba5c3ff1c11dbe5b882d34",
+      "hashes": {
+        "capture/evaluated-runtime/model.mil": "3392faa67bd2fff2bd12e7ab268bf85f59b8a97aeb259278ab034a23eeba4236",
+        "capture/evaluated-runtime/weights/packed.bin": "8c2bf123028f0e1abb8a9b59d0cc8e25334021b4771c4a44cd487fa2d2f8b741",
+        "capture/initial-input-0.bin": "3dbb7a9a3d3bf8bf771f3b1b4effbed1dc6b9dd00ce619b2d753882d6d840d6d",
+        "capture/initial-output-0.bin": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31",
+        "capture/offline-hwx/model.hwx": "bd825404963f450f887ac3391c21d0b992f464ec094b60eb34683f59e17d605d",
+        "capture/output-0.bin": "252ebb2ff07bf7077a561eaa6b1467965d136be03aba5c3ff1c11dbe5b882d34",
+        "host-reference.bin": "c902e72d8e7ff0c7d22a14ce8d2668b6f5eef88821b39454ad8a4c9cd21d632b",
+        "model.mil": "3392faa67bd2fff2bd12e7ab268bf85f59b8a97aeb259278ab034a23eeba4236",
+        "weights/down_weight.bin": "6f02a12812942e85e4a262d81ade8c398c45840ece7ca85410c51c3699e86fc6",
+        "weights/gate_weight.bin": "cdc8f4a1d78837d8233798aedee7e5c8310fd3180c2e64e030a5729876fad5d3",
+        "weights/norm_weight.bin": "f2dfa81fdd09e51e16b0a34050d6a1cf499a5d8446b0da506ffde653898d7366",
+        "weights/packed.bin": "8c2bf123028f0e1abb8a9b59d0cc8e25334021b4771c4a44cd487fa2d2f8b741",
+        "weights/up_weight.bin": "37b9248b5381a437573765ff8e43455fed761292cf64d34b8d3efeb6c06a9305",
+        "x.bin": "3dbb7a9a3d3bf8bf771f3b1b4effbed1dc6b9dd00ce619b2d753882d6d840d6d"
+      },
+      "raw_kdebug_rows": 43042
+    },
+    {
+      "case": "capital-head4096",
+      "interface": "Xcode Instruments Neural Engine + Core ML with Time Profiler",
+      "process": {
+        "type": "attached",
+        "return-exit-status": "0",
+        "name": "capture-profile",
+        "pid": "24796",
+        "termination-reason": "exit(0)"
+      },
+      "trace": "supplemental/instruments-attached/capital-head4096/capture-instruments.trace",
+      "instruments_version": "27.0 (27A266a)",
+      "timing_domain": "nanoseconds relative to recording start; host observation file uses system uptime milliseconds",
+      "events": [
+        {
+          "start_ns": 15943928333,
+          "duration_ns": 227000250,
+          "label": "Neural Engine Compile (QoS=Default)"
+        },
+        {
+          "start_ns": 16173228208,
+          "duration_ns": 19388208,
+          "label": "Neural Engine Load: cached"
+        },
+        {
+          "start_ns": 16199044625,
+          "duration_ns": 105583,
+          "label": "Neural Engine Prediction"
+        },
+        {
+          "start_ns": 16199344708,
+          "duration_ns": 110042,
+          "label": "Neural Engine Prediction"
+        },
+        {
+          "start_ns": 16204800500,
+          "duration_ns": 97875,
+          "label": "Neural Engine Prediction"
+        },
+        {
+          "start_ns": 16205879250,
+          "duration_ns": 102083,
+          "label": "Neural Engine Prediction"
+        },
+        {
+          "start_ns": 16206120666,
+          "duration_ns": 102084,
+          "label": "Neural Engine Prediction"
+        },
+        {
+          "start_ns": 16206351458,
+          "duration_ns": 108917,
+          "label": "Neural Engine Prediction"
+        },
+        {
+          "start_ns": 16206567958,
+          "duration_ns": 125667,
+          "label": "Neural Engine Prediction"
+        },
+        {
+          "start_ns": 16206803916,
+          "duration_ns": 109334,
+          "label": "Neural Engine Prediction"
+        },
+        {
+          "start_ns": 16207010250,
+          "duration_ns": 116291,
+          "label": "Neural Engine Prediction"
+        },
+        {
+          "start_ns": 16207252166,
+          "duration_ns": 102917,
+          "label": "Neural Engine Prediction"
+        },
+        {
+          "start_ns": 16207454125,
+          "duration_ns": 113958,
+          "label": "Neural Engine Prediction"
+        },
+        {
+          "start_ns": 16207660666,
+          "duration_ns": 117917,
+          "label": "Neural Engine Prediction"
+        },
+        {
+          "start_ns": 16207887125,
+          "duration_ns": 109041,
+          "label": "Neural Engine Prediction"
+        },
+        {
+          "start_ns": 16208096583,
+          "duration_ns": 116625,
+          "label": "Neural Engine Prediction"
+        },
+        {
+          "start_ns": 16208313958,
+          "duration_ns": 112708,
+          "label": "Neural Engine Prediction"
+        },
+        {
+          "start_ns": 16208528166,
+          "duration_ns": 121375,
+          "label": "Neural Engine Prediction"
+        },
+        {
+          "start_ns": 16208755500,
+          "duration_ns": 109166,
+          "label": "Neural Engine Prediction"
+        },
+        {
+          "start_ns": 16208965583,
+          "duration_ns": 120708,
+          "label": "Neural Engine Prediction"
+        },
+        {
+          "start_ns": 16209189333,
+          "duration_ns": 114875,
+          "label": "Neural Engine Prediction"
+        },
+        {
+          "start_ns": 16209399291,
+          "duration_ns": 116334,
+          "label": "Neural Engine Prediction"
+        },
+        {
+          "start_ns": 16209612250,
+          "duration_ns": 114000,
+          "label": "Neural Engine Prediction"
+        },
+        {
+          "start_ns": 16209818625,
+          "duration_ns": 117875,
+          "label": "Neural Engine Prediction"
+        }
+      ],
+      "raw_kdebug_files": [
+        "kdebug-all.xml"
+      ],
+      "missing": [
+        "loaded executable readback",
+        "Task Manager/Queue MMIO",
+        "DART IOVAs",
+        "runtime BAR relocation",
+        "clock/power registers"
+      ],
+      "prediction_intervals": 22,
+      "warmup_intervals": 2,
+      "warmed_interval_median_ms": 0.113979,
+      "host_call_median_ms": 0.21799999941140413,
+      "output_equal_to_selected_golden": true,
+      "output_sha256": "b2c6fd4a2846d2e66e8230ca4578ccc0f872b16d031e67ed4630148f878ef7e3",
+      "hashes": {
+        "capture/evaluated-runtime/model.mil": "e04d9923ee9912ce41fe7d4735591c058942774faebe88f5c30bd7ddf7a36127",
+        "capture/evaluated-runtime/weights/head_weight.bin": "7a760ca99fd5f907beda79938cc8377c04f60ce5212f923732e51628bed3fd67",
+        "capture/initial-input-0.bin": "80e9aa832dddb47a8db14f65e9bc2b134ee90b624758c0dc934e580b34e4a8e7",
+        "capture/initial-output-0.bin": "8a39d2abd3999ab73c34db2476849cddf303ce389b35826850f9a700589b4a90",
+        "capture/offline-hwx/model.hwx": "cc3459d0a8840b81d7ba0b94f2e5482384c9e9141a2f62273af78993a251e47a",
+        "capture/offline-hwx/model.hwx-decoded/payloads/segment-0.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "capture/offline-hwx/model.hwx-decoded/payloads/segment-1.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "capture/offline-hwx/model.hwx-decoded/payloads/segment-2.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "capture/offline-hwx/model.hwx-decoded/payloads/segment-3.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "capture/offline-hwx/model.hwx-decoded/payloads/segment-4.bin": "9c181d2b6a03de1318e86bf4111471eff25ee128359f416f48e0b0ec75fbd585",
+        "capture/offline-hwx/model.hwx-decoded/payloads/segment-5.bin": "5aebc9050507e982f772f68f088afb9c7b670f1608f803dab2c7bd2b1db4a508",
+        "capture/offline-hwx/model.hwx-decoded/task-descriptors.bin": "13a953d808b79dd739c50a03a44027ddb0abeb0cdb02582ba6a31464e899f629",
+        "capture/output-0.bin": "b2c6fd4a2846d2e66e8230ca4578ccc0f872b16d031e67ed4630148f878ef7e3",
+        "host-reference.bin": "a9022b24232d8a28f6626b1be1b839181606de9c93de2329519b8afc53f51c56",
+        "model.mil": "e04d9923ee9912ce41fe7d4735591c058942774faebe88f5c30bd7ddf7a36127",
+        "weights/head_weight.bin": "7a760ca99fd5f907beda79938cc8377c04f60ce5212f923732e51628bed3fd67",
+        "x.bin": "80e9aa832dddb47a8db14f65e9bc2b134ee90b624758c0dc934e580b34e4a8e7"
+      },
+      "raw_kdebug_rows": 32524
+    }
+  ],
+  "mmio_dump_obtained": false,
+  "loaded_executable_obtained": false
+}

@@ -1,0 +1,128 @@
+{
+  "receipt_sha256": "684c9460ced5e222eb2136ae0041cc13603e60af7cbf8cea3f868e3a628a495d",
+  "source_hashes_match": true,
+  "verified_source_paths": {
+    "bench_macos_m4_recipe.py": "notes/m1_m4_recipe_sources/684c9460ced5e222eb2136ae0041cc13603e60af7cbf8cea3f868e3a628a495d/scripts/bench_macos_m4_recipe.py",
+    "macos_m4_coreml_runtime.py": "scripts/macos_m4_coreml_runtime.py",
+    "macos_m4_environment.py": "scripts/macos_m4_environment.py",
+    "m1_full_ane.swift": "swift-bench/m1_full_ane.swift",
+    "macos_m4_native_runtime.py": "notes/m1_m4_recipe_sources/684c9460ced5e222eb2136ae0041cc13603e60af7cbf8cea3f868e3a628a495d/scripts/macos_m4_native_runtime.py",
+    "convert_macos_m4_recipe.py": "notes/m1_m4_recipe_sources/684c9460ced5e222eb2136ae0041cc13603e60af7cbf8cea3f868e3a628a495d/scripts/convert_macos_m4_recipe.py",
+    "macos_m4_coreml_models.py": "scripts/macos_m4_coreml_models.py"
+  },
+  "same_target_check": {
+    "passed": true,
+    "pairs": 8,
+    "matched_tokens": 800,
+    "checks": [
+      {
+        "name": "capital",
+        "repeat": 1,
+        "identical": true,
+        "first_mismatch": null,
+        "equal_prefix": 100,
+        "positions_equal": 100,
+        "lengths": [
+          100,
+          100
+        ]
+      },
+      {
+        "name": "capital",
+        "repeat": 2,
+        "identical": true,
+        "first_mismatch": null,
+        "equal_prefix": 100,
+        "positions_equal": 100,
+        "lengths": [
+          100,
+          100
+        ]
+      },
+      {
+        "name": "fibonacci",
+        "repeat": 1,
+        "identical": true,
+        "first_mismatch": null,
+        "equal_prefix": 100,
+        "positions_equal": 100,
+        "lengths": [
+          100,
+          100
+        ]
+      },
+      {
+        "name": "fibonacci",
+        "repeat": 2,
+        "identical": true,
+        "first_mismatch": null,
+        "equal_prefix": 100,
+        "positions_equal": 100,
+        "lengths": [
+          100,
+          100
+        ]
+      },
+      {
+        "name": "math",
+        "repeat": 1,
+        "identical": true,
+        "first_mismatch": null,
+        "equal_prefix": 100,
+        "positions_equal": 100,
+        "lengths": [
+          100,
+          100
+        ]
+      },
+      {
+        "name": "math",
+        "repeat": 2,
+        "identical": true,
+        "first_mismatch": null,
+        "equal_prefix": 100,
+        "positions_equal": 100,
+        "lengths": [
+          100,
+          100
+        ]
+      },
+      {
+        "name": "story",
+        "repeat": 1,
+        "identical": true,
+        "first_mismatch": null,
+        "equal_prefix": 100,
+        "positions_equal": 100,
+        "lengths": [
+          100,
+          100
+        ]
+      },
+      {
+        "name": "story",
+        "repeat": 2,
+        "identical": true,
+        "first_mismatch": null,
+        "equal_prefix": 100,
+        "positions_equal": 100,
+        "lengths": [
+          100,
+          100
+        ]
+      }
+    ]
+  },
+  "trials": 24,
+  "coreml_predictions": 4728,
+  "all_math_planned_ane": true,
+  "active_ane_read_mb": 18061.03,
+  "idle_ane_read_mb": 16.31,
+  "native_parity_trials": 4,
+  "sd_matches_same_target": true,
+  "speedup_ratio_of_means": 1.5934638689206546,
+  "speedup_vs_padded_ane_ar_ratio_of_means": 1.3495122964015012,
+  "optimized_one_row_ane_ar_measured": false,
+  "speedup_3x_mean_reproduced": false,
+  "exact_original_4b_reproduction": false
+}

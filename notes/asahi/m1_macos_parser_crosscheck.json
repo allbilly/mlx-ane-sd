@@ -1,0 +1,31 @@
+{
+  "programs": 51,
+  "all_equal": true,
+  "original_programs": 20,
+  "original_tasks": 332,
+  "original_ordered_writes": 41232,
+  "reference": {
+    "repository": "https://github.com/allbilly/ane",
+    "revision": "9c5d3c21ee941a6bb6b2440ef86c0494cfd698cf",
+    "source_repository_modified_by_capture": false,
+    "source_repository_had_existing_changes": true,
+    "files": {
+      "gpt2/hwx.py": "122a3d28810ff76dbf33e4f9a219591fb8bfa5daeee0a9dbe39662bfec2cc22d",
+      "gpt2/LICENSE-Orion": "94f4476a4da386ed46f831cf7f5890ead55d3848b93642f02c1352c4564f87f7"
+    },
+    "format_references": {
+      "experimental/m1_register_map.md": "1fa4a62a6f53a8d373dce5b6170e2501419409e1b52ffe66b92b6c4abbd15784",
+      "experimental/ane_hwx_regs.h": "78a82f6cd38e038e3679504f67a37e1451175fcae6daaa506146307a767cca35",
+      "hwx_parsing.py": "c9e695f7d797fca649dfd3ef6b39317de065df96f9af7b223c514e388cfa3747",
+      "gpt2/training/dump_hwx.m": "d97cb0a9323673a8b75e7a39847f9768747f09f03c6a1249edfece62c02436be",
+      "experimental/trace.sh": "9005aaa7c687c9b8d48f7413057849efa84498c421658d540b1e726632a66213"
+    },
+    "notes": [
+      "The reference reader checks chain/header and final register state; our ordered stream preserves repeated writes.",
+      "No Linux code or MMIO trace was executed.",
+      "The map lists source Fmt at 0x138A4; the Python reader and C struct place it at 0x13838. Annotation uses the latter.",
+      "Coefficient cache-hint bit ranges disagree between map and C struct, so only the enable bit is annotated."
+    ]
+  },
+  "full_report": ".asahi/m1-sd-macos/ane-parser-crosscheck.json"
+}

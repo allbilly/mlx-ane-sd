@@ -1,0 +1,1726 @@
+{
+  "status": "complete",
+  "rows": [
+    {
+      "name": "capital",
+      "finite": true,
+      "nonzero": 8192,
+      "max_abs": 6.79296875,
+      "cosine": 0.9994157552719116,
+      "relative_rmse": 0.034259263426065445
+    },
+    {
+      "name": "fibonacci",
+      "finite": true,
+      "nonzero": 8191,
+      "max_abs": 5.15625,
+      "cosine": 0.9994761943817139,
+      "relative_rmse": 0.032542090862989426
+    },
+    {
+      "name": "math",
+      "finite": true,
+      "nonzero": 8191,
+      "max_abs": 5.859375,
+      "cosine": 0.999412477016449,
+      "relative_rmse": 0.034266795963048935
+    },
+    {
+      "name": "story",
+      "finite": true,
+      "nonzero": 8192,
+      "max_abs": 4.40625,
+      "cosine": 0.9993047118186951,
+      "relative_rmse": 0.03727741912007332
+    }
+  ],
+  "placement": {
+    "counts": {
+      "unassigned": 100,
+      "MLNeuralEngineComputeDevice": 109
+    },
+    "math_counts": {
+      "MLNeuralEngineComputeDevice": 22
+    },
+    "math_all_ane": true,
+    "ops": [
+      {
+        "op": "const",
+        "outputs": [
+          "layers_0_input_ln_weight"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "constexpr_lut_to_dense",
+        "outputs": [
+          "layers_0_q_weight_palettized"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "layers_0_q_norm_weight"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "constexpr_lut_to_dense",
+        "outputs": [
+          "layers_0_k_weight_palettized"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "constexpr_lut_to_dense",
+        "outputs": [
+          "layers_0_v_weight_palettized"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "layers_0_k_norm_weight"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "layers_0_post_ln_weight"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "constexpr_lut_to_dense",
+        "outputs": [
+          "layers_0_gate_weight_palettized"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "constexpr_lut_to_dense",
+        "outputs": [
+          "layers_0_up_weight_palettized"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "constexpr_lut_to_dense",
+        "outputs": [
+          "layers_0_down_weight_palettized"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "cache_k_begin_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "cache_k_end_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "cache_k_end_mask_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "cache_k_squeeze_mask_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "slice_by_index",
+        "outputs": [
+          "cache_k_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.0060025223606347535
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "cache_v_begin_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "cache_v_end_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "cache_v_end_mask_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "cache_v_squeeze_mask_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "slice_by_index",
+        "outputs": [
+          "cache_v_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.0060025223606347535
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "var_21"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "var_28"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "var_29"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "abs",
+        "outputs": [
+          "var_46_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.000187569879740994
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "var_48_axes_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "reduce_max",
+        "outputs": [
+          "var_48_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 9.390514761813376e-05
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "var_30_to_fp16"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "const_0_to_fp16"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "clip",
+        "outputs": [
+          "clip_0_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 2.0607042452013503e-07
+      },
+      {
+        "op": "real_div",
+        "outputs": [
+          "scaled_1_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.00018766146659633632
+      },
+      {
+        "op": "mul",
+        "outputs": [
+          "var_51_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.0003340319630838483
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "variance_1_axes_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "variance_1_keep_dims_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "reduce_mean",
+        "outputs": [
+          "variance_1_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 9.390514761813376e-05
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "var_54_epsilon_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "inverse",
+        "outputs": [
+          "var_54_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 2.0607042452013503e-07
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "var_55_to_fp16"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "mul",
+        "outputs": [
+          "var_56_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 1.8348923753385223e-07
+      },
+      {
+        "op": "mul",
+        "outputs": [
+          "eps_scaled_1_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 3.262030889490706e-07
+      },
+      {
+        "op": "add",
+        "outputs": [
+          "var_58_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 4.059038626549024e-07
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "var_59_epsilon_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "rsqrt",
+        "outputs": [
+          "var_59_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 2.0607042452013503e-07
+      },
+      {
+        "op": "mul",
+        "outputs": [
+          "normalized_1_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.00016717908308639868
+      },
+      {
+        "op": "mul",
+        "outputs": [
+          "input_1"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.00018789297923466468
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "linear_0_bias_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "linear",
+        "outputs": [
+          "var_64"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.06555717285247259
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "var_65"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "reshape",
+        "outputs": [
+          "var_66"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.0003752313463373303
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "x_1_perm_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "transpose",
+        "outputs": [
+          "x_1"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.00044158711404417234
+      },
+      {
+        "op": "abs",
+        "outputs": [
+          "var_70_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.000375139759481988
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "var_72_axes_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "reduce_max",
+        "outputs": [
+          "var_72_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.000189063890318765
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "const_1_to_fp16"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "clip",
+        "outputs": [
+          "clip_1_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 2.953676084788602e-06
+      },
+      {
+        "op": "real_div",
+        "outputs": [
+          "scaled_3_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.0003766051491674646
+      },
+      {
+        "op": "mul",
+        "outputs": [
+          "var_75_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.0006680639261676966
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "variance_3_axes_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "variance_3_keep_dims_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "reduce_mean",
+        "outputs": [
+          "variance_3_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.000189063890318765
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "var_78_epsilon_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "inverse",
+        "outputs": [
+          "var_78_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 2.953676084788602e-06
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "var_79_to_fp16"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "mul",
+        "outputs": [
+          "var_80_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 2.6300124046518815e-06
+      },
+      {
+        "op": "mul",
+        "outputs": [
+          "eps_scaled_3_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 5.219249423185129e-06
+      },
+      {
+        "op": "add",
+        "outputs": [
+          "var_82_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 6.4944618024784385e-06
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "var_83_epsilon_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "rsqrt",
+        "outputs": [
+          "var_83_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 2.953676084788602e-06
+      },
+      {
+        "op": "mul",
+        "outputs": [
+          "normalized_3_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.00033664158779544084
+      },
+      {
+        "op": "mul",
+        "outputs": [
+          "x_3"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.00033664158779544084
+      },
+      {
+        "op": "mul",
+        "outputs": [
+          "var_92_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.00035490896077658874
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "var_93_begin_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "var_93_end_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "var_93_end_mask_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "slice_by_index",
+        "outputs": [
+          "var_93"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.0002815608900360112
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "const_3_promoted"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "mul",
+        "outputs": [
+          "var_94"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.00016703636923498345
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "var_95_begin_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "var_95_end_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "var_95_end_mask_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "slice_by_index",
+        "outputs": [
+          "var_95"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.0002815608900360112
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "var_97_interleave_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "concat",
+        "outputs": [
+          "var_97"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.00013695310486437778
+      },
+      {
+        "op": "mul",
+        "outputs": [
+          "var_98_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.00035490896077658874
+      },
+      {
+        "op": "add",
+        "outputs": [
+          "q_1_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.0008312911107172401
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "linear_1_bias_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "linear",
+        "outputs": [
+          "var_101"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.06555317204856362
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "var_102"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "reshape",
+        "outputs": [
+          "var_103"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.00018766146659633632
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "x_5_perm_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "linear",
+        "outputs": [
+          "var_106"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.06555317204856362
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "var_107"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "reshape",
+        "outputs": [
+          "var_108"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.00018766146659633632
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "new_v_perm_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "transpose",
+        "outputs": [
+          "x_5"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.0002208474485419842
+      },
+      {
+        "op": "abs",
+        "outputs": [
+          "var_112_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.000187569879740994
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "var_114_axes_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "reduce_max",
+        "outputs": [
+          "var_114_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 9.454625560552974e-05
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "const_4_to_fp16"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "clip",
+        "outputs": [
+          "clip_2_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 1.4882863993120862e-06
+      },
+      {
+        "op": "real_div",
+        "outputs": [
+          "scaled_5_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.0001883025745837323
+      },
+      {
+        "op": "mul",
+        "outputs": [
+          "var_117_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.0003340319630838483
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "variance_5_axes_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "variance_5_keep_dims_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "reduce_mean",
+        "outputs": [
+          "variance_5_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 9.454625560552974e-05
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "var_120_epsilon_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "inverse",
+        "outputs": [
+          "var_120_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 1.4882863993120862e-06
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "var_121_to_fp16"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "mul",
+        "outputs": [
+          "var_122_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 1.3252000488555992e-06
+      },
+      {
+        "op": "mul",
+        "outputs": [
+          "eps_scaled_5_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 2.6096247115925647e-06
+      },
+      {
+        "op": "add",
+        "outputs": [
+          "var_124_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 3.2472309012392192e-06
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "var_125_epsilon_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "rsqrt",
+        "outputs": [
+          "var_125_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 1.4882863993120862e-06
+      },
+      {
+        "op": "mul",
+        "outputs": [
+          "normalized_5_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.00016832079389772042
+      },
+      {
+        "op": "mul",
+        "outputs": [
+          "x_7"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.0001696256062535167
+      },
+      {
+        "op": "mul",
+        "outputs": [
+          "var_134_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.00018789297923466468
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "var_135_begin_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "var_135_end_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "var_135_end_mask_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "slice_by_index",
+        "outputs": [
+          "var_135"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.00014088348023026567
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "const_6_promoted"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "mul",
+        "outputs": [
+          "var_136"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 8.352837846402137e-05
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "var_137_begin_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "var_137_end_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "var_137_end_mask_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "slice_by_index",
+        "outputs": [
+          "var_137"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.00014088348023026567
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "var_139_interleave_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "concat",
+        "outputs": [
+          "var_139"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 6.847655243218889e-05
+      },
+      {
+        "op": "mul",
+        "outputs": [
+          "var_140_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.00018789297923466468
+      },
+      {
+        "op": "add",
+        "outputs": [
+          "new_k_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.00041564555535862006
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "var_143_interleave_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "concat",
+        "outputs": [
+          "var_143_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.002259726230262234
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "transpose_0_perm_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "tile_0_reps_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "transpose",
+        "outputs": [
+          "transpose_0_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.01286981446744674
+      },
+      {
+        "op": "tile",
+        "outputs": [
+          "tile_0_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.009284800634034546
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "concat_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "reshape",
+        "outputs": [
+          "reshape_0_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.012379726546474784
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "transpose_1_perm_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "concat_1"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "transpose",
+        "outputs": [
+          "transpose_1_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.025739486116799968
+      },
+      {
+        "op": "reshape",
+        "outputs": [
+          "reshape_1_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.012379703649760947
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "transpose_4_perm_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "var_146_interleave_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "transpose",
+        "outputs": [
+          "new_v_1"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.0002208474485419842
+      },
+      {
+        "op": "concat",
+        "outputs": [
+          "var_146_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.002259726230262234
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "transpose_2_perm_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "tile_1_reps_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "transpose",
+        "outputs": [
+          "transpose_2_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.01286981446744674
+      },
+      {
+        "op": "tile",
+        "outputs": [
+          "tile_1_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.009284800634034546
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "concat_2"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "reshape",
+        "outputs": [
+          "reshape_2_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.012379726546474784
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "transpose_3_perm_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "concat_3"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "transpose",
+        "outputs": [
+          "transpose_3_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.025739486116799968
+      },
+      {
+        "op": "reshape",
+        "outputs": [
+          "reshape_3_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.012379703649760947
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "v_1_perm_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "var_149_transpose_x_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "var_149_transpose_y_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "transpose",
+        "outputs": [
+          "transpose_4_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.02573943851076879
+      },
+      {
+        "op": "matmul",
+        "outputs": [
+          "var_149_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.006764238788159596
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "var_150_to_fp16"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "mul",
+        "outputs": [
+          "var_151_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.0006889613115534963
+      },
+      {
+        "op": "add",
+        "outputs": [
+          "scores_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.000910848267797601
+      },
+      {
+        "op": "softmax",
+        "outputs": [
+          "var_153_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.0007737486506454359
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "var_154_transpose_x_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "var_154_transpose_y_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "transpose",
+        "outputs": [
+          "v_1_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.02573943851076879
+      },
+      {
+        "op": "matmul",
+        "outputs": [
+          "var_154_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.006764238788159596
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "var_155_perm_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "var_156"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "transpose",
+        "outputs": [
+          "var_155_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.00044158711404417234
+      },
+      {
+        "op": "reshape",
+        "outputs": [
+          "input_3_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.00037520844962349477
+      },
+      {
+        "op": "constexpr_lut_to_dense",
+        "outputs": [
+          "layers_0_o_weight_promoted_to_fp16_palettized"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "linear",
+        "outputs": [
+          "linear_3_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.04832182887213188
+      },
+      {
+        "op": "add",
+        "outputs": [
+          "x_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.00041564555535862006
+      },
+      {
+        "op": "abs",
+        "outputs": [
+          "var_163_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.000187569879740994
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "var_165_axes_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "reduce_max",
+        "outputs": [
+          "var_165_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 9.390514761813376e-05
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "const_7_to_fp16"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "clip",
+        "outputs": [
+          "clip_3_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 2.0607042452013503e-07
+      },
+      {
+        "op": "real_div",
+        "outputs": [
+          "scaled_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.00018766146659633632
+      },
+      {
+        "op": "mul",
+        "outputs": [
+          "var_168_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.0003340319630838483
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "variance_axes_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "variance_keep_dims_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "reduce_mean",
+        "outputs": [
+          "variance_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 9.390514761813376e-05
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "var_171_epsilon_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "inverse",
+        "outputs": [
+          "var_171_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 2.0607042452013503e-07
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "var_172_to_fp16"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "mul",
+        "outputs": [
+          "var_173_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 1.8348923753385223e-07
+      },
+      {
+        "op": "mul",
+        "outputs": [
+          "eps_scaled_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 3.262030889490706e-07
+      },
+      {
+        "op": "add",
+        "outputs": [
+          "var_175_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 4.059038626549024e-07
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "var_176_epsilon_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "rsqrt",
+        "outputs": [
+          "var_176_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 2.0607042452013503e-07
+      },
+      {
+        "op": "mul",
+        "outputs": [
+          "normalized_cast_fp16"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.00016717908308639868
+      },
+      {
+        "op": "mul",
+        "outputs": [
+          "input_5"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.00018789297923466468
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "linear_4_bias_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "linear",
+        "outputs": [
+          "input_7"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.06556117365638157
+      },
+      {
+        "op": "silu",
+        "outputs": [
+          "var_182"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.000562709639222982
+      },
+      {
+        "op": "linear",
+        "outputs": [
+          "var_184"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.06556117365638157
+      },
+      {
+        "op": "mul",
+        "outputs": [
+          "input"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.0010020958892515447
+      },
+      {
+        "op": "linear",
+        "outputs": [
+          "var_187"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.10872319331061764
+      },
+      {
+        "op": "add",
+        "outputs": [
+          "hidden_out"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.00041564555535862006
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "var_195_axes_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "expand_dims",
+        "outputs": [
+          "new_k"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.0001875927764548296
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "var_198_axes_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "expand_dims",
+        "outputs": [
+          "new_v"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.0001875927764548296
+      },
+      {
+        "op": "const",
+        "outputs": [
+          "var_201_axes_0"
+        ],
+        "preferred": "unassigned",
+        "cost": null
+      },
+      {
+        "op": "expand_dims",
+        "outputs": [
+          "captures"
+        ],
+        "preferred": "MLNeuralEngineComputeDevice",
+        "cost": 0.0001875927764548296
+      }
+    ]
+  },
+  "predict_median_ms": 0.9747499971126672,
+  "idle_counter": "ANE_RD_MB 16.60  ANE_WR_MB 6.15  ANE_DCS_RD_MB 1.25  ANE_DCS_WR_MB 0.79  secs 2.0",
+  "active_counter": "ANE_RD_MB 22762.92  ANE_WR_MB 3459.38  ANE_DCS_RD_MB 17559.25  ANE_DCS_WR_MB 540.20  secs 2.0",
+  "counter_predictions": 1454,
+  "qualified": true
+}

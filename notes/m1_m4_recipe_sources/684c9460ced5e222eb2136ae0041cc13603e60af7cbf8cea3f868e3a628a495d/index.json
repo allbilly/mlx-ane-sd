@@ -1,0 +1,12 @@
+{
+  "receipt_sha256": "684c9460ced5e222eb2136ae0041cc13603e60af7cbf8cea3f868e3a628a495d",
+  "sources": {
+    "scripts/bench_macos_m4_recipe.py": "c2eb6dea6a8e7c587c7d2fdea0c4008e6c03e5ec47f4a223e3490cc3c66b12c1",
+    "scripts/macos_m4_coreml_runtime.py": "d5c4d1ac4d8c50f0ef8dcf2c561eae9a96d6948c88ee5c12fc8ae03675f34a73",
+    "scripts/macos_m4_environment.py": "98a8ff944b9e0a5e59e7821d3f6a499141a0ab5ae247dcb71addd0759d0923e3",
+    "swift-bench/m1_full_ane.swift": "5f22905110ab2459d0a356d2077e0b57a60af17fcd8bedf979c5689586afb94f",
+    "scripts/macos_m4_native_runtime.py": "266343515a3fb1603f8731e3e2028d09d72b960c89557108e431b908e2888e56",
+    "scripts/convert_macos_m4_recipe.py": "54bd8d22b94ef6c74cbc69de4fae2fceb48fae0d45d6a9c67e2bed20c8166923",
+    "scripts/macos_m4_coreml_models.py": "3bbea8c10176d0cea969f85e91d3b2bcc89916f874058f7aa55fb582ee970a59"
+  }
+}

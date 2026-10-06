@@ -1,0 +1,7 @@
+# Benchmark receipts and preserved sources are verified by their exact bytes.
+notes/m1_*.json -text
+notes/asahi/m1_macos_*.json -text
+notes/m1_m4_recipe_sources/** -text -whitespace
+
+# These contain gzip-compressed chunks of captured M1 programs and tensors.
+artifacts/m1-ane-replay/*.pack binary

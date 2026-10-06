@@ -1,0 +1,126 @@
+[wait] another workload holds ane.lock
+[configuration] body_ane_head_gpu_batch
+[ANE compile] complete three-layer draft body
+/Users/yeren/Desktop/mlx-ane-sd/scripts/dflash_macos_ane.py:120: DispatchFloorWarning: aneforge.compile: dispatch-floor-bound program (predicted ~82us, ~all of it the fixed per-call cost). Every ANE call pays a fixed dispatch + firmware round-trip (~0.2 ms on M1) regardless of how small the work is, and dispatch is single-in-flight (threads/concurrency do NOT amortize it). To amortize, do more work per call: increase batch N (per-sample cost falls ~linearly toward the compute rate) or chain more ops into one program (share_buffer keeps state resident). Silence: filter aneforge.DispatchFloorWarning.
+  self.body = af.compile(out, build_dir=build, opt=0)
+/Users/yeren/Desktop/ANEForge/aneforge/_compile.py:1347: UserWarning: aneforge: last-axis-offset slice_by_size(begin=[0, 0, 0, 64]) on a pre-A16 ANE (family 2) saturates any sliced |value| > 4094 (=65504/16) to +/-inf via the Q.4 crop-DMA. Safe if the data stays under 4094; otherwise slice with a zero last-axis begin or on the host.
+  out = _retarget_for(out, target)  # gate ops/shapes for the target ANE family
+[placement] ANE mask=0x4, body ops=246, head=gpu
+0 capital baseline: 37.93 tok/s
+0 capital dflash: 13.71 tok/s
+  identity=False ANE calls=98 stock_speedup=0.304x
+0 fibonacci baseline: 41.60 tok/s
+0 fibonacci dflash: 14.54 tok/s
+  identity=True ANE calls=98 stock_speedup=0.327x
+0 math baseline: 36.13 tok/s
+0 math dflash: 13.67 tok/s
+  identity=False ANE calls=98 stock_speedup=0.305x
+0 story baseline: 41.92 tok/s
+0 story dflash: 15.54 tok/s
+  identity=False ANE calls=98 stock_speedup=0.377x
+1 capital dflash: 14.06 tok/s
+1 capital baseline: 38.43 tok/s
+  identity=False ANE calls=98 stock_speedup=0.314x
+1 fibonacci dflash: 13.56 tok/s
+1 fibonacci baseline: 36.45 tok/s
+  identity=True ANE calls=98 stock_speedup=0.303x
+1 math dflash: 13.38 tok/s
+1 math baseline: 36.42 tok/s
+  identity=False ANE calls=98 stock_speedup=0.300x
+1 story dflash: 13.74 tok/s
+1 story baseline: 38.27 tok/s
+  identity=False ANE calls=98 stock_speedup=0.305x
+{
+  "stock_mean_tps": 44.36196884847926,
+  "dflash_mean_tps": 14.025222465241244,
+  "mean_speedup_vs_stock": 0.3167672246258469,
+  "max_speedup_vs_stock": 0.3765874582270488,
+  "identity_trials": 2,
+  "trials": 8,
+  "qualified": false,
+  "ane_evaluations": 784
+}
+[configuration] body_ane_head_ane_batch
+[ANE compile] complete three-layer draft body
+/Users/yeren/Desktop/mlx-ane-sd/scripts/dflash_macos_ane.py:120: DispatchFloorWarning: aneforge.compile: dispatch-floor-bound program (predicted ~82us, ~all of it the fixed per-call cost). Every ANE call pays a fixed dispatch + firmware round-trip (~0.2 ms on M1) regardless of how small the work is, and dispatch is single-in-flight (threads/concurrency do NOT amortize it). To amortize, do more work per call: increase batch N (per-sample cost falls ~linearly toward the compute rate) or chain more ops into one program (share_buffer keeps state resident). Silence: filter aneforge.DispatchFloorWarning.
+  self.body = af.compile(out, build_dir=build, opt=0)
+/Users/yeren/Desktop/ANEForge/aneforge/_compile.py:1347: UserWarning: aneforge: last-axis-offset slice_by_size(begin=[0, 0, 0, 64]) on a pre-A16 ANE (family 2) saturates any sliced |value| > 4094 (=65504/16) to +/-inf via the Q.4 crop-DMA. Safe if the data stays under 4094; otherwise slice with a zero last-axis begin or on the host.
+  out = _retarget_for(out, target)  # gate ops/shapes for the target ANE family
+[ANE compile] tiled full-vocabulary draft head
+[placement] ANE mask=0x4, body ops=246, head=ane
+0 capital baseline: 36.71 tok/s
+0 capital dflash: 12.63 tok/s
+  identity=False ANE calls=196 stock_speedup=0.275x
+0 fibonacci baseline: 37.25 tok/s
+0 fibonacci dflash: 12.51 tok/s
+  identity=True ANE calls=196 stock_speedup=0.274x
+0 math baseline: 36.96 tok/s
+0 math dflash: 12.02 tok/s
+  identity=False ANE calls=196 stock_speedup=0.271x
+0 story baseline: 36.71 tok/s
+0 story dflash: 12.21 tok/s
+  identity=False ANE calls=196 stock_speedup=0.266x
+1 capital dflash: 11.70 tok/s
+1 capital baseline: 37.22 tok/s
+  identity=False ANE calls=196 stock_speedup=0.256x
+1 fibonacci dflash: 11.67 tok/s
+1 fibonacci baseline: 38.15 tok/s
+  identity=True ANE calls=196 stock_speedup=0.252x
+1 math dflash: 11.48 tok/s
+1 math baseline: 37.20 tok/s
+  identity=False ANE calls=196 stock_speedup=0.250x
+1 story dflash: 11.14 tok/s
+1 story baseline: 36.75 tok/s
+  identity=False ANE calls=196 stock_speedup=0.244x
+{
+  "stock_mean_tps": 45.70180143105293,
+  "dflash_mean_tps": 11.919205441093785,
+  "mean_speedup_vs_stock": 0.26085732618087865,
+  "max_speedup_vs_stock": 0.27513551985739126,
+  "identity_trials": 2,
+  "trials": 8,
+  "qualified": false,
+  "ane_evaluations": 1568
+}
+[configuration] body_ane_head_ane_serial
+[ANE compile] complete three-layer draft body
+/Users/yeren/Desktop/mlx-ane-sd/scripts/dflash_macos_ane.py:120: DispatchFloorWarning: aneforge.compile: dispatch-floor-bound program (predicted ~82us, ~all of it the fixed per-call cost). Every ANE call pays a fixed dispatch + firmware round-trip (~0.2 ms on M1) regardless of how small the work is, and dispatch is single-in-flight (threads/concurrency do NOT amortize it). To amortize, do more work per call: increase batch N (per-sample cost falls ~linearly toward the compute rate) or chain more ops into one program (share_buffer keeps state resident). Silence: filter aneforge.DispatchFloorWarning.
+  self.body = af.compile(out, build_dir=build, opt=0)
+/Users/yeren/Desktop/ANEForge/aneforge/_compile.py:1347: UserWarning: aneforge: last-axis-offset slice_by_size(begin=[0, 0, 0, 64]) on a pre-A16 ANE (family 2) saturates any sliced |value| > 4094 (=65504/16) to +/-inf via the Q.4 crop-DMA. Safe if the data stays under 4094; otherwise slice with a zero last-axis begin or on the host.
+  out = _retarget_for(out, target)  # gate ops/shapes for the target ANE family
+[ANE compile] tiled full-vocabulary draft head
+[placement] ANE mask=0x4, body ops=246, head=ane
+0 capital baseline: 36.04 tok/s
+0 capital dflash: 20.27 tok/s
+  identity=True ANE calls=196 stock_speedup=0.465x
+0 fibonacci baseline: 36.65 tok/s
+0 fibonacci dflash: 19.55 tok/s
+  identity=True ANE calls=196 stock_speedup=0.429x
+0 math baseline: 37.82 tok/s
+0 math dflash: 18.86 tok/s
+  identity=True ANE calls=196 stock_speedup=0.403x
+0 story baseline: 38.68 tok/s
+0 story dflash: 19.14 tok/s
+  identity=True ANE calls=196 stock_speedup=0.408x
+1 capital dflash: 19.06 tok/s
+1 capital baseline: 38.42 tok/s
+  identity=True ANE calls=196 stock_speedup=0.404x
+1 fibonacci dflash: 19.02 tok/s
+1 fibonacci baseline: 38.25 tok/s
+  identity=True ANE calls=196 stock_speedup=0.408x
+1 math dflash: 18.90 tok/s
+1 math baseline: 34.22 tok/s
+  identity=True ANE calls=196 stock_speedup=0.422x
+1 story dflash: 17.12 tok/s
+1 story baseline: 35.63 tok/s
+  identity=True ANE calls=196 stock_speedup=0.483x
+{
+  "stock_mean_tps": 44.61779378425186,
+  "dflash_mean_tps": 18.988714396238866,
+  "mean_speedup_vs_stock": 0.427699829025518,
+  "max_speedup_vs_stock": 0.48334139504301254,
+  "identity_trials": 8,
+  "trials": 8,
+  "qualified": true,
+  "ane_evaluations": 1568
+}
