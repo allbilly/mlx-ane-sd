@@ -2,14 +2,17 @@
 
 The full-stack reference is in
 [artifacts/m1-full-ane](../artifacts/m1-full-ane/README.md). It is approximately
-**5.54 MB**. The earlier 44.9 MB microkernel bundle is preserved locally at
-`.asahi/compact-m1/archived-microkernel-reference/`, outside Git, and is not
-required by the full-stack runner. Model weights,
+**5.54 MB**. After successful Asahi validation, the entire ignored `.asahi/`
+directory was removed, including the earlier 44.9 MB microkernel bundle.
+The full-stack runner does not require that bundle. Model weights,
 compiler weight BLOBs, complete weight-bearing HWX files and bulk input/output
 dumps are excluded. Public checkpoints stay external; compact templates and
 recipes reconstruct every HWX byte locally. The superseded 1.106 GB packaging
-was removed from the unpublished commit, with the original captures retained
-locally.
+was removed from the unpublished commit. Original bulk captures, compiled
+CoreML models, downloaded checkpoints and runtime caches have now been deleted
+locally as well. The small reference, source snapshots and benchmark receipts
+remain in Git; [the cleanup receipt](m1_local_cache_cleanup.json) records both
+cleanup stages and the verified hashes before deletion.
 
 ## Measured scope
 
@@ -88,7 +91,7 @@ Compiler/loading interfaces were cross-checked with
 [coreml_to_ane_hwx](https://github.com/freedomtan/coreml_to_ane_hwx) and
 [ane_pmu_profiler](https://github.com/freedomtan/ane_pmu_profiler).
 
-## Asahi validation remains necessary
+## Validated Asahi replay
 
 Follow the bundle README for pinned `hf download` commands and Linux runs.
 Its offline commands select a macOS or Linux NumPy environment explicitly;
@@ -109,8 +112,73 @@ against the entire task chain. The separate queue bootstrap uses network ID
 IOVAs. No live macOS MMIO or firmware readback is claimed.
 
 Direct precompiled macOS loading failed at stage 4 / underlying `0x1`, while
-standalone MIL execution succeeded. The Linux driver's full descriptor-chain
-support, numerical identity and throughput still need hardware testing. The
-benchmark refuses to run until regenerated golden calls pass and saves
-failure receipts. This material supports the port; it does not guarantee 1.6×
-under Linux. Existing Asahi code and original speed receipts remain unchanged.
+standalone MIL execution succeeded. Asahi now executes all five offline exports;
+all 588 selected output hashes and four complete SD traces match macOS.
+The four-prompt, four-pass confirmation measured **61.39 tok/s SD versus
+36.22 tok/s stock MLX BF16 (1.695×)**, or **1.182×** its same LUT6 ANE AR
+control. All 1,600 measured SD tokens and acceptance decisions match macOS.
+See [the Linux report](m1_asahi_full_ane_results.md) and
+[the confirmed scheduler recipe](m1_asahi_scheduler_results.md). The benchmark
+still verifies regenerated golden calls before timing and saves failures.
+
+## Recreate local assets only when needed
+
+`.gitignore` prevents `.asahi/` from being transferred by Git; it does not make
+model weights unnecessary at runtime. The successful Asahi run downloaded the
+public checkpoints and rebuilt its own kernels. No copy of this macOS cache
+is needed. With no `.asahi/` directory, the small kit can still be verified and
+its buffer plans inspected using Python and NumPy. Follow the
+[bundle README](../artifacts/m1-full-ane/README.md) for a fresh environment,
+pinned `hf download` commands, reconstruction and Linux verification.
+
+Reconstruction recreates approximately 502 MB of runtime HWX from the two
+public checkpoints. The checkpoints total approximately 1.92 GB. Linux also
+needs its MLX/Vulkan environment and a C compiler with OpenMP; see
+[Asahi environment setup](asahi_findings.md#environment-and-reproduction).
+These assets are disposable local caches and may be removed again after a run.
+Exact Linux replay uses the committed templates and recipes; it does not
+require recompiling CoreML or deriving templates from old captures.
+
+For another native macOS benchmark, recreate the Metal environment separately.
+The deleted environment used Python 3.11.17 and these package versions:
+
+```bash
+python3.11 -m venv .asahi/venv-metal
+.asahi/venv-metal/bin/python -m pip install \
+  mlx==0.32.2 mlx-lm==0.31.3 numpy==2.4.6 \
+  huggingface-hub==1.33.0 transformers==5.18.0 \
+  safetensors==0.8.0 tokenizers==0.23.2
+```
+
+Download the pinned checkpoints to `.asahi/models/m1-full-ane-target` and
+`.asahi/models/m1-full-ane-draft` using the bundle's `hf download` commands.
+The conversion helper also reads the existing external
+`~/more-ane-transformers/.venv` without modifying it. That reference environment
+contains Python 3.11, NumPy 1.26.4, Torch 2.5.1 and coremltools 9.0 and was not
+deleted by this cleanup. With that environment and Apple's compiler available:
+
+```bash
+.asahi/venv-metal/bin/python scripts/convert_macos_m4_recipe.py \
+  --target .asahi/models/m1-full-ane-target \
+  --draft .asahi/models/m1-full-ane-draft \
+  --out .asahi/m4-recipe-m1-reviewed
+swiftc -O -framework CoreML swift-bench/m1_full_ane.swift \
+  -o .asahi/m4-recipe-m1-reviewed/m1-full-ane
+.asahi/venv-metal/bin/python scripts/bench_macos_m4_recipe.py --native \
+  --artifacts .asahi/m4-recipe-m1-reviewed \
+  --max-new 100 --repeats 2 --out notes/m1_m4_recipe_reviewed.json
+```
+
+Use fresh artifact and receipt paths. Recompilation creates new measured assets;
+compiler or quantizer changes can change their hashes. The original measured
+source snapshots, embedded manifest and completed audit remain committed.
+The original report auditor also checks the old native binary on disk, so it
+cannot rerun that filesystem check after the cache is deleted.
+
+The small [request-surface capture patch](m1_capture_request_surfaces.patch)
+preserves the unique diagnostic helper extracted before deletion. It adds
+IOSurface allocation/stride observations and initial surface dumps to
+`asahi/macos/capture.m`, with the follow-up's alphabetical MIL input ordering.
+It records userspace request surfaces, not device IOVAs, live BARs or MMIO.
+It is an optional historical reference; the current full-stack replay does not
+depend on it. The base Asahi capture source was left unchanged.

@@ -1,0 +1,63 @@
+--- a/asahi/macos/capture.m
++++ b/asahi/macos/capture.m
+@@ -17,6 +17,34 @@
+ static int compare_double(const void *a, const void *b) {
+     double x=*(const double*)a, y=*(const double*)b;
+     return (x>y)-(x<y);
++}
++
++// Record the actual request surfaces; these are not device IOVAs or BAR mappings.
++static NSDictionary *surface_binding(IOSurfaceRef surface, NSDictionary *tensor,
++                                      NSString *role, int index, NSString *out) {
++    size_t bytes=IOSurfaceGetAllocSize(surface);
++    NSString *file=[NSString stringWithFormat:@"initial-%@-%d.bin",role,index];
++    IOSurfaceLock(surface,kIOSurfaceLockReadOnly,NULL);
++    [[NSData dataWithBytes:IOSurfaceGetBaseAddress(surface) length:bytes]
++        writeToFile:[out stringByAppendingPathComponent:file] atomically:YES];
++    IOSurfaceUnlock(surface,kIOSurfaceLockReadOnly,NULL);
++    NSArray *shape=tensor[@"shape"];
++    size_t channels=[shape[1] unsignedLongLongValue], seq=[shape[3] unsignedLongLongValue];
++    NSMutableArray *planes=[NSMutableArray array];
++    for(size_t p=0;p<IOSurfaceGetPlaneCount(surface);p++) {
++        [planes addObject:@{@"index":@(p),@"width":@(IOSurfaceGetWidthOfPlane(surface,p)),
++            @"height":@(IOSurfaceGetHeightOfPlane(surface,p)),
++            @"bytes_per_row":@(IOSurfaceGetBytesPerRowOfPlane(surface,p)),
++            @"bytes_per_element":@(IOSurfaceGetBytesPerElementOfPlane(surface,p))}];
++    }
++    return @{@"role":role,@"request_index":@(index),@"name":tensor[@"name"],
++        @"dtype":@"float16",@"shape":shape,@"logical_bytes":@(channels*seq*2),
++        @"physical_strides_bytes":@[@(channels*seq*2),@(seq*2),@(seq*2),@2],
++        @"iosurface_id":@(IOSurfaceGetID(surface)),@"allocation_bytes":@(bytes),
++        @"width":@(IOSurfaceGetWidth(surface)),@"height":@(IOSurfaceGetHeight(surface)),
++        @"bytes_per_row":@(IOSurfaceGetBytesPerRow(surface)),
++        @"bytes_per_element":@(IOSurfaceGetBytesPerElement(surface)),@"planes":planes,
++        @"initial_payload":file,@"device_iova":NSNull.null,@"logical_bar":NSNull.null};
+ }
+ 
+ int main(int argc, char **argv) { @autoreleasepool {
+@@ -39,7 +67,7 @@
+     if (!orion_ane_init()) return 1;
+     OrionProgram *program=orion_compile_mil(mil.UTF8String,weights,desc[@"label"] ? [desc[@"label"] UTF8String] : "sd-capture");
+     if (!program) return 1;
+-    NSArray *in_desc=desc[@"inputs"], *out_desc=desc[@"outputs"];
++    NSArray *in_desc=[desc[@"inputs"] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]], *out_desc=desc[@"outputs"];
+     int ni=(int)in_desc.count, no=(int)out_desc.count;
+     IOSurfaceRef inputs[ni], outputs[no];
+     memset(inputs,0,sizeof(inputs)); memset(outputs,0,sizeof(outputs));
+@@ -56,6 +84,16 @@
+         NSArray *shape=out_desc[i][@"shape"];
+         outputs[i]=orion_tensor_create([shape[1] intValue],[shape[3] intValue]);
+         ok=outputs[i]!=NULL;
++    }
++    if(ok) {
++        NSMutableArray *bindings=[NSMutableArray array];
++        for(int i=0;i<ni;i++) [bindings addObject:surface_binding(inputs[i],in_desc[i],@"input",i,out)];
++        for(int i=0;i<no;i++) [bindings addObject:surface_binding(outputs[i],out_desc[i],@"output",i,out)];
++        NSDictionary *request=@{@"schema":@1,@"qos":@21,@"procedure_index":@0,
++            @"weights_buffer":NSNull.null,@"surfaces":bindings,
++            @"unavailable":@[@"device IOVAs",@"runtime BAR mappings",@"internal scratch buffers",@"live MMIO"]};
++        [[NSJSONSerialization dataWithJSONObject:request options:NSJSONWritingPrettyPrinted error:nil]
++            writeToFile:[out stringByAppendingPathComponent:@"request-bindings.json"] atomically:YES];
+     }
+     double samples[20];
+     for (int i=0;i<22 && ok;i++) {

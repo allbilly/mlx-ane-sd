@@ -1,0 +1,309 @@
+{
+  "status": "complete",
+  "source_commit": "d049a463ec96ae0a78823ffc062a77b61b2afcd4",
+  "purpose": "Remove the complete ignored .asahi directory after preserving useful source, documentation and verification receipts outside it.",
+  "previous_partial_cleanup": {
+    "status": "complete",
+    "started_utc": "2026-10-06T17:49:47.280998+00:00",
+    "purpose": "Remove superseded macOS captures and failed download caches after complete Asahi replay validation",
+    "source_commit": "d049a463ec96ae0a78823ffc062a77b61b2afcd4",
+    "checklist": [
+      {
+        "item": "Validate retained checkpoints, five kernels, compact kit and Linux confirmation",
+        "done": true
+      },
+      {
+        "item": "Remove the inspected obsolete dumps and incomplete downloads",
+        "done": true
+      },
+      {
+        "item": "Verify reconstruction, retained assets and actual reclaimed space",
+        "done": true
+      }
+    ],
+    "before_disk_bytes": 14772355072,
+    "planned_reclaimed_disk_bytes": 10334294016,
+    "deletions": [
+      {
+        "path": ".asahi/m1-sd-macos-results.tar.gz",
+        "disk_bytes": 3105488896,
+        "kind": "file",
+        "deleted": true
+      },
+      {
+        "path": ".asahi/m1-sd-macos-results.tar.gz.sha256",
+        "disk_bytes": 4096,
+        "kind": "file",
+        "deleted": true
+      },
+      {
+        "path": ".asahi/m1-sd-macos/cases",
+        "disk_bytes": 769441792,
+        "kind": "directory",
+        "deleted": true
+      },
+      {
+        "path": ".asahi/m1-sd-macos/supplemental",
+        "disk_bytes": 2126454784,
+        "kind": "directory",
+        "deleted": true
+      },
+      {
+        "path": ".asahi/m1-sd-macos/goldens",
+        "disk_bytes": 4194304,
+        "kind": "directory",
+        "deleted": true
+      },
+      {
+        "path": ".asahi/m1-full-stack-capture",
+        "disk_bytes": 1268072448,
+        "kind": "directory",
+        "deleted": true
+      },
+      {
+        "path": ".asahi/compact-m1/oversized-unpublished-kit",
+        "disk_bytes": 1108299776,
+        "kind": "directory",
+        "deleted": true
+      },
+      {
+        "path": ".asahi/compact-m1/kit",
+        "disk_bytes": 8192,
+        "kind": "directory",
+        "deleted": true
+      },
+      {
+        "path": ".asahi/compact-m1/kit2",
+        "disk_bytes": 8192,
+        "kind": "directory",
+        "deleted": true
+      },
+      {
+        "path": ".asahi/compact-m1/kit3",
+        "disk_bytes": 8192,
+        "kind": "directory",
+        "deleted": true
+      },
+      {
+        "path": ".asahi/compact-m1/kit4",
+        "disk_bytes": 8192,
+        "kind": "directory",
+        "deleted": true
+      },
+      {
+        "path": ".asahi/compact-m1/kit5",
+        "disk_bytes": 5586944,
+        "kind": "directory",
+        "deleted": true
+      },
+      {
+        "path": ".asahi/compact-m1/roundtrip",
+        "disk_bytes": 5627904,
+        "kind": "directory",
+        "deleted": true
+      },
+      {
+        "path": ".asahi/macos-ane-sd",
+        "disk_bytes": 537874432,
+        "kind": "directory",
+        "deleted": true
+      },
+      {
+        "path": ".asahi/huggingface",
+        "disk_bytes": 1034412032,
+        "kind": "directory",
+        "deleted": true
+      },
+      {
+        "path": ".asahi/target-cdn-parts",
+        "disk_bytes": 177274880,
+        "kind": "directory",
+        "deleted": true
+      },
+      {
+        "path": ".asahi/target-download-parts",
+        "disk_bytes": 67510272,
+        "kind": "directory",
+        "deleted": true
+      },
+      {
+        "path": ".asahi/m1-ane-reference-initial-full",
+        "disk_bytes": 122548224,
+        "kind": "directory",
+        "deleted": true
+      },
+      {
+        "path": ".asahi/m1-sd-macos-prepare-failed",
+        "disk_bytes": 114688,
+        "kind": "directory",
+        "deleted": true
+      },
+      {
+        "path": ".asahi/target-mirror-probe.bin",
+        "disk_bytes": 307200,
+        "kind": "file",
+        "deleted": true
+      },
+      {
+        "path": ".asahi/target-transfer-probe.bin",
+        "disk_bytes": 1048576,
+        "kind": "file",
+        "deleted": true
+      }
+    ],
+    "preserved_paths": [
+      ".asahi/m1-sd-macos/target",
+      ".asahi/models",
+      ".asahi/venv-metal",
+      ".asahi/m4-recipe-m1",
+      ".asahi/compact-m1/runtime",
+      ".asahi/compact-m1/archived-microkernel-reference",
+      ".asahi/hwx-parser-source"
+    ],
+    "checkpoint_sha256": {
+      ".asahi/m1-sd-macos/target/model.safetensors": "bfe05e58f5acdecd38e5f3e64c82071682683a73db0e57fd437523885a49f2ff",
+      ".asahi/models/microcycle-dflash/model.safetensors": "74a0b0f98b2a5b6a82c3c0bf8a4c7fbbe2a85f1920a7b6836ba6a9b716541a64"
+    },
+    "runtime_program_sha256": {
+      ".asahi/compact-m1/runtime/programs/target_0/hwx/model.hwx": "35dd9726e63d5f0baa2aaa0398a4d4d948a9555bccfab8f412cab446c11cce6b",
+      ".asahi/compact-m1/runtime/programs/target_14/hwx/model.hwx": "f63d8ce033a4141a533136a4e074a21724ec7d03a4c9880cd1e3839a3fdbe393",
+      ".asahi/compact-m1/runtime/programs/projector/hwx/model.hwx": "2b722a24d79443cf4179f65cdc2fd8d249b57c3c320303f50c59c9108ff9d5c1",
+      ".asahi/compact-m1/runtime/programs/draft/hwx/model.hwx": "6a7edb1cfdd9c96fd1734c73b0a9d789b882097bb67ebb71991e80c7907f748e",
+      ".asahi/compact-m1/runtime/programs/head/hwx/model.hwx": "ab7a7b0c046b8078e84939710761ff2062c70306d41df0848952e9d4992facc1"
+    },
+    "macos_compiled_source_sha256": {
+      ".asahi/m4-recipe-m1/target_0_14/lut6_per_grouped_channel.mlmodelc/model.mil": "6cb17e53d15b19ab4125b6f4e38929e97ee335aff357fc584864ec38feb7c28f",
+      ".asahi/m4-recipe-m1/target_0_14/lut6_per_grouped_channel.mlmodelc/weights/weight.bin": "352a825eb784d000295d312f7e9e4ee0550d179004b6523d9ca6a138d4d5788d",
+      ".asahi/m4-recipe-m1/target_14_14/lut6_per_grouped_channel.mlmodelc/model.mil": "09c532d527107bf176b48a6ca3f65732f47fea4978a6b9390cb8f8e69ddb0e3d",
+      ".asahi/m4-recipe-m1/target_14_14/lut6_per_grouped_channel.mlmodelc/weights/weight.bin": "3e377895c5538eef7956f6afefd538b6a58beadb7337373d4f8e88b56dfa9ee4",
+      ".asahi/m4-recipe-m1/draft_projector/lut6_per_tensor.mlmodelc/model.mil": "48b7283a211ad98db3073b674cb8db55717c03e12dbf17c66d3f887abb4d626d",
+      ".asahi/m4-recipe-m1/draft_projector/lut6_per_tensor.mlmodelc/weights/weight.bin": "ae66305c49892e6f814afa00cf844461e31255c2b14377e845c71adb3321eef5",
+      ".asahi/m4-recipe-m1/draft_body/lut6_per_tensor.mlmodelc/model.mil": "952fe91512b4aa08b4da74c6e24ccd85c5b5a572141e99f3156c51a796e4a280",
+      ".asahi/m4-recipe-m1/draft_body/lut6_per_tensor.mlmodelc/weights/weight.bin": "21cc1cfb118f8f64457f9afb7d659fbe1568537dafe5855839afc686f44ee40b",
+      ".asahi/m4-recipe-m1/head/lut6_per_grouped_channel.mlmodelc/model.mil": "c160fb3e5c6b9a3d17a80bf08aae0b2db9301699ec17d39aef874a0aaf43e06e",
+      ".asahi/m4-recipe-m1/head/lut6_per_grouped_channel.mlmodelc/weights/weight.bin": "4a0371949003356f665aa5c68c80dd2761845325988567be20fc31ebc0853279"
+    },
+    "linux_confirmation_sha256": "c0ba624a2bce23efb5df84d561ad86e6e318ff83b5c082d38596d011e7a836ad",
+    "retired_capture_archive_sha256": "7862a6b32164023818dc47fea18aeba8a633f2a74d7da651af33b1894bed42d2",
+    "repository_status_before": "",
+    "deletion_finished_utc": "2026-10-06T17:50:43.273027+00:00",
+    "finished_utc": "2026-10-06T17:52:25.907567+00:00",
+    "after_disk_bytes": 4438069248,
+    "reclaimed_disk_bytes": 10334285824,
+    "verification": {
+      "complete_runtime_hwx_hashes": 5,
+      "retained_checkpoint_and_compiled_source_hashes_unchanged": true,
+      "linux_confirmation_unchanged": true,
+      "macos_native_binary_hash_unchanged": true,
+      "compact_kit_verified": true,
+      "offline_reconstruction_cli_passed": true,
+      "host_tests_ran": 19,
+      "host_tests_skipped": 1,
+      "host_tests_passed": 18,
+      "optional_microkernel_archive_files_verified": 433
+    }
+  },
+  "complete_removal": {
+    "started_utc": "2026-10-06T18:10:16.148632+00:00",
+    "directory": ".asahi",
+    "before_disk_bytes": 4438069248,
+    "checklist": [
+      {
+        "item": "Extract unique capture helper and document recovery without bulk dumps",
+        "done": true
+      },
+      {
+        "item": "Remove the complete ignored directory after verifying retained provenance",
+        "done": true
+      },
+      {
+        "item": "Verify compact kit and offline plans without .asahi; confirm reclaimed space",
+        "done": true
+      }
+    ],
+    "checkpoint_sha256_before_removal": {
+      ".asahi/m1-sd-macos/target/model.safetensors": "bfe05e58f5acdecd38e5f3e64c82071682683a73db0e57fd437523885a49f2ff",
+      ".asahi/models/microcycle-dflash/model.safetensors": "74a0b0f98b2a5b6a82c3c0bf8a4c7fbbe2a85f1920a7b6836ba6a9b716541a64"
+    },
+    "runtime_program_sha256_before_removal": {
+      ".asahi/compact-m1/runtime/programs/target_0/hwx/model.hwx": "35dd9726e63d5f0baa2aaa0398a4d4d948a9555bccfab8f412cab446c11cce6b",
+      ".asahi/compact-m1/runtime/programs/target_14/hwx/model.hwx": "f63d8ce033a4141a533136a4e074a21724ec7d03a4c9880cd1e3839a3fdbe393",
+      ".asahi/compact-m1/runtime/programs/projector/hwx/model.hwx": "2b722a24d79443cf4179f65cdc2fd8d249b57c3c320303f50c59c9108ff9d5c1",
+      ".asahi/compact-m1/runtime/programs/draft/hwx/model.hwx": "6a7edb1cfdd9c96fd1734c73b0a9d789b882097bb67ebb71991e80c7907f748e",
+      ".asahi/compact-m1/runtime/programs/head/hwx/model.hwx": "ab7a7b0c046b8078e84939710761ff2062c70306d41df0848952e9d4992facc1"
+    },
+    "reference_sha256_before_removal": {
+      "notes/m1_m4_recipe.json": "684c9460ced5e222eb2136ae0041cc13603e60af7cbf8cea3f868e3a628a495d",
+      "notes/m1_compact_reference_validation.json": "ce3d71485afeea8deefbe8fe1a9d67dc33d4f7dafd0b2c8478bd1d4462001df9",
+      "notes/m1_asahi_scheduler_results.md": "02efa0f6016f5b367e0921ec41511f43e8af5addabc07ec5ee532fdd2d36830b",
+      "notes/m1_linux_full_ane_bench_20261006.json": "4a946723e8d606a1dd08139c6042391581f96737cd4eb6635097883985138f7e",
+      "notes/m1_linux_full_ane_bench_burst_omp4_warm100_20261006.json": "ae26ff9fb9634e4a87d2848125116a0b1a3ca798f00e165c438208a6b3c087f2",
+      "notes/m1_linux_full_ane_bench_grouped_pcores_warm100_20261006.json": "d9fece824f99fde48cdd480aa220efe6123cc52943fec4c1e2a1dc3408132335",
+      "notes/m1_linux_full_ane_bench_integer_pcores_warm100_20261006.json": "0ca10be803f9a321f46e64c7f1599f005ba3a72d9c12ce2f09bf473cbf5e56bf",
+      "notes/m1_linux_full_ane_bench_native_20261006.json": "833fade84fb80e4a4bfa193863e22d09449a80ba5ebe59157106c4ddefad5b80",
+      "notes/m1_linux_full_ane_bench_native_prefix_20261006.json": "de1c75ba82e2bcc3825b06cc44c934c457cf52bb0f16a29f76175e4250bc205a",
+      "notes/m1_linux_full_ane_bench_pcores_draft4_warm100_20261006.json": "25bf126385036707482028684505129986e3c7e9a4f805cc652f9e70bce3837d",
+      "notes/m1_linux_full_ane_bench_prefix_pcores_20261006.json": "b484046fdd0d2efb16b6b115b2561ce63c81543cdda4e16713dffe66170a8933",
+      "notes/m1_linux_full_ane_bench_prefix_pcores_grouped_omp4_20261006.json": "da905bb93dc9bf58990daf23f2a910cf439d25c762d884811db0bf3a1c6b020f",
+      "notes/m1_linux_full_ane_bench_prefix_pcores_omp4_20261006.json": "63a378c35511403a8e6a8708ba0c7181638f01d8a79d30e836ea2820b99a11e2",
+      "notes/m1_linux_full_ane_bench_resident_mapped_20261006.json": "9840e048132b39125bd98d9f6fe1c6ec62ebaa0b5bcb7b61262b90a8c0adc99e",
+      "notes/m1_linux_full_ane_bench_uclamp_confirm_warm100_20261006.json": "c0ba624a2bce23efb5df84d561ad86e6e318ff83b5c082d38596d011e7a836ad",
+      "notes/m1_linux_full_ane_bench_uclamp_omp4_warm100_20261006.json": "cdfb8a3cf21e6b28e80df01a329a1c6c1c8c7cf1113f65924ff49ca2aef93b83",
+      "notes/m1_linux_full_ane_bench_uclamp_pcores_warm100_20261006.json": "17061e320494c9792816e69424c50a72caa8f1c19d6505e86ec8d7177f19ed0f",
+      "notes/m1_linux_full_ane_verify_20261006.json": "7d9abedf54a37845552c13ece8ec14c7da66bd6e4a3e560f047bfd1e378973c6",
+      "notes/m1_linux_full_ane_verify_20261006_access.json": "a0f35ec0170ecfce499063ed8bccbea24ae049db1729b01cf7a6b3a2aa1efa06",
+      "notes/m1_linux_full_ane_verify_mapped_20261006.json": "a3e5f495402c993ef558903f8fef2b94be0c60ca5eb3e384c37c7a23bd9adc48",
+      "notes/m1_linux_full_ane_verify_native_20261006.json": "349dcc8a91da16ed8ff6e90e325956a033f06f9696b626352b5017a937aadf52",
+      "notes/m1_linux_full_ane_verify_native_prefix_20261006.json": "ab1eaca17f06f7b7d64957cce434fb3f879209f7119a2dec5a8ed005227e6b49",
+      "notes/m1_linux_full_ane_verify_resident_20261006.json": "843d478b5035e55357b89ca7c137f7475289c5ec2078df148dbeb00ebe963a5a",
+      "notes/m1_linux_full_ane_verify_resident_surfaces_20261006.json": "08969d8533c41825f6cd2e68dd59501f77bed3972294924adcd2c83ea1cd29b2"
+    },
+    "recovered_source": {
+      "source": ".asahi/m1-sd-macos/build/capture-sorted-inputs.m",
+      "source_sha256": "5ace9a828e21b12dbba77a6d1aa154ebd3d3697765edfb7fba479a9adcc92312",
+      "base": "asahi/macos/capture.m",
+      "base_sha256": "db154ca7d35d60d19ba4b300c5991d210984009fc2b8cff3f1a2b4934d77365b",
+      "patch": "notes/m1_capture_request_surfaces.patch",
+      "patch_sha256": "305a0ec3fcc8621b0b543e785fe557d6fd2be69662e7c02098f46d96afc08f6b",
+      "purpose": "Preserve request IOSurface observations and alphabetical MIL input ordering without retaining captured buffers or changing the base capture source."
+    },
+    "deleted_macos_environment": {
+      "python": "3.11.17",
+      "mlx": "0.32.2",
+      "mlx-lm": "0.31.3",
+      "numpy": "2.4.6",
+      "huggingface-hub": "1.33.0",
+      "transformers": "5.18.0",
+      "safetensors": "0.8.0",
+      "tokenizers": "0.23.2"
+    },
+    "retained_external_conversion_environment": "~/more-ane-transformers/.venv",
+    "recovery_document": "notes/m1_full_ane_asahi_handoff.md",
+    "after_disk_bytes": 0,
+    "reclaimed_disk_bytes": 4438069248,
+    "deleted_utc": "2026-10-06T18:10:49.625473+00:00",
+    "recovered_helper_syntax_check_passed": true,
+    "verification": {
+      "directory_absent_after_checks": true,
+      "compact_kit_verified_without_cache": true,
+      "compact_kit_stored_bytes": 5537635,
+      "offline_plans_passed_without_cache": 5,
+      "host_tests_ran": 19,
+      "host_tests_passed": 17,
+      "host_tests_skipped": 2,
+      "host_test_skip_reasons": [
+        "Pinned external draft deleted with cache",
+        "Native CPU transport requires Linux ARM64"
+      ],
+      "original_benchmark_and_validation_receipt_hashes_unchanged": true,
+      "recovered_patch_applies_to_unchanged_base": true,
+      "recovered_helper_syntax_check_passed": true,
+      "full_reconstruction_checked_before_removal": true,
+      "full_reconstruction_repeated_after_removal": false,
+      "after_removal_verification_environment": "~/more-ane-transformers/.venv (existing, read-only)",
+      "new_linux_hardware_benchmark_run": false
+    },
+    "finished_utc": "2026-10-06T18:11:41.706083+00:00"
+  },
+  "total_reclaimed_disk_bytes": 14772355072
+}

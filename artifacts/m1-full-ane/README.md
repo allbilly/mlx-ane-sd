@@ -3,14 +3,15 @@
 This kit preserves the kernels for the measured M1 macOS result: **72.00 tok/s
 SD versus 45.19 tok/s MLX BF16 Metal (1.593×)** across four prompts, two passes
 and 100 generated tokens. The full-stack runner uses this kit and the public
-checkpoints. Older per-operation capture bundles are optional local debugging
-material and are kept outside Git.
+checkpoints. Older per-operation capture bundles were local debugging material
+and were deleted after successful Asahi validation.
 
 The full-stack reference is about **5.54 MB**. It contains no learned weight
 banks, embedding, compiler `weight.bin`, complete weight-bearing HWX files, or
 captured input/output binaries. Public model checkpoints are downloaded
-separately. Large original captures remain local and are unnecessary for Linux
-reconstruction.
+separately. The entire local `.asahi/` directory has been removed; neither the
+original captures nor its cached environments/models are required for Linux
+reconstruction. See [cache cleanup and recovery](../../notes/m1_full_ane_asahi_handoff.md#recreate-local-assets-only-when-needed).
 
 ## What is retained
 
@@ -39,15 +40,18 @@ the captured CoreML ANE goldens. See
 
 ## Inspect and reconstruct
 
-From the repository root, select the existing Python/NumPy environment for
-the current OS. Planning and reconstruction use only NumPy and the standard
-library. On this macOS workspace the environment is `.asahi/venv-metal/`;
-on Asahi use `.venv-asahi/`:
+From the repository root, select a Python/NumPy environment. Planning and
+reconstruction use only NumPy and the standard library and do not require
+`.asahi/` to exist. This temporary environment also provides the HF CLI for
+downloading checkpoints; on Asahi an existing `.venv-asahi/` can be used instead:
 
 ```bash
-# macOS:
-replay_python=.asahi/venv-metal/bin/python
-# On Asahi Linux, use this assignment instead:
+# Fresh offline inspection environment (macOS or Linux):
+python3 -m venv /tmp/m1-ane-replay
+/tmp/m1-ane-replay/bin/python -m pip install numpy huggingface-hub
+source /tmp/m1-ane-replay/bin/activate
+replay_python=/tmp/m1-ane-replay/bin/python
+# With the existing Asahi environment, use this assignment instead:
 # replay_python=.venv-asahi/bin/python
 
 "$replay_python" scripts/package_m1_full_stack.py verify artifacts/m1-full-ane
