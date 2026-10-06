@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "/home/asahi/mlx-ane-sd/scripts/run_m1_full_ane_replay.py", line 241, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "/home/asahi/mlx-ane-sd/scripts/run_m1_full_ane_replay.py", line 173, in main
+    path=device_path(args.device);result['device']=str(path)
+  File "/home/asahi/mlx-ane-sd/scripts/m1_ane_replay.py", line 99, in device_path
+    raise ValueError('No accessible ANE accel device with the allbilly/libane submit ABI')
+ValueError: No accessible ANE accel device with the allbilly/libane submit ABI

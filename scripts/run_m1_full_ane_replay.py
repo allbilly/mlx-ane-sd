@@ -18,8 +18,8 @@ import numpy as np
 from bench_macos_dflash import device_locks,stock_baseline
 from capture_m1_full_stack import sha256,pack_tensor
 from m1_lut6_weights import Checkpoint,prepare
-from m1_ane_replay import Program,device_path,plan
-from m1_full_ane_host import FullANEStack,generate
+from m1_ane_replay import Program,CacheOutput,device_path,plan
+from m1_full_ane_host import FullANEStack,generate,trace_matches
 
 
 def check_sources(root,templates=True):
@@ -82,6 +82,33 @@ def verify_cases(root,programs,capture,values,result,save):
         def __init__(self,info):
             self.name=info['program']
             self.label=f"target{info['start']}" if info['role']=='target' else info['role']
+        def reset_transport(self):programs[self.name].reset_transport()
+        def commit_cache(self,*args):programs[self.name].commit_cache(*args)
+        def predict_token_ids(self,inputs,start,end,role=None):
+            # Always verify complete physical outputs against captured hashes.
+            # Compare the optimized reduction on the same submission afterwards.
+            outputs=self.predict(inputs,role)
+            program=programs[self.name]
+            expected=program.read_token_ids(start,end,outputs=outputs)
+            actual=program.read_token_ids(start,end)
+            if actual!=expected:raise RuntimeError('Mapped vocabulary reduction differs from full readback')
+            result['head_id_checks']=result.get('head_id_checks',0)+1
+            return actual
+        def predict_verified_ids(self,inputs,candidates,start,end,role=None):
+            outputs=self.predict(inputs,role)
+            program=programs[self.name]
+            expected=program.read_token_ids(start,end,outputs=outputs)
+            actual=program.read_verified_ids(candidates,start,end)
+            count=0
+            for candidate,prediction in zip(candidates,expected):
+                if candidate!=prediction:break
+                count+=1
+            wanted=expected if program.verify_readback=='all' else expected[:count+1]
+            if actual!=wanted:raise RuntimeError('Early-stop verification differs from full head readback')
+            result['head_prefix_checks']=result.get('head_prefix_checks',0)+1
+            # Keep complete historic traces during verification; benchmark traces
+            # record only the predictions that affect emitted tokens/cache state.
+            return expected
         def predict(self,inputs,role=None):
             label=role or self.label
             offset=host.draft_offset if self.name=='projector' else host.offset
@@ -93,11 +120,33 @@ def verify_cases(root,programs,capture,values,result,save):
             if row:
                 if row['offset']!=offset:raise RuntimeError('Regenerated cache offset differs')
                 verify_tensors(inputs,row['inputs'])
-            outputs=programs[self.name].predict(inputs)
+            program=programs[self.name]
+            program.submit(inputs)
+            outputs=program.read_outputs(full=True)
             if row:
+                # Check the actual resident surfaces, not just the CPU mirror.
+                program=programs[self.name]
+                bindings={t['name']:t for t in program.meta['io'] if t['direction']=='inputs'}
+                for tensor in row['inputs']:
+                    binding=bindings[tensor['name']]
+                    raw=program.buffers[binding['bank']].map[:binding['allocation_bytes']]
+                    if hashlib.sha256(raw).hexdigest()!=tensor['sha256']:
+                        raise RuntimeError('Resident input surface differs from macOS golden: '+tensor['name'])
                 checks=verify_tensors(outputs,row['outputs'])
-                result['cases'].append({'case':row['directory'],'inputs_byte_identical':True,'checks':checks})
+                result['cases'].append({'case':row['directory'],'inputs_byte_identical':True,
+                                        'resident_inputs_byte_identical':True,'checks':checks})
                 captured.add((label,stage));save()
+            if program.kv_readback=='prefix':
+                for tensor in program.meta['io']:
+                    if tensor['direction']=='outputs' and tensor['name'] in ('new_k','new_v'):
+                        value=CacheOutput(program,tensor)
+                        if row:
+                            for count in (1,4,8):
+                                actual=value.read_prefix(count)
+                                if actual.tobytes()!=outputs[tensor['name']][:,:,:,:count].tobytes():
+                                    raise RuntimeError('Partial K/V readback differs from full output')
+                                result['kv_prefix_checks']=result.get('kv_prefix_checks',0)+1
+                        outputs[tensor['name']]=value
             return outputs
     host=FullANEStack(root,values,Wrapper)
     class ReceiptTokenizer:
@@ -115,12 +164,33 @@ def verify_cases(root,programs,capture,values,result,save):
 
 class MeasuredProgram:
     def __init__(self,program,owner,label):self.program,self.owner,self.label=program,owner,label
+    def reset_transport(self):self.program.reset_transport()
+    def commit_cache(self,*args):
+        begin=time.perf_counter()
+        self.program.commit_cache(*args)
+        label=self.label+'_cache_update'
+        self.owner.profile[label]=self.owner.profile.get(label,0)+time.perf_counter()-begin
     def predict(self,inputs,role=None):
         begin=time.perf_counter();outputs=self.program.predict(inputs)
         label=role or self.label
         self.owner.profile[label]=self.owner.profile.get(label,0)+time.perf_counter()-begin
         self.owner.calls[label]=self.owner.calls.get(label,0)+1
         return outputs
+    def predict_token_ids(self,inputs,start,end,role=None):
+        begin=time.perf_counter();ids=self.program.predict_token_ids(inputs,start,end)
+        label=role or self.label
+        self.owner.profile[label]=self.owner.profile.get(label,0)+time.perf_counter()-begin
+        self.owner.calls[label]=self.owner.calls.get(label,0)+1
+        return ids
+    def __getattr__(self,name):
+        if name=='predict_verified_ids' and self.program.verify_readback=='accepted-prefix':return self.verified
+        raise AttributeError(name)
+    def verified(self,inputs,candidates,start,end,role=None):
+        begin=time.perf_counter();ids=self.program.predict_verified_ids(inputs,candidates,start,end)
+        label=role or self.label
+        self.owner.profile[label]=self.owner.profile.get(label,0)+time.perf_counter()-begin
+        self.owner.calls[label]=self.owner.calls.get(label,0)+1
+        return ids
 
 
 def mlx_baseline(model,tokenizer,prompt,limit):
@@ -130,6 +200,10 @@ def mlx_baseline(model,tokenizer,prompt,limit):
     row['text']=tokenizer.decode(row['tokens'])
     return row
 
+def synchronize_mlx():
+    import mlx.core as mx
+    mx.synchronize()
+
 
 def main():
     ap=argparse.ArgumentParser(description=__doc__)
@@ -138,11 +212,31 @@ def main():
     ap.add_argument('--device');ap.add_argument('--target',type=Path)
     ap.add_argument('--draft',type=Path)
     ap.add_argument('--cache',type=Path,default=Path('.asahi/m1-full-ane-cache'))
+    ap.add_argument('--transport',choices=('reference','packed','resident'),default='resident')
+    ap.add_argument('--head-readback',choices=('full','rows','mapped','native'),default='mapped')
+    ap.add_argument('--verify-readback',choices=('all','accepted-prefix'),default='all')
+    ap.add_argument('--kv-readback',choices=('full','prefix'),default='full')
+    ap.add_argument('--native-threads',type=int,default=1)
+    ap.add_argument('--cpu-affinity',help='Comma-separated Linux CPU IDs; applies to all three benchmark configurations')
+    ap.add_argument('--cpu-util-min',type=int,help='Optional per-process Linux utilization clamp, 0..1024; applies to all configurations')
     ap.add_argument('--max-new',type=int,default=100);ap.add_argument('--repeats',type=int,default=2)
+    ap.add_argument('--warmup-new',type=int,default=100)
+    ap.add_argument('--num-draft',type=int,help='Useful draft rows; physical ANE block remains unchanged')
     ap.add_argument('--out',type=Path)
     args=ap.parse_args()
-    if args.max_new<1 or args.repeats<1:ap.error('Need positive token limit and repeats')
+    cpu_hint=None
+    if args.cpu_util_min is not None:
+        from m1_scheduler import utilization_minimum
+        cpu_hint=utilization_minimum(args.cpu_util_min)
+    if not 1<=args.native_threads<=32:ap.error('--native-threads must be in 1..32')
+    if args.cpu_affinity:
+        affinity={int(cpu) for cpu in args.cpu_affinity.split(',')}
+        if not affinity or not affinity<=os.sched_getaffinity(0):ap.error('--cpu-affinity must select available CPUs')
+        os.sched_setaffinity(0,affinity)
+    if args.max_new<1 or args.repeats<1 or args.warmup_new<1:ap.error('Need positive token limit, warmup and repeats')
     stack,plans=check_sources(args.root)
+    if args.num_draft is None:args.num_draft=stack['block']-1
+    if not 1<=args.num_draft<stack['block']:ap.error('--num-draft must be in 1..block-1')
     if args.mode=='plan':
         print(json.dumps({'status':'planned','linux_hardware_verified':False,
                           'programs':{k:{key:p[key] for key in ('td_count','td_size','tsk_size','active_bars')} for k,p in plans.items()}},indent=2))
@@ -155,7 +249,13 @@ def main():
                           'program_sha256':{name:p['hwx_sha256'] for name,p in actual.items()}},indent=2))
         return
     if not args.out or args.out.exists():ap.error('--out must name a fresh receipt')
-    result={'status':'waiting','host':platform.platform(),'mode':args.mode,'cases':[],'rows':[],
+    result={'status':'waiting','host':platform.platform(),'mode':args.mode,'transport':args.transport,
+            'head_readback':args.head_readback,'verify_readback':args.verify_readback,
+            'kv_readback':args.kv_readback,'cases':[],'rows':[],
+            'cpu_affinity':sorted(os.sched_getaffinity(0)),
+            'cpu_utilization_hint':cpu_hint,
+            'mlx_synchronized_between_trials':True,
+            'num_draft':args.num_draft,
             'max_new':args.max_new,'repeats':args.repeats,'timing':'decode only; prefill, loading and warm-up excluded',
             'timing_by_impl':{'mlx_bf16':'stock stream_generate generation_tps; time to first token excluded',
                               'ane_lut6_ar':'host decode timer includes last prompt-token forward',
@@ -165,6 +265,14 @@ def main():
                              ('run_m1_full_ane_replay.py','m1_ane_replay.py','m1_full_ane_host.py','m1_lut6_weights.py','capture_m1_full_stack.py','bench_macos_dflash.py')},
             'model_checkpoints':{name:stack[name] for name in ('target','draft')},
             'program_sha256':{k:p['hwx_sha256'] for k,p in plans.items()},'goldens_verified':False}
+    if args.head_readback=='native':
+        from m1_native_transport import library,configure
+        configure(args.native_threads)
+        result['native_transport']=library()[1]
+        result['native_threads']=args.native_threads
+        result['source_sha256']['m1_native_transport.py']=sha256(Path(__file__).parent/'m1_native_transport.py')
+    from m1_scheduler import host_observation
+    result['source_sha256']['m1_scheduler.py']=sha256(Path(__file__).parent/'m1_scheduler.py')
     def save():
         args.out.parent.mkdir(parents=True,exist_ok=True);args.out.write_text(json.dumps(result,indent=2)+'\n')
     save();fd=None;programs={}
@@ -180,7 +288,9 @@ def main():
             for name in plans:
                 example=next(r for r in capture['cases'] if r['program']==name)
                 shapes={t['name']:t['shape'] for t in example['outputs']}
-                programs[name]=Program(fd,runtime/'programs'/name,shapes)
+                programs[name]=Program(fd,runtime/'programs'/name,shapes,transport=args.transport,
+                                       head_readback=args.head_readback,verify_readback=args.verify_readback,
+                                       kv_readback=args.kv_readback)
             result['status']='verifying';save()
             verify_cases(args.root,programs,capture,values,result,save)
             if args.mode=='bench':
@@ -195,9 +305,15 @@ def main():
                 host=FullANEStack(args.root,values,factory)
                 for p in wrappers:p.owner=host
                 def trial(label,prompt,limit):
-                    return mlx_baseline(model,tok,prompt,limit) if label=='mlx_bf16' else generate(host,tok,prompt,limit,label=='ane_lut6_sd')
+                    before=host_observation()
+                    if label=='mlx_bf16':
+                        row=mlx_baseline(model,tok,prompt,limit)
+                        synchronize_mlx()
+                    else:row=generate(host,tok,prompt,limit,label=='ane_lut6_sd',num_draft=args.num_draft)
+                    row['system_before'],row['system_after']=before,host_observation()
+                    return row
                 result['status']='warming'
-                result['warmup']={'max_new':min(10,args.max_new),'excluded_from_rows':True,'calls':[]};save()
+                result['warmup']={'max_new':min(args.warmup_new,args.max_new),'excluded_from_rows':True,'calls':[]};save()
                 for g in capture['generations']:
                     for label in ('mlx_bf16','ane_lut6_ar','ane_lut6_sd'):
                         row=trial(label,g['prompt'],result['warmup']['max_new'])
@@ -216,6 +332,8 @@ def main():
                             raise RuntimeError('SD token identity failed against same LUT6 ANE target')
                         if args.max_new==100 and rows['ane_lut6_sd']['tokens']!=g['tokens']:
                             raise RuntimeError('Linux generation differs from captured macOS compressed target')
+                        if args.max_new==100 and args.num_draft==stack['block']-1 and not trace_matches(rows['ane_lut6_sd']['trace'],g['trace']):
+                            raise RuntimeError('Linux verification decisions/cache state differ from macOS trace')
                 means={label:statistics.mean(r['tok_per_s_decode'] for r in result['rows'] if r['impl']==label)
                        for label in ('mlx_bf16','ane_lut6_ar','ane_lut6_sd')}
                 result['means']=means

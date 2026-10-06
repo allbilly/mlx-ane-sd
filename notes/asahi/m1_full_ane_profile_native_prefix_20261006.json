@@ -1,0 +1,371 @@
+{
+  "schema": 1,
+  "status": "complete",
+  "procedure": "Separate host transport and synchronous submit costs for real M1 SD traces.\n\nThis diagnostic wraps the existing replay implementation without changing its\nprograms, buffers or arithmetic. Its timings are separate from benchmark rates.\n",
+  "generations": [
+    {
+      "prompt": "capital",
+      "tokens": 100,
+      "matches_macOS_trace": true,
+      "tokens_sha256": "63ddbc3eb908bdd461dbe760c441dc3531fef2b10129071f456cdb2815bcfaf0"
+    },
+    {
+      "prompt": "fibonacci",
+      "tokens": 100,
+      "matches_macOS_trace": true,
+      "tokens_sha256": "a23a82cd9a59f101b7e916af62a047b56b4c1f8ced0d9cf2f0fb7cb2c1809a9d"
+    },
+    {
+      "prompt": "math",
+      "tokens": 100,
+      "matches_macOS_trace": true,
+      "tokens_sha256": "e01ea365032b365369d7e62383524536fe20b7ffef2c2a27bfda840bf3b487dc"
+    },
+    {
+      "prompt": "story",
+      "tokens": 100,
+      "matches_macOS_trace": true,
+      "tokens_sha256": "85af63889893b5be6b334b6011a62b787bf0a3828dc639f42650e85ba8cd349b"
+    }
+  ],
+  "transport": "resident",
+  "head_readback": "native",
+  "verify_readback": "accepted-prefix",
+  "kv_readback": "prefix",
+  "source_sha256": {
+    "profile_m1_full_ane_replay.py": "a898db78449b871cc1fa5170efe893ba375035a7e6a465cf155afc713b722445",
+    "m1_ane_replay.py": "2d36d805944296bb0fc5e4e97771b54b4e7d997aa643c189d327a1a78822edeb",
+    "m1_full_ane_host.py": "b43d2486fcf9c999dda98ab1a2af7ccdab1e4b88ef6302ab2421b103221b0a9a",
+    "m1_native_transport.py": "148cb8abd94ef4ac014bf80dde7101592435047a61b1e1a0c6d301e8618e5536"
+  },
+  "program_sha256": {
+    "target_0": "35dd9726e63d5f0baa2aaa0398a4d4d948a9555bccfab8f412cab446c11cce6b",
+    "target_14": "f63d8ce033a4141a533136a4e074a21724ec7d03a4c9880cd1e3839a3fdbe393",
+    "projector": "2b722a24d79443cf4179f65cdc2fd8d249b57c3c320303f50c59c9108ff9d5c1",
+    "draft": "6a7edb1cfdd9c96fd1734c73b0a9d789b882097bb67ebb71991e80c7907f748e",
+    "head": "ab7a7b0c046b8078e84939710761ff2062c70306d41df0848952e9d4992facc1"
+  },
+  "submit_timing": "synchronous ioctl span; includes device execution and driver wait",
+  "native_transport": {
+    "source_sha256": "41718d5d6b24249053077af1ccbbe1d69f7684297484d88294baf01516300692",
+    "compiler": [
+      "cc"
+    ],
+    "compiler_version": "cc (GCC) 16.2.1 20260819 (Red Hat 16.2.1-2)\nCopyright (C) 2026 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+    "flags": [
+      "-O3",
+      "-std=c11",
+      "-fPIC",
+      "-shared",
+      "-march=armv8.2-a+fp16",
+      "-fno-fast-math"
+    ],
+    "library_sha256": "7c868a793285d6c5fdb61893f1e744234f9cc5ff3432ec0e0477d3b090b0221a"
+  },
+  "programs": {
+    "target_0": {
+      "calls": 216,
+      "mean_ms": {
+        "input_write": 0.0030070925925925925,
+        "mapped_read": 0.23813089814814814,
+        "other": 0.05714217592592593,
+        "output_write": 0.02016439814814815,
+        "pack": 0.044844773148148144,
+        "scratch_write": 0.07271151851851852,
+        "submit": 6.9504326342592595,
+        "total": 7.4034817870370375,
+        "unpack": 0.017048296296296294
+      },
+      "max_ms": {
+        "input_write": 0.003916,
+        "mapped_read": 0.409428,
+        "other": 0.169213,
+        "output_write": 0.036835,
+        "pack": 0.09242,
+        "scratch_write": 0.092627,
+        "submit": 7.368922,
+        "total": 7.846811,
+        "unpack": 0.052293
+      },
+      "mean_bytes_per_call": {
+        "input_write_bytes": 25088,
+        "output_write_bytes": 507904,
+        "scratch_write_bytes": 2195456
+      },
+      "per_prompt_mean_ms": {
+        "capital": 7.174509744680851,
+        "fibonacci": 7.253318019999999,
+        "math": 7.577371660714285,
+        "story": 7.5389110158730155
+      }
+    },
+    "target_14": {
+      "calls": 216,
+      "mean_ms": {
+        "input_write": 0.0033052777777777776,
+        "mapped_read": 0.15908796759259258,
+        "other": 0.0530194212962963,
+        "output_write": 0.020648175925925927,
+        "pack": 0.044375495370370374,
+        "scratch_write": 0.07703480092592593,
+        "submit": 6.989007833333333,
+        "total": 7.361829194444444,
+        "unpack": 0.015350222222222223
+      },
+      "max_ms": {
+        "input_write": 0.009375,
+        "mapped_read": 0.195423,
+        "other": 0.231259,
+        "output_write": 0.033834,
+        "pack": 0.067167,
+        "scratch_write": 0.240549,
+        "submit": 7.455466,
+        "total": 7.894145,
+        "unpack": 0.036
+      },
+      "mean_bytes_per_call": {
+        "input_write_bytes": 25088,
+        "output_write_bytes": 491520,
+        "scratch_write_bytes": 2195456
+      },
+      "per_prompt_mean_ms": {
+        "capital": 7.114047957446809,
+        "fibonacci": 7.19033462,
+        "math": 7.560308625,
+        "story": 7.506362507936508
+      }
+    },
+    "projector": {
+      "calls": 216,
+      "mean_ms": {
+        "input_write": 0.003736435185185185,
+        "other": 0.01809010185185185,
+        "output_write": 0.0052096712962962964,
+        "pack": 0.04186580555555555,
+        "scratch_write": 0.00785500462962963,
+        "submit": 0.21360728703703705,
+        "total": 0.29036430555555554
+      },
+      "max_ms": {
+        "input_write": 0.009959,
+        "other": 0.043334,
+        "output_write": 0.008042,
+        "pack": 0.107419,
+        "scratch_write": 0.014167,
+        "submit": 0.365053,
+        "total": 0.435888
+      },
+      "mean_bytes_per_call": {
+        "input_write_bytes": 53248,
+        "output_write_bytes": 98304,
+        "scratch_write_bytes": 196608
+      },
+      "per_prompt_mean_ms": {
+        "capital": 0.27530578723404253,
+        "fibonacci": 0.28306566,
+        "math": 0.30058835714285714,
+        "story": 0.29830296825396824
+      }
+    },
+    "draft": {
+      "calls": 190,
+      "mean_ms": {
+        "input_write": 0.0030458736842105265,
+        "mapped_read": 0.10131673684210526,
+        "other": 0.036611068421052634,
+        "output_write": 0.001420457894736842,
+        "pack": 0.04532283157894737,
+        "scratch_write": 0.0764549052631579,
+        "submit": 1.5563296157894737,
+        "total": 1.8289938631578948,
+        "unpack": 0.008492373684210526
+      },
+      "max_ms": {
+        "input_write": 0.008292,
+        "mapped_read": 4.117202,
+        "other": 0.046294,
+        "output_write": 0.00225,
+        "pack": 0.073753,
+        "scratch_write": 0.149963,
+        "submit": 1.713216,
+        "total": 6.037424,
+        "unpack": 0.014542
+      },
+      "mean_bytes_per_call": {
+        "input_write_bytes": 25088,
+        "output_write_bytes": 16384,
+        "scratch_write_bytes": 2195456
+      },
+      "per_prompt_mean_ms": {
+        "capital": 1.8388656363636364,
+        "fibonacci": 1.7807068780487805,
+        "math": 1.8507972765957448,
+        "story": 1.837970551724138
+      }
+    },
+    "head": {
+      "calls": 386,
+      "mean_ms": {
+        "head_reduce": 6.40578381865285,
+        "input_write": 0.0012213134715025906,
+        "other": 0.038326567357512956,
+        "output_write": 0.09808926165803108,
+        "pack": 0.014262642487046633,
+        "scratch_write": 0.003194020725388601,
+        "submit": 2.6980537227979275,
+        "total": 9.25893134715026
+      },
+      "max_ms": {
+        "head_reduce": 10.834313,
+        "input_write": 0.006459,
+        "other": 0.070628,
+        "output_write": 0.133378,
+        "pack": 0.033293,
+        "scratch_write": 0.004625,
+        "submit": 2.803998,
+        "total": 13.641728
+      },
+      "mean_bytes_per_call": {
+        "input_write_bytes": 16384,
+        "output_write_bytes": 2430976,
+        "scratch_write_bytes": 65536
+      },
+      "per_prompt_mean_ms": {
+        "capital": 9.106732898876404,
+        "fibonacci": 9.347709738095238,
+        "math": 9.506224368421053,
+        "story": 9.111435076271185
+      }
+    }
+  },
+  "cache_updates": {
+    "target_0": {
+      "calls": 216,
+      "mean_ms": {
+        "input_write": 0.12470269444444444,
+        "other": 0.02502835648148148,
+        "pack": 0.3493634861111111,
+        "total": 0.49909453703703704
+      },
+      "max_ms": {
+        "input_write": 0.223508,
+        "other": 0.055709,
+        "pack": 5.553448,
+        "total": 5.686498
+      },
+      "mean_bytes_per_call": {
+        "input_write_bytes": 143890.96296296295
+      },
+      "per_prompt_mean_ms": {
+        "capital": 0.5319462127659574,
+        "fibonacci": 0.4645884,
+        "math": 0.5156444464285714,
+        "story": 0.4872609365079365
+      }
+    },
+    "target_14": {
+      "calls": 216,
+      "mean_ms": {
+        "input_write": 0.12360507870370371,
+        "other": 0.022568754629629633,
+        "pack": 0.31402714814814814,
+        "total": 0.4602009814814815
+      },
+      "max_ms": {
+        "input_write": 0.322957,
+        "other": 0.05296,
+        "pack": 0.524008,
+        "total": 0.806023
+      },
+      "mean_bytes_per_call": {
+        "input_write_bytes": 143890.96296296295
+      },
+      "per_prompt_mean_ms": {
+        "capital": 0.4101253404255319,
+        "fibonacci": 0.45094382,
+        "math": 0.504600875,
+        "story": 0.46543938095238097
+      }
+    },
+    "draft": {
+      "calls": 216,
+      "mean_ms": {
+        "input_write": 0.026322847222222223,
+        "other": 0.015562356481481483,
+        "pack": 0.08128867592592592,
+        "total": 0.12317387962962964
+      },
+      "max_ms": {
+        "input_write": 0.035292,
+        "other": 0.025875,
+        "pack": 0.111922,
+        "total": 0.169921
+      },
+      "mean_bytes_per_call": {
+        "input_write_bytes": 30833.777777777777
+      },
+      "per_prompt_mean_ms": {
+        "capital": 0.10938080851063829,
+        "fibonacci": 0.11881258,
+        "math": 0.133931,
+        "story": 0.1273634126984127
+      }
+    }
+  },
+  "kv_reads": {
+    "target_0": {
+      "calls": 432,
+      "mean_ms": {
+        "total": 0.36797947685185184
+      },
+      "max_ms": {
+        "total": 1.335997
+      },
+      "mean_bytes_per_call": {
+        "requested_tensor_bytes": 71945.48148148147
+      },
+      "per_prompt_mean_ms": {
+        "capital": 0.3281615319148936,
+        "fibonacci": 0.4354634,
+        "math": 0.42611539285714284,
+        "story": 0.2924498888888889
+      }
+    },
+    "target_14": {
+      "calls": 432,
+      "mean_ms": {
+        "total": 0.36319541203703704
+      },
+      "max_ms": {
+        "total": 1.289371
+      },
+      "mean_bytes_per_call": {
+        "requested_tensor_bytes": 71945.48148148147
+      },
+      "per_prompt_mean_ms": {
+        "capital": 0.31673304255319146,
+        "fibonacci": 0.43274382,
+        "math": 0.42341552678571426,
+        "story": 0.2891316746031746
+      }
+    },
+    "projector": {
+      "calls": 432,
+      "mean_ms": {
+        "total": 0.08882131481481481
+      },
+      "max_ms": {
+        "total": 0.280383
+      },
+      "mean_bytes_per_call": {
+        "requested_tensor_bytes": 15416.888888888889
+      },
+      "per_prompt_mean_ms": {
+        "capital": 0.07932717021276595,
+        "fibonacci": 0.10325705,
+        "math": 0.10215584821428571,
+        "story": 0.07259439682539683
+      }
+    }
+  }
+}

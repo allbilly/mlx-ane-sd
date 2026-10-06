@@ -1,0 +1,45 @@
+{
+  "status": "failed",
+  "host": "Linux-7.1.13+-aarch64-with-glibc2.43",
+  "mode": "verify",
+  "cases": [],
+  "rows": [],
+  "max_new": 100,
+  "repeats": 2,
+  "timing": "decode only; prefill, loading and warm-up excluded",
+  "timing_by_impl": {
+    "mlx_bf16": "stock stream_generate generation_tps; time to first token excluded",
+    "ane_lut6_ar": "host decode timer includes last prompt-token forward",
+    "ane_lut6_sd": "host decode timer includes last prompt-token forward"
+  },
+  "mlx_baseline": "mlx_lm.stream_generate, greedy temp=0, prefill_step_size=32; same as macOS receipt",
+  "source_sha256": {
+    "run_m1_full_ane_replay.py": "2589b23a7e70a5b13f96af217ffbd5ee7446cc9dba862612f2997dae299893cc",
+    "m1_ane_replay.py": "f6b04616e9bb6fc7709da8309d92849a1e96f9a5e4b00efc77a606fffc6550b1",
+    "m1_full_ane_host.py": "719d32ca602d4b700771dc3c41e5fb1425e84624c60a4d80aeab6279e9ce0709",
+    "m1_lut6_weights.py": "e1bb0ff8c390003855fe1489f82f8f7042ab506a320491a267361167c06fa660",
+    "capture_m1_full_stack.py": "1e1b66cd209b1453e434ddd7ffb3643ff4cca589d743daf227ffc1c2c18dc459",
+    "bench_macos_dflash.py": "29f92abf41cad573a5dccb1d125d3f279f43aac1a6079ce618122cd5d4d87413"
+  },
+  "model_checkpoints": {
+    "target": {
+      "repo": "mlx-community/Qwen3-0.6B-bf16",
+      "revision": "42096995f6402fde107068cf530136fe64b604f8",
+      "safetensors_sha256": "bfe05e58f5acdecd38e5f3e64c82071682683a73db0e57fd437523885a49f2ff"
+    },
+    "draft": {
+      "repo": "orestis-z/dflash-qwen3-0.6b-microcycle-dflash",
+      "revision": "4dd1e04078f993593338ef1f9403179e41e4580e",
+      "safetensors_sha256": "74a0b0f98b2a5b6a82c3c0bf8a4c7fbbe2a85f1920a7b6836ba6a9b716541a64"
+    }
+  },
+  "program_sha256": {
+    "target_0": "35dd9726e63d5f0baa2aaa0398a4d4d948a9555bccfab8f412cab446c11cce6b",
+    "target_14": "f63d8ce033a4141a533136a4e074a21724ec7d03a4c9880cd1e3839a3fdbe393",
+    "projector": "2b722a24d79443cf4179f65cdc2fd8d249b57c3c320303f50c59c9108ff9d5c1",
+    "draft": "6a7edb1cfdd9c96fd1734c73b0a9d789b882097bb67ebb71991e80c7907f748e",
+    "head": "ab7a7b0c046b8078e84939710761ff2062c70306d41df0848952e9d4992facc1"
+  },
+  "goldens_verified": false,
+  "error": "No accessible ANE accel device with the allbilly/libane submit ABI"
+}

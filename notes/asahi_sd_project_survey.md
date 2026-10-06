@@ -1,5 +1,14 @@
 # Asahi SD: project survey and measured bottlenecks
 
+Update, 2026-10-06: the matched M1 macOS captures are now available. The compact
+five-program full-ANE stack replays on Linux with all 588 output hashes matching.
+After native useful-row readback and process scheduling changes, the four-pass
+confirmation averages **61.39 versus 36.22 tok/s MLX (1.695×)**, with all 1,600
+SD tokens matching macOS. See [the current results](m1_asahi_full_ane_results.md)
+and [the confirmed recipe and controls](m1_asahi_scheduler_results.md).
+The survey and per-operation measurements below describe the earlier path;
+its Vulkan route diagnostics remain relevant to GPU verification follow-ups.
+
 2026-10-05. All 18 nonhidden top-level Git checkouts under `~/` were inspected.
 Other repositories were read only; copied sources, diagnostics and generated
 artifacts are in `mlx-ane-sd`. Revisions, origins and observed working-tree

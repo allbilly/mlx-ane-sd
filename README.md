@@ -316,8 +316,17 @@ identifies reusable compiler/runtime components, measures small-block Vulkan
 verification and native ANE transfer costs, and links a
 [matched M1 macOS capture kit](./asahi/macos/README.md). Follow
 [task.md](./task.md) after Git pull on the same M1 under macOS; it includes the
-required ANE program, register and buffer dumps. The new macOS captures and
-their Linux replay remain pending.
+required ANE program, register and buffer dumps. The compact M1 full-ANE kit
+now passes Linux replay: all 588 selected output hashes and four SD traces
+match macOS. With native useful-row readback, resident caches, P-core affinity
+and a per-process CPU utilization hint, a four-prompt, four-pass confirmation
+averages **61.39 tok/s SD versus 36.22 tok/s stock MLX BF16 (1.695×)**,
+or **1.182×** its same LUT6 ANE AR control. All 1,600 SD tokens and acceptance
+decisions match macOS. The initial Linux replay was 0.776× versus MLX; the same
+M1's native macOS result is **72.00 / 45.19 tok/s (1.593×)**. LUT6 changes target
+numerics, and the ANE AR control uses padded B=8 programs. See
+[the full-ANE Linux report](./notes/m1_asahi_full_ane_results.md) and
+[the confirmed Linux recipe](./notes/m1_asahi_scheduler_results.md).
 
 ```bash
 # After creating .venv-asahi with the Vulkan wheel and its native dependencies:

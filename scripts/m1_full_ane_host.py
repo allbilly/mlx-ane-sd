@@ -23,6 +23,19 @@ def causal_mask(offset, capacity, block):
     result[:,:,:,capacity:]=np.where(np.tri(block,dtype=bool),0,-10000)
     return result
 
+def cache_prefix(value,count):
+    read=getattr(value,'read_prefix',None)
+    return read(count) if read is not None else np.asarray(value,np.float16)[:,:,:,:count]
+
+def trace_matches(actual,expected):
+    """Unused predictions may be omitted; decisions and cache state must match."""
+    if len(actual)!=len(expected):return False
+    for row,golden in zip(actual,expected):
+        if any(row[key]!=golden[key] for key in ('candidates','accepted','committed','offset')):return False
+        if len(row['predictions'])<row['accepted']+1:return False
+        if row['predictions']!=golden['predictions'][:len(row['predictions'])]:return False
+    return True
+
 class FullANEStack:
     def __init__(self, directory, embedding, factory):
         self.directory=Path(directory)
@@ -65,8 +78,16 @@ class FullANEStack:
         self.draft_k=np.zeros((self.dc["num_hidden_layers"],1,self.KV,self.C,self.D),np.float16)
         self.draft_v=np.zeros_like(self.draft_k)
         self.profile={};self.calls={}
-    def ids(self, hidden, start=0, end=None, role="target_head"):
+        for program in [model for _,model in self.chunks]+[self.draft]:
+            reset=getattr(program,'reset_transport',None)
+            if reset is not None:reset()
+    def ids(self, hidden, start=0, end=None, role="target_head",candidates=None):
         end=self.B if end is None else end
+        verify=getattr(self.head,'predict_verified_ids',None)
+        if candidates is not None and verify is not None:
+            return verify({'hidden':hidden},candidates,start,end,role)
+        read=getattr(self.head,'predict_token_ids',None)
+        if read is not None:return read({'hidden':hidden},start,end,role)
         outputs=self.head.predict({"hidden":hidden},role)
         begin=time.perf_counter()
         rows=end-start
@@ -83,7 +104,7 @@ class FullANEStack:
         if not np.isfinite(best).all(): raise RuntimeError("Invalid ANE vocabulary logits")
         self.profile["host_argmax"]=self.profile.get("host_argmax",0)+time.perf_counter()-begin
         return ids.tolist()
-    def forward(self, token_ids, logits=True):
+    def forward(self, token_ids, logits=True,candidates=None):
         n=len(token_ids)
         if not 1<=n<=self.B or self.offset+n>self.C: raise ValueError("Invalid target block/context length")
         hidden=np.zeros((1,self.B,self.W),np.float16)
@@ -98,17 +119,21 @@ class FullANEStack:
                                "cache_v":self.cache_v[start:start+count]})
             hidden=np.asarray(out["hidden_out"],np.float16)
             if not np.isfinite(hidden[0,:n]).all(): raise RuntimeError("Non-finite target hidden state")
-            pending.append((start,count,np.asarray(out["new_k"],np.float16),np.asarray(out["new_v"],np.float16)))
+            pending.append((start,count,out['new_k'],out['new_v']))
             if info["captures"]:
                 for local,index in enumerate(info["captures"]): captures[index]=np.asarray(out["captures"])[local,0,:n]
         features=np.concatenate([captures[i] for i in self.feature_ids],axis=-1).astype(np.float16)
         self.last_hidden=hidden
-        predictions=self.ids(hidden,end=n) if logits else None
+        predictions=self.ids(hidden,end=n,candidates=candidates) if logits else None
         return predictions,features,pending
     def commit(self, pending, count):
         for start,layers,k,v in pending:
-            self.cache_k[start:start+layers,:,:,self.offset:self.offset+count]=k[:,:,:,:count]
-            self.cache_v[start:start+layers,:,:,self.offset:self.offset+count]=v[:,:,:,:count]
+            k,v=cache_prefix(k,count),cache_prefix(v,count)
+            self.cache_k[start:start+layers,:,:,self.offset:self.offset+count]=k
+            self.cache_v[start:start+layers,:,:,self.offset:self.offset+count]=v
+            program=next(model for info,model in self.chunks if info['start']==start)
+            update=getattr(program,'commit_cache',None)
+            if update is not None:update(k,v,self.offset,count)
         self.offset+=count
     def append_draft(self, features):
         for begin in range(0,len(features),self.B):
@@ -119,14 +144,18 @@ class FullANEStack:
             padded[0,:n]=active
             cos,sin=self.positions(self.draft_offset)
             outputs=self.projector.predict({"features":padded,"cos":cos,"sin":sin})
-            k,v=np.asarray(outputs["new_k"],np.float16),np.asarray(outputs["new_v"],np.float16)
+            k,v=cache_prefix(outputs['new_k'],n),cache_prefix(outputs['new_v'],n)
             if not np.isfinite(k[:,:,:,:n]).all() or not np.isfinite(v[:,:,:,:n]).all():
                 raise RuntimeError("Invalid draft context projection")
             self.draft_k[:,:,:,self.draft_offset:self.draft_offset+n]=k[:,:,:,:n]
             self.draft_v[:,:,:,self.draft_offset:self.draft_offset+n]=v[:,:,:,:n]
+            update=getattr(self.draft,'commit_cache',None)
+            if update is not None:update(k[:,:,:,:n],v[:,:,:,:n],self.draft_offset,n)
             self.draft_offset+=n
-    def propose(self, anchor):
+    def propose(self, anchor,count=None):
         if self.offset!=self.draft_offset: raise RuntimeError("Draft/target cache offset mismatch")
+        count=self.B-1 if count is None else count
+        if not 1<=count<self.B:raise ValueError('Invalid draft lookahead')
         mask_id=self.manifest["draft_config"]["mask_token_id"]
         noise=self.embedding[[anchor]+[mask_id]*(self.B-1)][None]
         cos,sin=self.positions(self.draft_offset)
@@ -135,11 +164,13 @@ class FullANEStack:
                                "mask":causal_mask(self.draft_offset,self.C,self.B)})
         hidden=np.asarray(out["hidden_out"],np.float16)
         if not np.isfinite(hidden).all() or not np.any(hidden): raise RuntimeError("Invalid ANE draft hidden state")
-        return self.ids(hidden,start=1,role="draft_head"),hidden[0,1:]
+        return self.ids(hidden,start=1,end=count+1,role="draft_head"),hidden[0,1:count+1]
 
 
-def generate(stack, tok, prompt, limit, speculative):
+def generate(stack, tok, prompt, limit, speculative,num_draft=None):
     stack.reset()
+    num_draft=stack.B-1 if num_draft is None else num_draft
+    if not 1<=num_draft<stack.B:raise ValueError('Draft lookahead exceeds the compiled block')
     prompt_ids=tok.encode(prompt)
     if len(prompt_ids)+limit>stack.C: raise ValueError("Prompt/generation exceed compiled context capacity")
     start=time.perf_counter()
@@ -157,9 +188,9 @@ def generate(stack, tok, prompt, limit, speculative):
     tokens=[first[0]];traces=[];accepted=proposed=0
     eos=tok.eos_token_ids if hasattr(tok,"eos_token_ids") else {tok.eos_token_id}
     while len(tokens)<limit and tokens[-1] not in eos:
-        candidates=stack.propose(tokens[-1])[0] if speculative and limit-len(tokens)>1 else []
-        candidates=candidates[:max(0,limit-len(tokens)-1)]
-        predictions,features,pending=stack.forward([tokens[-1],*candidates])
+        wanted=min(num_draft,max(0,limit-len(tokens)-1))
+        candidates=stack.propose(tokens[-1],wanted)[0] if speculative and wanted else []
+        predictions,features,pending=stack.forward([tokens[-1],*candidates],candidates=candidates)
         count=0
         for candidate,prediction in zip(candidates,predictions):
             if candidate!=prediction: break

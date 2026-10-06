@@ -10,16 +10,79 @@ referenced `notes/` receipts in the same commit as this task. In particular,
 the four fixtures, vendored Orion runtime, capture tools, preparer/downloader
 and `notes/asahi/dflash_bf16_serial.json` are required after Git pull.
 
-The immediate deliverable is a reproducible capture bundle, followed by an
-Asahi implementation and correctness/performance measurements. macOS execution
-and replay of these new cases have not yet been tested. Keep failures and logs
-as evidence rather than marking compilation as a successful replay.
+The immediate deliverable was a reproducible capture bundle, followed by an
+Asahi implementation and correctness/performance measurements. Keep failures
+and logs as evidence rather than marking compilation as a successful replay.
 
-## Why this task is needed
+## Current Asahi queue — 2026-10-06
+
+The macOS work is now available through commit `9a824a5`. In addition to the
+20 microkernel captures, it includes a complete five-program M1 reference:
+two 14-layer target chunks, draft body, context projector and vocabulary head.
+Its native macOS result is 72.00 tok/s versus 45.19 tok/s Metal BF16 (1.593×).
+The ANE target uses LUT6, and SD matches that compressed target rather than
+claiming BF16 token identity. See the
+[full-stack handoff](notes/m1_full_ane_asahi_handoff.md).
+
+On this Asahi host, the initial preflight passed compact-kit hashes, all five
+buffer plans and 16 host tests. All five complete HWX files reconstructed byte-for-byte from
+the already cached checkpoints; the runtime cache is 501,871,902 bytes.
+[Preflight receipt](notes/asahi/m1_full_ane_preflight_20261006.json).
+
+Linux hardware verification is now complete: all **72 selected calls / 588
+output hashes** and all four complete SD traces match the macOS goldens.
+The paired four-prompt, two-pass, 100-token benchmark also completed, with
+12 warmups excluded: **34.72 tok/s MLX BF16, 17.59 tok/s LUT6 ANE AR,
+26.96 tok/s LUT6 ANE SD**. SD is 0.776× the MLX baseline and 1.532× the
+same compressed target's AR control. All eight SD trials match ANE AR.
+See [the Linux results and profile](notes/m1_asahi_full_ane_results.md).
+
+The three transport tasks have now been implemented and verified:
+
+1. Resident target/draft caches now update only the accepted prefix, with
+   deterministic reset and padding. Compiler-layout staging is reused and
+   FP16 finite checks inspect exponent bits.
+2. Head argmax reads requested rows directly from mapped output. Full physical
+   output verification remains enabled; 386 head calls matched full readback.
+3. All 588 output hashes and four complete SD traces passed again. The new
+   four-prompt, two-pass benchmark averages **35.19 tok/s MLX, 30.61 tok/s
+   ANE AR and 39.50 tok/s SD**: **1.123× MLX and 1.290× ANE AR**.
+   At that stage, story still lost to MLX. LUT6 does not claim BF16 identity.
+
+The relative macOS speedup gap is now closed. Native NEON reduction, reading
+only decisive target predictions and committed K/V output rows, P-core
+affinity and a per-process utilization hint pass **19 host tests**, all 588
+selected output hashes, 386 head comparisons and 216 K/V prefix checks.
+The four-prompt, four-pass confirmation measures **36.22 tok/s MLX, 51.94
+tok/s padded ANE AR and 61.39 tok/s SD (1.695× MLX)**. All 1,600 SD tokens
+and acceptance/cache decisions match macOS; every prompt is faster than MLX.
+An independent two-pass run measured 1.733×. A four-worker extended run had
+system-wide slowdowns and is preserved separately rather than used as the
+headline. See [the confirmed recipe and controls](notes/m1_asahi_scheduler_results.md).
+Absolute Linux SD throughput remains below macOS's 72.00 tok/s.
+
+The confirmed recipe explicitly selects native/prefix readback, one worker,
+`--cpu-affinity 4,5,6,7 --cpu-util-min 1024`, and 100-token warmups. The hint
+applies equally to all three configurations and changes no global settings.
+The default is `--transport resident --head-readback mapped`; use
+`--transport reference --head-readback full` for the original transport control.
+See [the optimized receipt](notes/m1_linux_full_ane_bench_resident_mapped_20261006.json).
+Live macOS MMIO/IOVAs and the exact runtime-loaded executable remain
+unavailable, but additional dumps are unnecessary for the verified computation.
+Small-block Vulkan verification has existing route diagnostics; optimizing
+those kernels remains separate from this full-ANE path. An optimized B=1 ANE
+AR control requires new M1-compiled programs: the current kit computes B=8.
+
+Use [the compact kit commands](artifacts/m1-full-ane/README.md) for these steps.
+No macOS capture archive or compiler installation is needed to reconstruct and
+run the full-stack replay. The original capture plan below remains useful
+for additional diagnostics and documenting the missing live driver state.
+
+## Original capture motivation
 
 The original 2.21× result used an M4 Pro with 64 GB, Qwen3-4B bf16, a different
 DFlash draft, and fused CoreML/LUT6 graphs. Our M1 experiment uses Qwen3-0.6B
-bf16 and a trained three-layer, eight-token draft. The Linux draft currently
+bf16 and a trained three-layer, eight-token draft. The earlier Linux draft path
 makes **59 ANE submissions per proposal**, with attention, norms and activations
 on CPU. These are materially different execution paths.
 
@@ -312,15 +375,18 @@ later captures are not included in the first 20-case kit.
 
 ## Completion criteria
 
-- [ ] Matched Metal target benchmark and all width probes saved, including
+- [x] Matched Metal target benchmark and all width probes saved, including
   mismatches, model/package hashes and same-M1 hardware identity.
-- [ ] All 20 ANE cases attempted; successful evaluated outputs and artifacts,
+- [x] All 20 ANE cases attempted; successful evaluated outputs and artifacts,
   failure logs and independent export status retained.
-- [ ] H13G task/register streams, coefficients and bindings decoded for the
-  graphs selected for replay; evaluated/offline provenance resolved.
-- [ ] Live tracing collected where needed, with unavailable fields stated.
-- [ ] Bundle returned to Linux and report written with archive SHA256.
-- [ ] Linux replay passes all four real inputs before SD integration.
-- [ ] End-to-end results report correctness, mean/max speedup and remaining
+- [x] H13G task/register streams, coefficients and bindings decoded for the
+  selected full-stack replay; offline export provenance documented and Linux
+  output equivalence established. The exact macOS-loaded binary is unavailable.
+- [x] Unavailable live register fields stated. Live tracing was not collected;
+  it is not required for the now-verified Linux computation.
+- [x] Compact full-stack bundle returned through Git, hashes verified and
+  report written. Optional original microkernel archives remain outside Git.
+- [x] Linux full-stack replay passes all four real traces before benchmarking.
+- [x] End-to-end results report correctness, mean/max speedup and remaining
   bottlenecks. Reproducing the original M4 Pro 2.21× is not a completion claim
   for this smaller M1 setup without its own measured result.

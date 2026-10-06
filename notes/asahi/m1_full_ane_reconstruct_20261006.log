@@ -1,0 +1,17 @@
+Reconstructing target_0
+Reconstructing target_14
+Reconstructing projector
+Reconstructing draft
+Reconstructing head
+{
+  "status": "reconstructed",
+  "cache": ".asahi/m1-full-ane-cache",
+  "full_hwx_byte_identical": true,
+  "program_sha256": {
+    "target_0": "35dd9726e63d5f0baa2aaa0398a4d4d948a9555bccfab8f412cab446c11cce6b",
+    "target_14": "f63d8ce033a4141a533136a4e074a21724ec7d03a4c9880cd1e3839a3fdbe393",
+    "projector": "2b722a24d79443cf4179f65cdc2fd8d249b57c3c320303f50c59c9108ff9d5c1",
+    "draft": "6a7edb1cfdd9c96fd1734c73b0a9d789b882097bb67ebb71991e80c7907f748e",
+    "head": "ab7a7b0c046b8078e84939710761ff2062c70306d41df0848952e9d4992facc1"
+  }
+}

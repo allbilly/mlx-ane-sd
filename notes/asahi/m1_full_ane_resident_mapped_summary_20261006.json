@@ -1,0 +1,127 @@
+{
+  "schema": 1,
+  "status": "complete",
+  "transport": "resident",
+  "head_readback": "mapped",
+  "benchmark_receipt": "notes/m1_linux_full_ane_bench_resident_mapped_20261006.json",
+  "verification_receipt": "notes/m1_linux_full_ane_verify_resident_surfaces_20261006.json",
+  "golden_calls": 72,
+  "golden_output_hashes": 588,
+  "all_output_hashes_byte_identical": true,
+  "head_id_checks": 386,
+  "macos_sd_traces_matched": 4,
+  "warmup_calls_excluded": 12,
+  "means_tok_s": {
+    "mlx_bf16": 35.1858632320123,
+    "ane_lut6_ar": 30.61451859092397,
+    "ane_lut6_sd": 39.50257443441012
+  },
+  "maxima_tok_s": {
+    "mlx_bf16": 36.227651906920855,
+    "ane_lut6_ar": 38.88803274508578,
+    "ane_lut6_sd": 46.130027510283355
+  },
+  "sd_vs_mlx_ratio_of_means": 1.1226831120763991,
+  "sd_vs_mlx_mean_paired": 1.125138221116328,
+  "sd_vs_mlx_max_paired": 1.336661149673751,
+  "sd_vs_ane_ar_ratio_of_means": 1.2903215942164485,
+  "sd_vs_ane_ar_mean_paired": 1.2975887820081533,
+  "sd_vs_ane_ar_max_paired": 1.5508323124419006,
+  "per_prompt_means": {
+    "capital": {
+      "mlx_bf16": 35.369518438254595,
+      "ane_lut6_ar": 36.615321204339146,
+      "ane_lut6_sd": 45.26497884490067
+    },
+    "fibonacci": {
+      "mlx_bf16": 33.91076559343138,
+      "ane_lut6_ar": 33.524346917773165,
+      "ane_lut6_sd": 41.0328894507815
+    },
+    "math": {
+      "mlx_bf16": 35.496762826415775,
+      "ane_lut6_ar": 27.497712780375746,
+      "ane_lut6_sd": 41.2039135713046
+    },
+    "story": {
+      "mlx_bf16": 35.96640606994747,
+      "ane_lut6_ar": 24.82069346120783,
+      "ane_lut6_sd": 30.50851587065373
+    }
+  },
+  "pairs": [
+    {
+      "name": "capital",
+      "repeat": 1,
+      "sd_vs_mlx": 1.336661149673751,
+      "sd_vs_ane_ar": 1.1862268223406784,
+      "same_ane_target_tokens": true,
+      "bf16_tokens": false
+    },
+    {
+      "name": "fibonacci",
+      "repeat": 1,
+      "sd_vs_mlx": 1.2333059155725725,
+      "sd_vs_ane_ar": 1.2167215267233018,
+      "same_ane_target_tokens": true,
+      "bf16_tokens": false
+    },
+    {
+      "name": "math",
+      "repeat": 1,
+      "sd_vs_mlx": 1.1389645916307045,
+      "sd_vs_ane_ar": 1.4472963643079122,
+      "same_ane_target_tokens": true,
+      "bf16_tokens": true
+    },
+    {
+      "name": "story",
+      "repeat": 1,
+      "sd_vs_mlx": 0.9071701288278988,
+      "sd_vs_ane_ar": 1.2686553753405194,
+      "same_ane_target_tokens": true,
+      "bf16_tokens": false
+    },
+    {
+      "name": "capital",
+      "repeat": 2,
+      "sd_vs_mlx": 1.2255812298736344,
+      "sd_vs_ane_ar": 1.2928525413311118,
+      "same_ane_target_tokens": true,
+      "bf16_tokens": false
+    },
+    {
+      "name": "fibonacci",
+      "repeat": 2,
+      "sd_vs_mlx": 1.1875383880939712,
+      "sd_vs_ane_ar": 1.2313342905323785,
+      "same_ane_target_tokens": true,
+      "bf16_tokens": false
+    },
+    {
+      "name": "math",
+      "repeat": 2,
+      "sd_vs_mlx": 1.1824234573914645,
+      "sd_vs_ane_ar": 1.5508323124419006,
+      "same_ane_target_tokens": true,
+      "bf16_tokens": true
+    },
+    {
+      "name": "story",
+      "repeat": 2,
+      "sd_vs_mlx": 0.7894609078666287,
+      "sd_vs_ane_ar": 1.1867910230474241,
+      "same_ane_target_tokens": true,
+      "bf16_tokens": false
+    }
+  ],
+  "target_quality": "LUT6 compressed target; BF16 token identity is not claimed",
+  "macos_reference": {
+    "mlx_bf16": 45.18688817948176,
+    "ane_lut6_ar": 53.35532981430484,
+    "ane_lut6_sd": 72.003673662962
+  },
+  "macos_reference_receipt": "notes/m1_m4_recipe.json",
+  "resident_input_surfaces_byte_identical": true,
+  "profile_receipt": "notes/asahi/m1_full_ane_profile_resident_mapped_20261006.json"
+}

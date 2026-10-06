@@ -1,0 +1,181 @@
+{
+  "target_0": {
+    "calls": 216,
+    "mean_ms": {
+      "input_write": 0.002754782407407407,
+      "mapped_read": 0.20854749074074072,
+      "other": 0.047635009259259266,
+      "output_write": 0.018132824074074072,
+      "pack": 0.037551726851851853,
+      "scratch_write": 0.06898193981481482,
+      "submit": 6.599352805555556,
+      "total": 6.997271430555556,
+      "unpack": 0.014314851851851853
+    },
+    "max_ms": {
+      "input_write": 0.007626,
+      "mapped_read": 0.38706,
+      "other": 0.179216,
+      "output_write": 0.024459,
+      "pack": 0.109923,
+      "scratch_write": 0.090921,
+      "submit": 6.727368,
+      "total": 7.347731,
+      "unpack": 0.04671
+    },
+    "mean_bytes_per_call": {
+      "input_write_bytes": 25088,
+      "output_write_bytes": 507904,
+      "scratch_write_bytes": 2195456
+    },
+    "per_prompt_mean_ms": {
+      "capital": 7.023189638297873,
+      "fibonacci": 6.99578158,
+      "math": 6.985322892857143,
+      "story": 6.989738968253969
+    },
+    "mean_submit_thread_cpu_ms": 1.3446850138888888
+  },
+  "target_14": {
+    "calls": 216,
+    "mean_ms": {
+      "input_write": 0.002530962962962963,
+      "mapped_read": 0.14012115277777779,
+      "other": 0.042592884259259264,
+      "output_write": 0.01786775,
+      "pack": 0.03379315740740741,
+      "scratch_write": 0.06703970833333332,
+      "submit": 6.600330671296296,
+      "total": 6.915796953703703,
+      "unpack": 0.011520666666666667
+    },
+    "max_ms": {
+      "input_write": 0.008334,
+      "mapped_read": 0.28068,
+      "other": 0.250971,
+      "output_write": 0.025628,
+      "pack": 0.05088,
+      "scratch_write": 0.251388,
+      "submit": 7.466903,
+      "total": 7.88434,
+      "unpack": 0.115464
+    },
+    "mean_bytes_per_call": {
+      "input_write_bytes": 25088,
+      "output_write_bytes": 491520,
+      "scratch_write_bytes": 2195456
+    },
+    "per_prompt_mean_ms": {
+      "capital": 6.949657787234043,
+      "fibonacci": 6.90467708,
+      "math": 6.910389214285715,
+      "story": 6.904167873015873
+    },
+    "mean_submit_thread_cpu_ms": 1.290871699074074
+  },
+  "projector": {
+    "calls": 216,
+    "mean_ms": {
+      "input_write": 0.002894800925925926,
+      "other": 0.015534518518518519,
+      "output_write": 0.004174208333333333,
+      "pack": 0.03170578703703704,
+      "scratch_write": 0.006819189814814814,
+      "submit": 0.20090366666666665,
+      "total": 0.2620321712962963
+    },
+    "max_ms": {
+      "input_write": 0.004207,
+      "other": 0.036166,
+      "output_write": 0.00875,
+      "pack": 0.066297,
+      "scratch_write": 0.011708,
+      "submit": 0.224345,
+      "total": 0.345267
+    },
+    "mean_bytes_per_call": {
+      "input_write_bytes": 53248,
+      "output_write_bytes": 98304,
+      "scratch_write_bytes": 196608
+    },
+    "per_prompt_mean_ms": {
+      "capital": 0.2659073617021277,
+      "fibonacci": 0.26255534,
+      "math": 0.2605155357142857,
+      "story": 0.26007406349206347
+    },
+    "mean_submit_thread_cpu_ms": 0.05441108333333333
+  },
+  "draft": {
+    "calls": 190,
+    "mean_ms": {
+      "input_write": 0.0023245315789473683,
+      "mapped_read": 0.0697275,
+      "other": 0.029044194736842107,
+      "output_write": 0.0011800684210526314,
+      "pack": 0.03465292631578947,
+      "scratch_write": 0.06490162631578947,
+      "submit": 1.4722344947368422,
+      "total": 1.6804345263157894,
+      "unpack": 0.006369184210526316
+    },
+    "max_ms": {
+      "input_write": 0.003833,
+      "mapped_read": 0.081129,
+      "other": 0.072294,
+      "output_write": 0.001958,
+      "pack": 0.053545,
+      "scratch_write": 0.106422,
+      "submit": 1.731626,
+      "total": 1.944511,
+      "unpack": 0.025168
+    },
+    "mean_bytes_per_call": {
+      "input_write_bytes": 25088,
+      "output_write_bytes": 16384,
+      "scratch_write_bytes": 2195456
+    },
+    "per_prompt_mean_ms": {
+      "capital": 1.6893915454545454,
+      "fibonacci": 1.6758709024390244,
+      "math": 1.6789874042553192,
+      "story": 1.678038224137931
+    },
+    "mean_submit_thread_cpu_ms": 0.2879264157894737
+  },
+  "head": {
+    "calls": 386,
+    "mean_ms": {
+      "head_reduce": 5.432188774611398,
+      "input_write": 0.0009227564766839379,
+      "other": 0.031118603626943003,
+      "output_write": 0.0835594689119171,
+      "pack": 0.010723095854922279,
+      "scratch_write": 0.0027893134715025907,
+      "submit": 2.6906371917098446,
+      "total": 8.251939204663213
+    },
+    "max_ms": {
+      "head_reduce": 26.914762,
+      "input_write": 0.003,
+      "other": 0.20251,
+      "output_write": 0.233971,
+      "pack": 0.054253,
+      "scratch_write": 0.007542,
+      "submit": 2.85993,
+      "total": 29.876157
+    },
+    "mean_bytes_per_call": {
+      "input_write_bytes": 16384,
+      "output_write_bytes": 2430976,
+      "scratch_write_bytes": 65536
+    },
+    "per_prompt_mean_ms": {
+      "capital": 8.562240786516854,
+      "fibonacci": 8.237758845238096,
+      "math": 8.265578642105263,
+      "story": 8.017011771186441
+    },
+    "mean_submit_thread_cpu_ms": 0.535712621761658
+  }
+}

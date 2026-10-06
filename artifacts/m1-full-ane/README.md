@@ -101,17 +101,29 @@ scripts/asahi_python.sh scripts/run_m1_full_ane_replay.py \
   artifacts/m1-full-ane --mode bench \
   --target .asahi/models/m1-full-ane-target \
   --draft .asahi/models/m1-full-ane-draft \
-  --max-new 100 --repeats 2 --out notes/m1_linux_full_ane_bench.json
+  --transport resident --head-readback native \
+  --verify-readback accepted-prefix --kv-readback prefix \
+  --native-threads 1 --cpu-affinity 4,5,6,7 --cpu-util-min 1024 \
+  --warmup-new 100 --max-new 100 --repeats 4 \
+  --out notes/m1_linux_full_ane_bench.json
 ```
 
-Each run requires a fresh receipt path. Verification generates all four
+The optimized command requires a C compiler with OpenMP. Its CPU utilization
+hint applies to the benchmark process and its new workers, equally for all
+three configurations; it changes no system settings. Each run requires a fresh receipt path. Verification generates all four
 100-token SD traces, checks every selected input/output hash and refuses a
-benchmark after a mismatch. The benchmark repeats verification, compares Linux
+benchmark after a mismatch. The default Linux transport keeps target/draft K/V
+buffers resident and writes only committed cache positions. It reduces useful
+vocabulary rows directly from mapped output, while verification checks complete
+physical outputs and compares reductions with full readback. Select
+`--transport reference --head-readback full` for the original full-cache packing
+and full-output readback control; receipts record both options.
+The benchmark repeats verification, compares Linux
 stock greedy MLX BF16 (`mlx_lm.stream_generate`, temperature zero,
 `prefill_step_size=32`) with LUT6 ANE AR and SD, and enforces SD/AR token
 identity. This is the same baseline and reported `generation_tps` metric used
 in the macOS receipt. Before measured trials, all three configurations run each
-of the four prompts for up to ten tokens; those warm-up calls are recorded
+of the four prompts for up to 100 tokens; those warm-up calls are recorded
 separately and excluded from benchmark rows and speedup calculations. Partial
 results and failures are saved, including failures during warm-up.
 
@@ -125,12 +137,18 @@ prefill and warm-up are excluded from reported throughput.
 The retained kernel templates come from **offline HWX compiler exports**.
 Direct macOS `_ANEClient` loading rejected those exports at stage 4 with status
 `0x1`. The corresponding MIL graphs executed on ANE and matched CoreML goldens;
-this does not establish execution of the exported HWX itself. Linux submission,
-numerical agreement and throughput remain unverified on this macOS host.
+this does not establish execution of the exported HWX itself on macOS. Asahi
+now executes all five exports and matches all 588 selected output hashes and
+four complete SD traces. After native useful-row readback and process scheduling
+changes, its four-prompt, four-pass confirmation averages **61.39 tok/s SD
+versus 36.22 tok/s MLX BF16 (1.695×)**. All 1,600 measured SD tokens match
+macOS. The initial Linux result was 0.776×; macOS measured 1.593×.
+See [the Linux report](../../notes/m1_asahi_full_ane_results.md) and
+[the confirmed recipe and receipts](../../notes/m1_asahi_scheduler_results.md).
 
 The target is LUT6 compressed and differs from BF16 on near-tie logits. SD
 matches the same compressed target. Its ANE AR control uses padded B=8 kernels;
 an optimized B=1 ANE baseline remains unmeasured. Linux uses a Python host loop
 and an MLX Vulkan baseline, while the 72 tok/s macOS result used Swift and
-Metal. Actual Asahi receipts are required to claim a Linux speedup. See the
+Metal. These measurements do not reproduce the original M4 Pro / 4B result. See the
 [handoff](../../notes/m1_full_ane_asahi_handoff.md).

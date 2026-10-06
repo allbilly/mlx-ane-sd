@@ -110,6 +110,9 @@ class Buffer:
         except BaseException:self.close();raise
     def write(self,data):
         require(len(data)<=self.size,'Surface overflow');self.map[:len(data)]=data
+    def write_at(self,data,offset):
+        require(offset>=0 and offset+len(data)<=self.size,'Surface overflow')
+        self.map[offset:offset+len(data)]=data
     def close(self):
         if self.map is not None:self.map.close();self.map=None
         if self.handle:
@@ -117,10 +120,87 @@ class Buffer:
             finally:self.handle=0
 
 
+def finite_fp16(values):
+    """Check FP16 exponent bits without the slow half-precision ufunc path."""
+    values=np.asarray(values,dtype='<f2')
+    return not bool(np.any((values.view('<u2') & 0x7c00)==0x7c00))
+
+
+class InputTransport:
+    """Reusable compiler-layout storage, including deterministic zero padding."""
+    def __init__(self,descriptor):
+        self.shape,self.strides,self.size=geometry(descriptor)
+        self.data=bytearray(self.size)
+        self.array=np.ndarray(self.shape,dtype='<f2',buffer=self.data,strides=self.strides)
+
+    def write(self,values,buffer):
+        values=np.asarray(values,dtype='<f2')
+        require(values.size==np.prod(self.shape) and finite_fp16(values),'Wrong-size or nonfinite real tensor')
+        self.array[...]=values.reshape(self.shape)
+        buffer.write(memoryview(self.data))
+
+    def reset(self,buffer):
+        self.array.fill(0)
+        buffer.write(memoryview(self.data))
+
+    def validate_rows(self,values,offset,count):
+        batches,channels,depth,height,width=self.shape
+        require(0<=offset and count>0 and offset+count<=height,'Invalid cache update extent')
+        values=np.asarray(values,dtype='<f2')
+        require(values.size==batches*channels*depth*count*width and finite_fp16(values),
+                'Wrong-size or nonfinite cache update')
+        return values
+
+    def write_rows(self,values,offset,count,buffer):
+        values=self.validate_rows(values,offset,count)
+        batches,channels,depth,height,width=self.shape
+        self.array[:,:,:,offset:offset+count,:]=values.reshape(batches,channels,depth,count,width)
+        for batch in range(batches):
+            for channel in range(channels):
+                for plane in range(depth):
+                    start=batch*self.strides[0]+channel*self.strides[1]+plane*self.strides[2]+offset*self.strides[3]
+                    end=start+(count-1)*self.strides[3]+width*2
+                    buffer.write_at(memoryview(self.data)[start:end],start)
+
+
+class CacheOutput:
+    """Read a committed prefix before this program's next submission."""
+    def __init__(self,program,tensor):
+        self.program,self.tensor,self.epoch=program,tensor,program.epoch
+    def read_prefix(self,count):
+        program,tensor=self.program,self.tensor
+        require(program.epoch==self.epoch and tensor['bank'] in program.buffers,'Stale ANE cache output')
+        shape,strides,size=geometry(tensor['compiler_geometry'])
+        require(0<count<=shape[3],'Invalid output cache prefix')
+        mapping=program.buffers[tensor['bank']].map
+        raw=getattr(mapping,'mapping',mapping)
+        view=np.ndarray(shape,dtype='<f2',buffer=raw,strides=strides)
+        # Copy only useful rows from every layer/head, then release the mapping
+        # view. Output arrays never retain a buffer export beyond this call.
+        result=view[:,:,:,:count,:].copy()
+        require(finite_fp16(result),'Unwritten/nonfinite cache prefix')
+        logical=list(program.shapes[tensor['name']]);logical[-2]=count
+        return result.reshape(logical)
+
+
 class Program:
-    def __init__(self,fd,root,logical_shapes):
+    def __init__(self,fd,root,logical_shapes,transport='resident',head_readback='mapped',
+                 verify_readback='all',kv_readback='full'):
         self.fd,self.root,self.shapes=fd,Path(root),logical_shapes
+        require(transport in ('reference','packed','resident'),'Unknown input transport')
+        require(head_readback in ('full','rows','mapped','native'),'Unknown head readback')
+        self.head_readback=head_readback
+        require(verify_readback in ('all','accepted-prefix'),'Unknown verification readback')
+        require(kv_readback in ('full','prefix'),'Unknown cache output readback')
+        self.verify_readback,self.kv_readback,self.epoch=verify_readback,kv_readback,0
+        self.native_vocabulary=None
+        self.transport=transport;self.cache_ready=False;self.cache_end=0
         self.meta=plan(root);self.buffers={};self.bootstrap=None
+        self.inputs={t['name']:InputTransport(t['compiler_geometry']) for t in self.meta['io'] if t['direction']=='inputs'}
+        self.input_banks={t['name']:t['bank'] for t in self.meta['io'] if t['direction']=='inputs'}
+        self.poison={t['bank']:np.full(t['allocation_bytes']//2,np.nan,dtype='<f2').tobytes()
+                     for t in self.meta['io'] if t['direction']=='outputs'}
+        self.scratch={b['bank']:bytes(b['bytes']) for b in self.meta['buffers'] if b['role']=='scratch'}
         data=(self.root/'hwx/model.hwx').read_bytes()
         m=self.meta
         try:
@@ -136,26 +216,127 @@ class Program:
             struct.pack_into('<I',bootstrap,0,(first&~(255<<16))|(64<<16))
             self.bootstrap.write(bootstrap)
         except BaseException:self.close();raise
-    def predict(self,inputs,role=None):
+    def reset_transport(self):
+        self.epoch=getattr(self,'epoch',0)+1
+        self.cache_ready=False;self.cache_end=0
+        if self.transport=='resident' and {'cache_k','cache_v'}<=self.inputs.keys():
+            for name in ('cache_k','cache_v'):
+                self.inputs[name].reset(self.buffers[self.input_banks[name]])
+            self.cache_ready=True
+    def commit_cache(self,k,v,offset,count):
+        if not self.cache_ready:return
+        require(offset==self.cache_end,'Cache update must append the accepted prefix')
+        # Validate both updates before changing either resident surface.
+        for name,values in (('cache_k',k),('cache_v',v)):
+            self.inputs[name].validate_rows(values,offset,count)
+        for name,values in (('cache_k',k),('cache_v',v)):
+            self.inputs[name].write_rows(values,offset,count,self.buffers[self.input_banks[name]])
+        self.cache_end+=count
+    def submit(self,inputs):
+        self.epoch+=1
         for b in self.meta['buffers']:
-            if b['role']=='scratch': self.buffers[b['bank']].write(bytes(b['bytes']))
+            if b['role']=='scratch': self.buffers[b['bank']].write(self.scratch[b['bank']])
         for t in self.meta['io']:
-            self.buffers[t['bank']].write(pack_tensor(inputs[t['name']],t['compiler_geometry']) if t['direction']=='inputs'
-                                          else np.full(t['allocation_bytes']//2,np.nan,dtype='<f2').tobytes())
+            if t['direction']=='inputs':
+                name=t['name']
+                if self.cache_ready and name in ('cache_k','cache_v'):
+                    require(np.asarray(inputs[name]).size==np.prod(self.inputs[name].shape),'Wrong-size resident cache')
+                elif self.transport=='reference':
+                    self.buffers[t['bank']].write(pack_tensor(inputs[name],t['compiler_geometry']))
+                else:self.inputs[name].write(inputs[name],self.buffers[t['bank']])
+            else:self.buffers[t['bank']].write(self.poison[t['bank']])
         request=Submit(tsk_size=self.meta['tsk_size'],td_count=self.meta['td_count'],
                        td_size=self.meta['td_size'],btsp_handle=self.bootstrap.handle)
         for bank,buffer in self.buffers.items():request.handles[bank]=buffer.handle
         require(request.handles[1]==0,'BAR1 is supplied by the driver')
         ioctl(self.fd,SUBMIT,request)
+
+    def read_outputs(self,full=False):
         outputs={}
         for t in self.meta['io']:
             if t['direction']!='outputs':continue
+            if self.kv_readback=='prefix' and not full and t['name'] in ('new_k','new_v'):
+                outputs[t['name']]=CacheOutput(self,t)
+                continue
             raw=self.buffers[t['bank']].map[:t['allocation_bytes']]
             value=unpack_tensor(raw,t['compiler_geometry'],self.shapes[t['name']])
-            require(np.isfinite(value).all(),f'Unwritten/nonfinite {t["name"]}')
+            require(finite_fp16(value),f'Unwritten/nonfinite {t["name"]}')
             outputs[t['name']]=value
         return outputs
+
+    def predict(self,inputs,role=None):
+        self.submit(inputs)
+        return self.read_outputs()
+
+    def read_token_ids(self,start,end,outputs=None):
+        """Reduce useful vocabulary rows; keep the lowest token ID on ties."""
+        tensors=[t for t in self.meta['io'] if t['direction']=='outputs']
+        require(tensors and {t['name'] for t in tensors}=={f'logits{i}' for i in range(len(tensors))},
+                'Token readback requires only numbered vocabulary outputs')
+        tensors.sort(key=lambda t:int(t['name'][6:]))
+        if outputs is None and self.head_readback=='native':
+            from m1_native_transport import Vocabulary
+            if self.native_vocabulary is None:
+                surfaces=[]
+                for tensor in tensors:
+                    shape,strides,size=geometry(tensor['compiler_geometry'])
+                    require(shape[:3]==(1,1,1) and 0<=start<end<=shape[3],
+                            'Unsupported vocabulary layout or requested rows')
+                    mapping=self.buffers[tensor['bank']].map
+                    surfaces.append((getattr(mapping,'mapping',mapping),shape[3],shape[4],strides[3]))
+                self.native_vocabulary=Vocabulary(surfaces)
+            return self.native_vocabulary.ids(start,end)
+        if outputs is None and self.head_readback=='full':outputs=self.read_outputs()
+        best=np.full(end-start,-np.inf,np.float32);ids=np.zeros(end-start,np.int32)
+        base=0
+        for tensor in tensors:
+            shape,strides,size=geometry(tensor['compiler_geometry'])
+            batches,channels,depth,height,width=shape
+            require((batches,channels,depth)==(1,1,1) and 0<=start<end<=height,
+                    'Unsupported vocabulary layout or requested rows')
+            if outputs is not None:
+                logits=np.asarray(outputs[tensor['name']])[0,start:end].astype(np.float32)
+            else:
+                mapping=self.buffers[tensor['bank']].map
+                if self.head_readback=='rows':
+                    raw=mapping[start*strides[3]:(end-1)*strides[3]+width*2]
+                    logits=np.ndarray((end-start,width),dtype='<f2',buffer=raw,
+                                      strides=(strides[3],2)).astype(np.float32)
+                else:
+                    # Convert directly from the mapped surface, avoiding a full
+                    # intermediate memcpy. Diagnostic map wrappers expose mapping.
+                    raw=getattr(mapping,'mapping',mapping)
+                    logits=np.ndarray((end-start,width),dtype='<f2',buffer=raw,offset=start*strides[3],
+                                      strides=(strides[3],2)).astype(np.float32)
+            require(np.isfinite(logits).all(),'Unwritten/nonfinite vocabulary logits')
+            index=logits.argmax(-1);values=logits[np.arange(end-start),index]
+            better=values>best
+            ids[better]=index[better]+base;best[better]=values[better]
+            base+=width
+        require(np.isfinite(best).all(),'Invalid ANE vocabulary logits')
+        return ids.tolist()
+
+    def predict_token_ids(self,inputs,start,end,role=None):
+        self.submit(inputs)
+        return self.read_token_ids(start,end)
+
+    def read_verified_ids(self,candidates,start,end):
+        require(end-start==len(candidates)+1,'Target verification needs one bonus row')
+        if self.verify_readback=='all':return self.read_token_ids(start,end)
+        predictions=[]
+        for row in range(start,end):
+            token=self.read_token_ids(row,row+1)[0]
+            predictions.append(token)
+            index=row-start
+            if index==len(candidates) or token!=candidates[index]:break
+        return predictions
+
+    def predict_verified_ids(self,inputs,candidates,start,end,role=None):
+        self.submit(inputs)
+        return self.read_verified_ids(candidates,start,end)
     def close(self):
+        if self.native_vocabulary is not None:self.native_vocabulary.close()
+        self.native_vocabulary=None
         buffers=list(self.buffers.values())+([self.bootstrap] if self.bootstrap else [])
         self.buffers={};self.bootstrap=None
         for b in reversed(buffers):b.close()
