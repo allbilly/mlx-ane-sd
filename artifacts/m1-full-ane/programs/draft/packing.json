@@ -1,0 +1,423 @@
+{
+  "schema": 1,
+  "size": 35782656,
+  "sha256": "6a7edb1cfdd9c96fd1734c73b0a9d789b882097bb67ebb71991e80c7907f748e",
+  "template": "kernel.hwx.gz",
+  "template_sha256": "c5e49c017a618f5609b27211ac92a7ad71c1759adab3e19a091d9078a5bfdb19",
+  "boundaries": "quantizer.bin.gz",
+  "boundaries_sha256": "15161a1cf5bb70d5416aadf1b8fd56801c4bbb8edf198ca88443a867bd8b8bd7",
+  "quantizer_bytes": 2646,
+  "learned_coefficients_zeroed": true,
+  "fixed_activation_tables": [
+    {
+      "symbol": "K471E3C462A3A0BEE5592270D4C57BEB8AC4A58C74AA26B5ADE308A24590D923C",
+      "sha256": "c24c8e25e265d894a091f46b1d811441cbc8ef01b9757ef2e35f6871bf539555",
+      "bytes": 128
+    },
+    {
+      "symbol": "K7C876A59CE09916F1FF9DA8B77C438AE332776274882643F6CC820A226AF9AE9",
+      "sha256": "8a5840509d79c95c6e5a80bdb5938d55624a29211ab6f71f8c069191bef1538b",
+      "bytes": 128
+    },
+    {
+      "symbol": "K70E0CDC78402315626D7DFACAB2A1DCE059EE6EE0BB2A49D92F60B4900B60570",
+      "sha256": "c4c420936d8229783ffb9b3a75e66cbc6779c37f17058f652732a5fc757c324b",
+      "bytes": 128
+    },
+    {
+      "symbol": "K0A4633DF9F9F0357D19A9979D321A8B9A1C46820C61971F7E3AC1283EAFDADA9",
+      "sha256": "182158a2cbc0c3da91e3447d7afae8825d45a1e6396d611b4a48fb2ed8f0a6d3",
+      "bytes": 128
+    },
+    {
+      "symbol": "K429D76FEACD2496DECEF4539D424F14BB60524C582F11B139E0004A9776C14FD",
+      "sha256": "c079709c1ed8870f250a87e7e18901b1f5fc52f0edee020ac9171e221bc30f1a",
+      "bytes": 2048
+    },
+    {
+      "kind": "fixed fused SiLU table",
+      "sha256": "0d48f9b9a9a791fcef312a765cd621e43acb2b56306b9bf491ee0957c5842897",
+      "bytes": 128,
+      "copies": 48
+    }
+  ],
+  "operations": [
+    {
+      "kind": "lut6",
+      "checkpoint": "draft",
+      "tensor": "layers.0.self_attn.q_proj.weight",
+      "shape": [
+        2048,
+        1024
+      ],
+      "group_rows": 0,
+      "boundary_offset": 0,
+      "tile": 32,
+      "offset": 328192,
+      "size": 1574912,
+      "sha256": "492a265ca7388db0abb34651e760565b4ae476103d4a3a4c45f0724e24b75d6e"
+    },
+    {
+      "kind": "lut6",
+      "checkpoint": "draft",
+      "tensor": "layers.0.self_attn.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "group_rows": 0,
+      "boundary_offset": 126,
+      "tile": 16,
+      "offset": 1903104,
+      "size": 788480,
+      "sha256": "3d5d84b165e1bcde7b12fa8c5ff5c8cfbd43d0b47417742b930869bd3558b473"
+    },
+    {
+      "kind": "lut6",
+      "checkpoint": "draft",
+      "tensor": "layers.0.self_attn.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "group_rows": 0,
+      "boundary_offset": 252,
+      "tile": 16,
+      "offset": 2691584,
+      "size": 788480,
+      "sha256": "1714b10e20077e7588fbc5819fc6d475ba171f972b8133e910fd4217d597e194"
+    },
+    {
+      "kind": "lut6",
+      "checkpoint": "draft",
+      "tensor": "layers.0.mlp.gate_proj.weight",
+      "shape": [
+        3072,
+        1024
+      ],
+      "group_rows": 0,
+      "boundary_offset": 378,
+      "engine_offsets": [
+        5057152,
+        5204864,
+        5352576,
+        5500288,
+        5648000,
+        5795712,
+        5943424,
+        6091136,
+        6238848,
+        6386560,
+        6534272,
+        6681984,
+        6829696,
+        6977408,
+        7125120,
+        7272832
+      ],
+      "tile": 32,
+      "size": 2361344,
+      "sha256": "f0383c38ffd19bf78c9c18d90e4ee9ddb502ca5bbed62a49a2e0ab32c7005672"
+    },
+    {
+      "kind": "lut6",
+      "checkpoint": "draft",
+      "tensor": "layers.0.mlp.up_proj.weight",
+      "shape": [
+        3072,
+        1024
+      ],
+      "group_rows": 0,
+      "boundary_offset": 504,
+      "tile": 32,
+      "offset": 7420416,
+      "size": 2361344,
+      "sha256": "0a338e555e048c95683c9c09d0315fd2cf663c050482d779ca476123b84f0e8a"
+    },
+    {
+      "kind": "lut6",
+      "checkpoint": "draft",
+      "tensor": "layers.0.mlp.down_proj.weight",
+      "shape": [
+        1024,
+        3072
+      ],
+      "group_rows": 0,
+      "boundary_offset": 630,
+      "tile": 32,
+      "offset": 9781760,
+      "size": 2361344,
+      "sha256": "82a296be4f2a6a64ffc9c792034c7f2c547617d7304d4656f3f1ed1364e10b33"
+    },
+    {
+      "kind": "lut6",
+      "checkpoint": "draft",
+      "tensor": "layers.1.self_attn.q_proj.weight",
+      "shape": [
+        2048,
+        1024
+      ],
+      "group_rows": 0,
+      "boundary_offset": 756,
+      "tile": 32,
+      "offset": 12143104,
+      "size": 1574912,
+      "sha256": "a0af32ad1cab11b7a1813de51d2f50d063776be8ab210cfb6b742d9424fe2c08"
+    },
+    {
+      "kind": "lut6",
+      "checkpoint": "draft",
+      "tensor": "layers.1.self_attn.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "group_rows": 0,
+      "boundary_offset": 882,
+      "tile": 16,
+      "offset": 13718016,
+      "size": 788480,
+      "sha256": "583ede6325810155c2f2134298b6c8fb3679274eab8c1870572e5e3f47235394"
+    },
+    {
+      "kind": "lut6",
+      "checkpoint": "draft",
+      "tensor": "layers.1.self_attn.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "group_rows": 0,
+      "boundary_offset": 1008,
+      "tile": 16,
+      "offset": 14506496,
+      "size": 788480,
+      "sha256": "6691f8ecb2f368151469800cf2d1f08b107d46530b23ac1b8efffe83f7cbd1ff"
+    },
+    {
+      "kind": "lut6",
+      "checkpoint": "draft",
+      "tensor": "layers.1.mlp.gate_proj.weight",
+      "shape": [
+        3072,
+        1024
+      ],
+      "group_rows": 0,
+      "boundary_offset": 1134,
+      "engine_offsets": [
+        16870016,
+        17017728,
+        17165440,
+        17313152,
+        17460864,
+        17608576,
+        17756288,
+        17904000,
+        18051712,
+        18199424,
+        18347136,
+        18494848,
+        18642560,
+        18790272,
+        18937984,
+        19085696
+      ],
+      "tile": 32,
+      "size": 2361344,
+      "sha256": "162dfa88b73a54be425750c51567a4f3f0526c82cee37c204084176d19f27832"
+    },
+    {
+      "kind": "lut6",
+      "checkpoint": "draft",
+      "tensor": "layers.1.mlp.up_proj.weight",
+      "shape": [
+        3072,
+        1024
+      ],
+      "group_rows": 0,
+      "boundary_offset": 1260,
+      "tile": 32,
+      "offset": 19233280,
+      "size": 2361344,
+      "sha256": "aba455609769c95e8dbe69b7ca45403cd8ea683d956ca762e994f91aa9012719"
+    },
+    {
+      "kind": "lut6",
+      "checkpoint": "draft",
+      "tensor": "layers.1.mlp.down_proj.weight",
+      "shape": [
+        1024,
+        3072
+      ],
+      "group_rows": 0,
+      "boundary_offset": 1386,
+      "tile": 32,
+      "offset": 21594624,
+      "size": 2361344,
+      "sha256": "bb7c21d4c8caab72bb7584a4c53f0997356172e662f3baf0239755683367926a"
+    },
+    {
+      "kind": "lut6",
+      "checkpoint": "draft",
+      "tensor": "layers.2.self_attn.q_proj.weight",
+      "shape": [
+        2048,
+        1024
+      ],
+      "group_rows": 0,
+      "boundary_offset": 1512,
+      "tile": 32,
+      "offset": 23955968,
+      "size": 1574912,
+      "sha256": "d4cc11096f9d74b55ec3b5796cdb7fdaea2eda2c536a81ecc0816ca003dfc198"
+    },
+    {
+      "kind": "lut6",
+      "checkpoint": "draft",
+      "tensor": "layers.2.self_attn.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "group_rows": 0,
+      "boundary_offset": 1638,
+      "tile": 16,
+      "offset": 25530880,
+      "size": 788480,
+      "sha256": "c45e34fa185ec3db5d98e99f16458c37a023a1ed47d4c18067997c25bd9a9833"
+    },
+    {
+      "kind": "lut6",
+      "checkpoint": "draft",
+      "tensor": "layers.2.self_attn.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "group_rows": 0,
+      "boundary_offset": 1764,
+      "tile": 16,
+      "offset": 26319360,
+      "size": 788480,
+      "sha256": "1a6b821373d98042a3e6355992b1e9f36ecaf0215fef4334eabb8d79873c1f4c"
+    },
+    {
+      "kind": "lut6",
+      "checkpoint": "draft",
+      "tensor": "layers.2.mlp.gate_proj.weight",
+      "shape": [
+        3072,
+        1024
+      ],
+      "group_rows": 0,
+      "boundary_offset": 1890,
+      "engine_offsets": [
+        28682880,
+        28830592,
+        28978304,
+        29126016,
+        29273728,
+        29421440,
+        29569152,
+        29716864,
+        29864576,
+        30012288,
+        30160000,
+        30307712,
+        30455424,
+        30603136,
+        30750848,
+        30898560
+      ],
+      "tile": 32,
+      "size": 2361344,
+      "sha256": "8d7e9ab55d05fff17b1020b3163bffb302c81c663a58366f9d9557a748c105d7"
+    },
+    {
+      "kind": "lut6",
+      "checkpoint": "draft",
+      "tensor": "layers.2.mlp.up_proj.weight",
+      "shape": [
+        3072,
+        1024
+      ],
+      "group_rows": 0,
+      "boundary_offset": 2016,
+      "tile": 32,
+      "offset": 31046144,
+      "size": 2361344,
+      "sha256": "8206b2d32e2b6cff4c4fa7ac84857273a2d9423d190a7ed6df3f01b24a748972"
+    },
+    {
+      "kind": "lut6",
+      "checkpoint": "draft",
+      "tensor": "layers.2.mlp.down_proj.weight",
+      "shape": [
+        1024,
+        3072
+      ],
+      "group_rows": 0,
+      "boundary_offset": 2142,
+      "tile": 32,
+      "offset": 33407488,
+      "size": 2361344,
+      "sha256": "71ea5384c4bc378b35e847c60e8b18ce39ab5744da7a624ca4ba88f86569a408"
+    },
+    {
+      "kind": "lut6",
+      "checkpoint": "draft",
+      "tensor": "layers.0.self_attn.o_proj.weight",
+      "shape": [
+        1024,
+        2048
+      ],
+      "group_rows": 0,
+      "boundary_offset": 2268,
+      "tile": 32,
+      "offset": 3482112,
+      "size": 1574912,
+      "sha256": "3dd47c653971c6c288c9cd80531d4e29d8d11e4c1edba964ee1ea5ef2134eb8f"
+    },
+    {
+      "kind": "lut6",
+      "checkpoint": "draft",
+      "tensor": "layers.1.self_attn.o_proj.weight",
+      "shape": [
+        1024,
+        2048
+      ],
+      "group_rows": 0,
+      "boundary_offset": 2394,
+      "tile": 32,
+      "offset": 15294976,
+      "size": 1574912,
+      "sha256": "193742f0cb0ae2a71241ebf089cc47e0f86bc757690f4d0668cc4473ea2663de"
+    },
+    {
+      "kind": "lut6",
+      "checkpoint": "draft",
+      "tensor": "layers.2.self_attn.o_proj.weight",
+      "shape": [
+        1024,
+        2048
+      ],
+      "group_rows": 0,
+      "boundary_offset": 2520,
+      "tile": 32,
+      "offset": 27107840,
+      "size": 1574912,
+      "sha256": "dcb483c81cdca8513df0eb2832e0e892f4f104cc36606dc22b212de14d338741"
+    },
+    {
+      "kind": "vector",
+      "checkpoint": "draft",
+      "tensor": "layers.0.input_layernorm.weight",
+      "shape": [
+        1024
+      ],
+      "offset": 317952,
+      "size": 2048,
+      "sha256": "c02234fb476b3e4817612e727ce439fa7030fc9c3566b4a761dccac7febedba8"
+    }
+  ]
+}

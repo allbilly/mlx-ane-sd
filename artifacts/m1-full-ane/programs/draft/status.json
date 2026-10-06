@@ -1,0 +1,126 @@
+{
+  "CompiledInputSourceFileName": "/Users/yeren/Desktop/mlx-ane-sd/.asahi/m1-full-stack-capture/programs/draft/model.mil",
+  "ErrorList": [],
+  "ModelMaxDramUsage": 41061880,
+  "NetworkStatusList": [
+    {
+      "LiveInputList": [
+        {
+          "BatchStride": 524288,
+          "Batches": 3,
+          "Channels": 8,
+          "Depth": 1,
+          "DepthStride": 524288,
+          "Height": 256,
+          "Interleave": 1,
+          "Name": "cache_k",
+          "PlaneCount": 24,
+          "PlaneStride": 65536,
+          "RowStride": 256,
+          "Symbol": "cache_k",
+          "Type": "Float16",
+          "Width": 128
+        },
+        {
+          "BatchStride": 524288,
+          "Batches": 3,
+          "Channels": 8,
+          "Depth": 1,
+          "DepthStride": 524288,
+          "Height": 256,
+          "Interleave": 1,
+          "Name": "cache_v",
+          "PlaneCount": 24,
+          "PlaneStride": 65536,
+          "RowStride": 256,
+          "Symbol": "cache_v",
+          "Type": "Float16",
+          "Width": 128
+        },
+        {
+          "BatchStride": 2048,
+          "Batches": 1,
+          "Channels": 1,
+          "Depth": 1,
+          "DepthStride": 2048,
+          "Height": 8,
+          "Interleave": 1,
+          "Name": "cos",
+          "PlaneCount": 1,
+          "PlaneStride": 2048,
+          "RowStride": 256,
+          "Symbol": "cos",
+          "Type": "Float16",
+          "Width": 128
+        },
+        {
+          "BatchStride": 16384,
+          "Batches": 1,
+          "Channels": 1,
+          "Depth": 1,
+          "DepthStride": 16384,
+          "Height": 8,
+          "Interleave": 1,
+          "Name": "hidden",
+          "PlaneCount": 1,
+          "PlaneStride": 16384,
+          "RowStride": 2048,
+          "Symbol": "hidden",
+          "Type": "Float16",
+          "Width": 1024
+        },
+        {
+          "BatchStride": 4608,
+          "Batches": 1,
+          "Channels": 1,
+          "Depth": 1,
+          "DepthStride": 4608,
+          "Height": 8,
+          "Interleave": 1,
+          "Name": "mask",
+          "PlaneCount": 1,
+          "PlaneStride": 4608,
+          "RowStride": 576,
+          "Symbol": "mask",
+          "Type": "Float16",
+          "Width": 264
+        },
+        {
+          "BatchStride": 2048,
+          "Batches": 1,
+          "Channels": 1,
+          "Depth": 1,
+          "DepthStride": 2048,
+          "Height": 8,
+          "Interleave": 1,
+          "Name": "sin",
+          "PlaneCount": 1,
+          "PlaneStride": 2048,
+          "RowStride": 256,
+          "Symbol": "sin",
+          "Type": "Float16",
+          "Width": 128
+        }
+      ],
+      "LiveOutputList": [
+        {
+          "BatchStride": 16384,
+          "Batches": 1,
+          "Channels": 1,
+          "Depth": 1,
+          "DepthStride": 16384,
+          "Height": 8,
+          "Interleave": 1,
+          "Name": "hidden_out@output",
+          "PlaneCount": 1,
+          "PlaneStride": 16384,
+          "RowStride": 2048,
+          "Symbol": "hidden_out@output",
+          "Type": "Float16",
+          "Width": 1024
+        }
+      ],
+      "Name": "main"
+    }
+  ]
+}

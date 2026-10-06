@@ -1,0 +1,383 @@
+{
+  "schema": 1,
+  "architecture": "H13G",
+  "hwx_sha256": "f63d8ce033a4141a533136a4e074a21724ec7d03a4c9880cd1e3839a3fdbe393",
+  "td_count": 2504,
+  "td_size": 504,
+  "tsk_size": 1646080,
+  "text_file_offset": 1081344,
+  "text_file_bytes": 1720320,
+  "buffers": [
+    {
+      "bank": 3,
+      "segment_index": 1,
+      "segment": "__DATA",
+      "bytes": 2195456,
+      "file_offset": 0,
+      "file_bytes": 0,
+      "role": "scratch"
+    },
+    {
+      "bank": 4,
+      "segment_index": 2,
+      "segment": "__FVMLIB",
+      "bytes": 7340032,
+      "file_offset": 0,
+      "file_bytes": 0,
+      "role": "surface"
+    },
+    {
+      "bank": 5,
+      "segment_index": 3,
+      "segment": "__FVMLIB",
+      "bytes": 7340032,
+      "file_offset": 0,
+      "file_bytes": 0,
+      "role": "surface"
+    },
+    {
+      "bank": 6,
+      "segment_index": 4,
+      "segment": "__FVMLIB",
+      "bytes": 16384,
+      "file_offset": 0,
+      "file_bytes": 0,
+      "role": "surface"
+    },
+    {
+      "bank": 7,
+      "segment_index": 5,
+      "segment": "__FVMLIB",
+      "bytes": 16384,
+      "file_offset": 0,
+      "file_bytes": 0,
+      "role": "surface"
+    },
+    {
+      "bank": 8,
+      "segment_index": 6,
+      "segment": "__FVMLIB",
+      "bytes": 16384,
+      "file_offset": 0,
+      "file_bytes": 0,
+      "role": "surface"
+    },
+    {
+      "bank": 9,
+      "segment_index": 7,
+      "segment": "__FVMLIB",
+      "bytes": 16384,
+      "file_offset": 0,
+      "file_bytes": 0,
+      "role": "surface"
+    },
+    {
+      "bank": 10,
+      "segment_index": 8,
+      "segment": "__FVMLIB",
+      "bytes": 16384,
+      "file_offset": 0,
+      "file_bytes": 0,
+      "role": "surface"
+    },
+    {
+      "bank": 11,
+      "segment_index": 9,
+      "segment": "__FVMLIB",
+      "bytes": 229376,
+      "file_offset": 0,
+      "file_bytes": 0,
+      "role": "surface"
+    },
+    {
+      "bank": 12,
+      "segment_index": 10,
+      "segment": "__FVMLIB",
+      "bytes": 229376,
+      "file_offset": 0,
+      "file_bytes": 0,
+      "role": "surface"
+    },
+    {
+      "bank": 13,
+      "segment_index": 11,
+      "segment": "__FVMLIB",
+      "bytes": 16384,
+      "file_offset": 0,
+      "file_bytes": 0,
+      "role": "surface"
+    },
+    {
+      "bank": 14,
+      "segment_index": 13,
+      "segment": "__KERN_0",
+      "bytes": 134103040,
+      "file_offset": 2801664,
+      "file_bytes": 134103040,
+      "role": "coefficient"
+    },
+    {
+      "bank": 15,
+      "segment_index": 14,
+      "segment": "__KERN_1",
+      "bytes": 32784384,
+      "file_offset": 136904704,
+      "file_bytes": 32784384,
+      "role": "coefficient"
+    }
+  ],
+  "io": [
+    {
+      "direction": "inputs",
+      "index": 0,
+      "name": "cache_k",
+      "bank": 4,
+      "allocation_bytes": 7340032,
+      "compiler_geometry": {
+        "BatchStride": 524288,
+        "Batches": 14,
+        "Channels": 8,
+        "Depth": 1,
+        "DepthStride": 524288,
+        "Height": 256,
+        "Interleave": 1,
+        "Name": "cache_k",
+        "PlaneCount": 112,
+        "PlaneStride": 65536,
+        "RowStride": 256,
+        "Symbol": "cache_k",
+        "Type": "Float16",
+        "Width": 128
+      }
+    },
+    {
+      "direction": "inputs",
+      "index": 1,
+      "name": "cache_v",
+      "bank": 5,
+      "allocation_bytes": 7340032,
+      "compiler_geometry": {
+        "BatchStride": 524288,
+        "Batches": 14,
+        "Channels": 8,
+        "Depth": 1,
+        "DepthStride": 524288,
+        "Height": 256,
+        "Interleave": 1,
+        "Name": "cache_v",
+        "PlaneCount": 112,
+        "PlaneStride": 65536,
+        "RowStride": 256,
+        "Symbol": "cache_v",
+        "Type": "Float16",
+        "Width": 128
+      }
+    },
+    {
+      "direction": "inputs",
+      "index": 2,
+      "name": "cos",
+      "bank": 7,
+      "allocation_bytes": 2048,
+      "compiler_geometry": {
+        "BatchStride": 2048,
+        "Batches": 1,
+        "Channels": 1,
+        "Depth": 1,
+        "DepthStride": 2048,
+        "Height": 8,
+        "Interleave": 1,
+        "Name": "cos",
+        "PlaneCount": 1,
+        "PlaneStride": 2048,
+        "RowStride": 256,
+        "Symbol": "cos",
+        "Type": "Float16",
+        "Width": 128
+      }
+    },
+    {
+      "direction": "inputs",
+      "index": 3,
+      "name": "hidden",
+      "bank": 8,
+      "allocation_bytes": 16384,
+      "compiler_geometry": {
+        "BatchStride": 16384,
+        "Batches": 1,
+        "Channels": 1,
+        "Depth": 1,
+        "DepthStride": 16384,
+        "Height": 8,
+        "Interleave": 1,
+        "Name": "hidden",
+        "PlaneCount": 1,
+        "PlaneStride": 16384,
+        "RowStride": 2048,
+        "Symbol": "hidden",
+        "Type": "Float16",
+        "Width": 1024
+      }
+    },
+    {
+      "direction": "inputs",
+      "index": 4,
+      "name": "mask",
+      "bank": 10,
+      "allocation_bytes": 4608,
+      "compiler_geometry": {
+        "BatchStride": 4608,
+        "Batches": 1,
+        "Channels": 1,
+        "Depth": 1,
+        "DepthStride": 4608,
+        "Height": 8,
+        "Interleave": 1,
+        "Name": "mask",
+        "PlaneCount": 1,
+        "PlaneStride": 4608,
+        "RowStride": 576,
+        "Symbol": "mask",
+        "Type": "Float16",
+        "Width": 264
+      }
+    },
+    {
+      "direction": "inputs",
+      "index": 5,
+      "name": "sin",
+      "bank": 13,
+      "allocation_bytes": 2048,
+      "compiler_geometry": {
+        "BatchStride": 2048,
+        "Batches": 1,
+        "Channels": 1,
+        "Depth": 1,
+        "DepthStride": 2048,
+        "Height": 8,
+        "Interleave": 1,
+        "Name": "sin",
+        "PlaneCount": 1,
+        "PlaneStride": 2048,
+        "RowStride": 256,
+        "Symbol": "sin",
+        "Type": "Float16",
+        "Width": 128
+      }
+    },
+    {
+      "direction": "outputs",
+      "index": 0,
+      "name": "captures",
+      "bank": 6,
+      "allocation_bytes": 16384,
+      "compiler_geometry": {
+        "BatchStride": 16384,
+        "Batches": 1,
+        "Channels": 1,
+        "Depth": 1,
+        "DepthStride": 16384,
+        "Height": 8,
+        "Interleave": 1,
+        "Name": "captures@output",
+        "PlaneCount": 1,
+        "PlaneStride": 16384,
+        "RowStride": 2048,
+        "Symbol": "captures@output",
+        "Type": "Float16",
+        "Width": 1024
+      }
+    },
+    {
+      "direction": "outputs",
+      "index": 1,
+      "name": "hidden_out",
+      "bank": 9,
+      "allocation_bytes": 16384,
+      "compiler_geometry": {
+        "BatchStride": 16384,
+        "Batches": 1,
+        "Channels": 1,
+        "Depth": 1,
+        "DepthStride": 16384,
+        "Height": 8,
+        "Interleave": 1,
+        "Name": "hidden_out@output",
+        "PlaneCount": 1,
+        "PlaneStride": 16384,
+        "RowStride": 2048,
+        "Symbol": "hidden_out@output",
+        "Type": "Float16",
+        "Width": 1024
+      }
+    },
+    {
+      "direction": "outputs",
+      "index": 2,
+      "name": "new_k",
+      "bank": 11,
+      "allocation_bytes": 229376,
+      "compiler_geometry": {
+        "BatchStride": 16384,
+        "Batches": 14,
+        "Channels": 8,
+        "Depth": 1,
+        "DepthStride": 16384,
+        "Height": 8,
+        "Interleave": 1,
+        "Name": "new_k@output",
+        "PlaneCount": 112,
+        "PlaneStride": 2048,
+        "RowStride": 256,
+        "Symbol": "new_k@output",
+        "Type": "Float16",
+        "Width": 128
+      }
+    },
+    {
+      "direction": "outputs",
+      "index": 3,
+      "name": "new_v",
+      "bank": 12,
+      "allocation_bytes": 229376,
+      "compiler_geometry": {
+        "BatchStride": 16384,
+        "Batches": 14,
+        "Channels": 8,
+        "Depth": 1,
+        "DepthStride": 16384,
+        "Height": 8,
+        "Interleave": 1,
+        "Name": "new_v@output",
+        "PlaneCount": 112,
+        "PlaneStride": 2048,
+        "RowStride": 256,
+        "Symbol": "new_v@output",
+        "Type": "Float16",
+        "Width": 128
+      }
+    }
+  ],
+  "active_bars": [
+    0,
+    1,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+  ],
+  "bootstrap_network_id": 64,
+  "original_network_id": 0,
+  "driver_synthesizes_bar1": true,
+  "task_descriptors_modified": false,
+  "linux_hardware_verified": false
+}

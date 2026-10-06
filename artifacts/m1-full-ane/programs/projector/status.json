@@ -1,0 +1,94 @@
+{
+  "CompiledInputSourceFileName": "/Users/yeren/Desktop/mlx-ane-sd/.asahi/m1-full-stack-capture/programs/projector/model.mil",
+  "ErrorList": [],
+  "ModelMaxDramUsage": 7501560,
+  "NetworkStatusList": [
+    {
+      "LiveInputList": [
+        {
+          "BatchStride": 2048,
+          "Batches": 1,
+          "Channels": 1,
+          "Depth": 1,
+          "DepthStride": 2048,
+          "Height": 8,
+          "Interleave": 1,
+          "Name": "cos",
+          "PlaneCount": 1,
+          "PlaneStride": 2048,
+          "RowStride": 256,
+          "Symbol": "cos",
+          "Type": "Float16",
+          "Width": 128
+        },
+        {
+          "BatchStride": 49152,
+          "Batches": 1,
+          "Channels": 1,
+          "Depth": 1,
+          "DepthStride": 49152,
+          "Height": 8,
+          "Interleave": 1,
+          "Name": "features",
+          "PlaneCount": 1,
+          "PlaneStride": 49152,
+          "RowStride": 6144,
+          "Symbol": "features",
+          "Type": "Float16",
+          "Width": 3072
+        },
+        {
+          "BatchStride": 2048,
+          "Batches": 1,
+          "Channels": 1,
+          "Depth": 1,
+          "DepthStride": 2048,
+          "Height": 8,
+          "Interleave": 1,
+          "Name": "sin",
+          "PlaneCount": 1,
+          "PlaneStride": 2048,
+          "RowStride": 256,
+          "Symbol": "sin",
+          "Type": "Float16",
+          "Width": 128
+        }
+      ],
+      "LiveOutputList": [
+        {
+          "BatchStride": 16384,
+          "Batches": 3,
+          "Channels": 8,
+          "Depth": 1,
+          "DepthStride": 16384,
+          "Height": 8,
+          "Interleave": 1,
+          "Name": "new_k@output",
+          "PlaneCount": 24,
+          "PlaneStride": 2048,
+          "RowStride": 256,
+          "Symbol": "new_k@output",
+          "Type": "Float16",
+          "Width": 128
+        },
+        {
+          "BatchStride": 16384,
+          "Batches": 3,
+          "Channels": 8,
+          "Depth": 1,
+          "DepthStride": 16384,
+          "Height": 8,
+          "Interleave": 1,
+          "Name": "new_v@output",
+          "PlaneCount": 24,
+          "PlaneStride": 2048,
+          "RowStride": 256,
+          "Symbol": "new_v@output",
+          "Type": "Float16",
+          "Width": 128
+        }
+      ],
+      "Name": "main"
+    }
+  ]
+}
