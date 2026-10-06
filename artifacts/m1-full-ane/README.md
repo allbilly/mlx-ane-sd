@@ -2,8 +2,9 @@
 
 This kit preserves the kernels for the measured M1 macOS result: **72.00 tok/s
 SD versus 45.19 tok/s MLX BF16 Metal (1.593×)** across four prompts, two passes
-and 100 generated tokens. It supplements the earlier
-[microkernel reference](../m1-ane-replay/README.md).
+and 100 generated tokens. The full-stack runner uses this kit and the public
+checkpoints. Older per-operation capture bundles are optional local debugging
+material and are kept outside Git.
 
 The full-stack reference is about **5.54 MB**. It contains no learned weight
 banks, embedding, compiler `weight.bin`, complete weight-bearing HWX files, or

@@ -2,7 +2,9 @@
 
 The full-stack reference is in
 [artifacts/m1-full-ane](../artifacts/m1-full-ane/README.md). It is approximately
-**5.54 MB**, alongside the earlier 45 MB microkernel reference. Model weights,
+**5.54 MB**. The earlier 44.9 MB microkernel bundle is preserved locally at
+`.asahi/compact-m1/archived-microkernel-reference/`, outside Git, and is not
+required by the full-stack runner. Model weights,
 compiler weight BLOBs, complete weight-bearing HWX files and bulk input/output
 dumps are excluded. Public checkpoints stay external; compact templates and
 recipes reconstruct every HWX byte locally. The superseded 1.106 GB packaging

@@ -185,19 +185,30 @@ Archive integrity verification passed: all **2,430 files** match their recorded
 hashes, and the archive SHA256 matches its sidecar. See
 [m1_macos_archive_verification.json](asahi/m1_macos_archive_verification.json).
 
-## Git-carried kernel reference for Asahi
+## Optional local microkernel reference
 
-The selected 20 successful cases are also extracted into the committed
-[M1 ANE reference](../artifacts/m1-ane-replay/README.md). Its three compressed,
-deduplicated pack files total **44.9 MB**, reconstructing 433 captured files:
+The selected 20 successful cases are also packaged locally at
+`.asahi/compact-m1/archived-microkernel-reference/`, outside Git. Its three
+compressed, deduplicated pack files total **44.9 MB**, reconstructing 433 captured files:
 20 complete offline HWX programs with embedded coefficients, descriptor and
 register streams, compiler bindings, real inputs, surface observations, and
 20 macOS golden outputs. Segment payload copies are regenerated from the HWX
 and verified against their recorded hashes.
 
-After Git pull, use the standard-library verification/extraction commands in
-that reference's README. All reconstructed files and regenerated segments were
-checked against the original capture. The full archive remains preserved.
+On the capture host, use the standard-library verification/extraction tools:
+
+```bash
+python3 scripts/package_m1_ane_reference.py verify \
+  .asahi/compact-m1/archived-microkernel-reference
+python3 scripts/package_m1_ane_reference.py extract \
+  .asahi/compact-m1/archived-microkernel-reference --out .asahi/m1-ane-replay
+```
+
+All reconstructed files and regenerated segments were checked against the
+original capture. The full archive remains preserved. This optional bundle is
+not required by the full-stack runner. After Git pull on Asahi, use the
+[compact full-stack kit](../artifacts/m1-full-ane/README.md) and its pinned public
+checkpoints for reconstruction and replay.
 This focused reference does not include the BF16 target, original source-weight
 BLOBs, failed trials, Instruments recordings or duplicate runtime temporary
 directories. The exact runtime-loaded HWX and live device data remain missing,
