@@ -1,12 +1,16 @@
 """Check real HWX planning failures and padded tensor transport without ANE."""
 import ctypes
+from contextlib import ExitStack,nullcontext,redirect_stdout
 import gzip
 import hashlib
+import io
 import json
 from pathlib import Path
 import struct
 import tempfile
+from types import ModuleType,SimpleNamespace
 import unittest
+from unittest.mock import Mock,patch
 import numpy as np
 from capture_m1_full_stack import pack_tensor,unpack_tensor
 from m1_ane_replay import plan,BOInit,BOFree,Submit
@@ -14,6 +18,7 @@ from m1_hwx_decode import container
 from run_m1_full_ane_replay import verify_tensors
 from package_m1_full_stack import verify_or_extract
 from m1_lut6_weights import Checkpoint,reconstruct,sha256
+import run_m1_full_ane_replay as runner
 
 
 class ReplayTests(unittest.TestCase):
@@ -98,6 +103,77 @@ class ReplayTests(unittest.TestCase):
         (self.root/'model.safetensors').write_bytes(b'not the pinned model')
         with self.assertRaisesRegex(ValueError,'Checkpoint differs'):
             Checkpoint(self.root,'0'*64)
+
+
+class BenchmarkTests(unittest.TestCase):
+    def exercise_benchmark(self,warmup_error=None):
+        """Exercise the CLI/receipt flow with a cold GPU and no ANE device."""
+        temporary=tempfile.TemporaryDirectory();self.addCleanup(temporary.cleanup)
+        root=Path(temporary.name);receipt=root/'bench.json'
+        bundle=Path(__file__).resolve().parent.parent/'artifacts/m1-full-ane'
+        stack=json.loads((bundle/'stack.json').read_text())
+        plans={info['program']:{'hwx_sha256':info['hwx_sha256']} for info in stack['artifacts']}
+        events=[];cold=True
+        def record(label,prompt,limit):
+            status=json.loads(receipt.read_text())['status']
+            events.append((label,prompt,limit,status))
+            return status
+        def stock(model,tokenizer,prompt,limit):
+            nonlocal cold
+            record('mlx_bf16',prompt,limit)
+            if warmup_error:raise warmup_error
+            rate=1.0 if cold else 100.0;cold=False
+            return {'tokens':[7]*limit,'generation_tokens':limit,'generation_tps':rate}
+        def ane(host,tokenizer,prompt,limit,speculative):
+            record('ane_lut6_sd' if speculative else 'ane_lut6_ar',prompt,limit)
+            return {'tokens':[7]*limit,'tok_per_s_decode':100.0}
+        def verified(root,programs,capture,values,result,save):
+            result['goldens_verified']=True;save()
+        model=Mock();tokenizer=SimpleNamespace(decode=lambda ids:str(ids))
+        mlx_lm=ModuleType('mlx_lm');mlx_lm.load=Mock(return_value=(model,tokenizer))
+        argv=['run_m1_full_ane_replay.py',str(bundle),'--mode','bench',
+              '--target',str(root/'target'),'--draft',str(root/'draft'),
+              '--cache',str(root/'cache'),'--max-new','12','--repeats','2','--out',str(receipt)]
+        with ExitStack() as context:
+            context.enter_context(patch('sys.argv',argv))
+            context.enter_context(patch.dict('sys.modules',{'mlx_lm':mlx_lm}))
+            for name,replacement in {
+                'check_sources':Mock(return_value=(stack,plans)),
+                'device_locks':lambda:nullcontext(),'device_path':lambda requested:root/'device',
+                'prepare':Mock(return_value=root/'cache'),'embedding':Mock(return_value=None),
+                'Program':Mock(),'verify_cases':verified,'FullANEStack':Mock(),
+                'stock_baseline':stock,'generate':ane,
+            }.items():context.enter_context(patch.object(runner,name,replacement))
+            context.enter_context(patch.object(runner,'os',SimpleNamespace(
+                open=Mock(return_value=99),close=Mock(),O_RDWR=runner.os.O_RDWR,O_CLOEXEC=runner.os.O_CLOEXEC)))
+            context.enter_context(redirect_stdout(io.StringIO()))
+            context.enter_context(patch('bench_macos_dflash.generate',side_effect=AssertionError('Custom MLX baseline used')))
+            if warmup_error:
+                with self.assertRaisesRegex(RuntimeError,str(warmup_error)):runner.main()
+            else:runner.main()
+        return json.loads(receipt.read_text()),events,model
+    def test_cold_stock_baseline_is_warmed_and_excluded_from_speedup(self):
+        result,events,model=self.exercise_benchmark()
+        self.assertEqual(result['status'],'complete');model.eval.assert_called_once()
+        self.assertEqual(len(result['warmup']['calls']),12)
+        self.assertTrue(result['warmup']['excluded_from_rows'])
+        self.assertEqual([event[3] for event in events],['warming']*12+['benchmarking']*24)
+        self.assertEqual([event[2] for event in events],[10]*12+[12]*24)
+        self.assertEqual({(row['name'],row['impl']) for row in result['warmup']['calls']},
+                         {(row['name'],row['impl']) for row in result['rows']})
+        self.assertEqual(len(result['rows']),24)
+        baseline=[row for row in result['rows'] if row['impl']=='mlx_bf16']
+        self.assertTrue(all(row['generation_tps']==row['tok_per_s_decode']==100.0 for row in baseline))
+        self.assertEqual(result['sd_vs_linux_mlx'],1.0)
+        self.assertIn('stream_generate',result['mlx_baseline'])
+        self.assertIn('first token excluded',result['timing_by_impl']['mlx_bf16'])
+    def test_failed_warmup_writes_failure_without_measured_rows(self):
+        result,events,_=self.exercise_benchmark(RuntimeError('GPU warm-up failed'))
+        self.assertEqual(result['status'],'failed')
+        self.assertEqual(result['error'],'GPU warm-up failed')
+        self.assertEqual(result['rows'],[])
+        self.assertEqual(result['warmup']['calls'],[])
+        self.assertEqual([event[3] for event in events],['warming'])
 
 
 if __name__=='__main__':unittest.main()

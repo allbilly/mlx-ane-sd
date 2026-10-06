@@ -15,7 +15,7 @@ import platform
 import statistics
 import time
 import numpy as np
-from bench_macos_dflash import device_locks
+from bench_macos_dflash import device_locks,stock_baseline
 from capture_m1_full_stack import sha256,pack_tensor
 from m1_lut6_weights import Checkpoint,prepare
 from m1_ane_replay import Program,device_path,plan
@@ -123,6 +123,14 @@ class MeasuredProgram:
         return outputs
 
 
+def mlx_baseline(model,tokenizer,prompt,limit):
+    """Use the same stock greedy generator and rate as the macOS receipt."""
+    row=stock_baseline(model,tokenizer,prompt,limit)
+    row['tok_per_s_decode']=row['generation_tps']
+    row['text']=tokenizer.decode(row['tokens'])
+    return row
+
+
 def main():
     ap=argparse.ArgumentParser(description=__doc__)
     ap.add_argument('root',type=Path)
@@ -148,9 +156,13 @@ def main():
         return
     if not args.out or args.out.exists():ap.error('--out must name a fresh receipt')
     result={'status':'waiting','host':platform.platform(),'mode':args.mode,'cases':[],'rows':[],
-            'max_new':args.max_new,'repeats':args.repeats,'timing':'decode only, last prompt token included; prefill and loading excluded',
+            'max_new':args.max_new,'repeats':args.repeats,'timing':'decode only; prefill, loading and warm-up excluded',
+            'timing_by_impl':{'mlx_bf16':'stock stream_generate generation_tps; time to first token excluded',
+                              'ane_lut6_ar':'host decode timer includes last prompt-token forward',
+                              'ane_lut6_sd':'host decode timer includes last prompt-token forward'},
+            'mlx_baseline':'mlx_lm.stream_generate, greedy temp=0, prefill_step_size=32; same as macOS receipt',
             'source_sha256':{n:sha256(Path(__file__).parent/n) for n in
-                             ('run_m1_full_ane_replay.py','m1_ane_replay.py','m1_full_ane_host.py','m1_lut6_weights.py','capture_m1_full_stack.py')},
+                             ('run_m1_full_ane_replay.py','m1_ane_replay.py','m1_full_ane_host.py','m1_lut6_weights.py','capture_m1_full_stack.py','bench_macos_dflash.py')},
             'model_checkpoints':{name:stack[name] for name in ('target','draft')},
             'program_sha256':{k:p['hwx_sha256'] for k,p in plans.items()},'goldens_verified':False}
     def save():
@@ -172,10 +184,9 @@ def main():
             result['status']='verifying';save()
             verify_cases(args.root,programs,capture,values,result,save)
             if args.mode=='bench':
-                import mlx.core as mx
                 from mlx_lm import load
-                from bench_macos_dflash import generate as baseline
                 model,tok=load(str(args.target))
+                model.eval()
                 # The factory is called during construction; bind owners afterwards.
                 wrappers=[]
                 def factory(info):
@@ -183,13 +194,21 @@ def main():
                     p=MeasuredProgram(programs[info['program']],None,label);wrappers.append(p);return p
                 host=FullANEStack(args.root,values,factory)
                 for p in wrappers:p.owner=host
+                def trial(label,prompt,limit):
+                    return mlx_baseline(model,tok,prompt,limit) if label=='mlx_bf16' else generate(host,tok,prompt,limit,label=='ane_lut6_sd')
+                result['status']='warming'
+                result['warmup']={'max_new':min(10,args.max_new),'excluded_from_rows':True,'calls':[]};save()
+                for g in capture['generations']:
+                    for label in ('mlx_bf16','ane_lut6_ar','ane_lut6_sd'):
+                        row=trial(label,g['prompt'],result['warmup']['max_new'])
+                        result['warmup']['calls'].append({'name':g['name'],'impl':label,'tokens':len(row['tokens'])});save()
                 result['status']='benchmarking';save()
                 for repeat in range(args.repeats):
                     for g in capture['generations']:
                         rows={}
                         order=('mlx_bf16','ane_lut6_ar','ane_lut6_sd') if repeat%2==0 else ('ane_lut6_sd','ane_lut6_ar','mlx_bf16')
                         for label in order:
-                            row=baseline(model,tok,None,g['prompt'],args.max_new,False) if label=='mlx_bf16' else generate(host,tok,g['prompt'],args.max_new,label=='ane_lut6_sd')
+                            row=trial(label,g['prompt'],args.max_new)
                             row.update(impl=label,name=g['name'],repeat=repeat+1)
                             result['rows'].append(row);rows[label]=row;save()
                             print(g['name'],repeat+1,label,round(row['tok_per_s_decode'],2),flush=True)

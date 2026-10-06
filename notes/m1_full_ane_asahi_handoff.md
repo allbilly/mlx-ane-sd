@@ -89,6 +89,13 @@ Compiler/loading interfaces were cross-checked with
 ## Asahi validation remains necessary
 
 Follow the bundle README for pinned `hf download` commands and Linux runs.
+Its offline commands select a macOS or Linux NumPy environment explicitly;
+the `asahi_python.sh` wrapper is used for Linux hardware verification and
+benchmarking. The Linux benchmark uses the same stock greedy
+`mlx_lm.stream_generate` baseline and `generation_tps` metric as the macOS
+receipt. All three configurations warm each of the four prompts before any
+measured row. Receipts keep those calls separate and state each configuration's
+timing convention.
 No macOS capture archive or compiler environment is needed. Reconstructed
 runtime binaries occupy approximately 502 MB locally; these contain model
 coefficients and are deliberately excluded from Git.

@@ -38,11 +38,19 @@ the captured CoreML ANE goldens. See
 
 ## Inspect and reconstruct
 
-From the repository root, use the existing Python/NumPy environment:
+From the repository root, select the existing Python/NumPy environment for
+the current OS. Planning and reconstruction use only NumPy and the standard
+library. On this macOS workspace the environment is `.asahi/venv-metal/`;
+on Asahi use `.venv-asahi/`:
 
 ```bash
-python3 scripts/package_m1_full_stack.py verify artifacts/m1-full-ane
-scripts/asahi_python.sh scripts/run_m1_full_ane_replay.py \
+# macOS:
+replay_python=.asahi/venv-metal/bin/python
+# On Asahi Linux, use this assignment instead:
+# replay_python=.venv-asahi/bin/python
+
+"$replay_python" scripts/package_m1_full_stack.py verify artifacts/m1-full-ane
+"$replay_python" scripts/run_m1_full_ane_replay.py \
   artifacts/m1-full-ane --mode plan
 
 hf download mlx-community/Qwen3-0.6B-bf16 \
@@ -56,7 +64,7 @@ hf download orestis-z/dflash-qwen3-0.6b-microcycle-dflash \
   --include 'config.json' 'model.safetensors'
 
 # Works offline on macOS or Linux once the checkpoints have been downloaded.
-scripts/asahi_python.sh scripts/run_m1_full_ane_replay.py \
+"$replay_python" scripts/run_m1_full_ane_replay.py \
   artifacts/m1-full-ane --mode reconstruct \
   --target .asahi/models/m1-full-ane-target \
   --draft .asahi/models/m1-full-ane-draft
@@ -98,8 +106,18 @@ scripts/asahi_python.sh scripts/run_m1_full_ane_replay.py \
 Each run requires a fresh receipt path. Verification generates all four
 100-token SD traces, checks every selected input/output hash and refuses a
 benchmark after a mismatch. The benchmark repeats verification, compares Linux
-MLX BF16 with LUT6 ANE AR and SD, and enforces SD/AR token identity. Partial
-results and failures are saved.
+stock greedy MLX BF16 (`mlx_lm.stream_generate`, temperature zero,
+`prefill_step_size=32`) with LUT6 ANE AR and SD, and enforces SD/AR token
+identity. This is the same baseline and reported `generation_tps` metric used
+in the macOS receipt. Before measured trials, all three configurations run each
+of the four prompts for up to ten tokens; those warm-up calls are recorded
+separately and excluded from benchmark rows and speedup calculations. Partial
+results and failures are saved, including failures during warm-up.
+
+Receipts document timing per configuration: the stock MLX rate excludes time
+to the first token, while ANE's host decode timer includes the last prompt-token
+forward. These follow the original macOS benchmark conventions. Loading,
+prefill and warm-up are excluded from reported throughput.
 
 ## Scope and remaining hardware work
 
