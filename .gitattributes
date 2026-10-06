@@ -1,0 +1,8 @@
+# Benchmark receipts and preserved sources are verified by their exact bytes.
+notes/m1_*.json -text
+
+# Full-stack kernels are weight-free compressed templates and quantizer recipes.
+artifacts/m1-full-ane/**/*.gz binary
+artifacts/m1-full-ane/*.npz binary
+artifacts/m1-full-ane/**/*.json -text
+artifacts/m1-full-ane/**/*.mil -text -whitespace

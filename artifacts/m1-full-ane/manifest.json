@@ -1,0 +1,149 @@
+{
+  "schema": 2,
+  "architecture": "H13G",
+  "cpu_subtype": 4,
+  "isa_version": 7,
+  "files": {
+    "cases/capture.json": {
+      "bytes": 942359,
+      "sha256": "ff094af6e2f988632aef03a56991b416b5f276e30d3356e38900f926d6953440"
+    },
+    "programs/draft/kernel.hwx.gz": {
+      "bytes": 62895,
+      "sha256": "c5e49c017a618f5609b27211ac92a7ad71c1759adab3e19a091d9078a5bfdb19"
+    },
+    "programs/draft/linux-plan.json": {
+      "bytes": 5866,
+      "sha256": "b6d5d2f08042804258b534610434cdd1dfea89ed92dc22258f8a4b8bc3b26c20"
+    },
+    "programs/draft/original.mil": {
+      "bytes": 90376,
+      "sha256": "952fe91512b4aa08b4da74c6e24ccd85c5b5a572141e99f3156c51a796e4a280"
+    },
+    "programs/draft/packing.json": {
+      "bytes": 10602,
+      "sha256": "3eba92d6b8d107d1b8291b6aed2c79678a5517f746a353e1ed53997fd450b25c"
+    },
+    "programs/draft/quantizer.bin.gz": {
+      "bytes": 1666,
+      "sha256": "15161a1cf5bb70d5416aadf1b8fd56801c4bbb8edf198ca88443a867bd8b8bd7"
+    },
+    "programs/draft/status.json": {
+      "bytes": 3143,
+      "sha256": "39b1315ae56976e35654f45bd5812d8dda188d0ee076e1c2ea0d8d90a68281ec"
+    },
+    "programs/head/kernel.hwx.gz": {
+      "bytes": 259730,
+      "sha256": "e3875f9edc682f5d7d49c88c67bc23af6ff235a4c26c73170663f76c60756c98"
+    },
+    "programs/head/linux-plan.json": {
+      "bytes": 15649,
+      "sha256": "728649567bb29688cfe8ebdd17aff8583409eba27b482360dead78c02a200dd9"
+    },
+    "programs/head/original.mil": {
+      "bytes": 12427,
+      "sha256": "c160fb3e5c6b9a3d17a80bf08aae0b2db9301699ec17d39aef874a0aaf43e06e"
+    },
+    "programs/head/packing.json": {
+      "bytes": 41053,
+      "sha256": "26bb72bf6c7a5fe0e533bf10984f69fb0d6562a8e8175a00c1422c36e0550626"
+    },
+    "programs/head/quantizer.bin.gz": {
+      "bytes": 505551,
+      "sha256": "c4e27453d0be9e990abd29c3cab25c0eba08a584deca6418cb2fb6bcc8369ded"
+    },
+    "programs/head/status.json": {
+      "bytes": 8801,
+      "sha256": "f534efd94d30b5c0154edcf18950fcfbcc84e76fe986ce8f2dd718af47fe2328"
+    },
+    "programs/projector/kernel.hwx.gz": {
+      "bytes": 15088,
+      "sha256": "b998e15b932fbfe652f072c46fe7e3e606b86549f6f527b9120ae8b6f69a8ae5"
+    },
+    "programs/projector/linux-plan.json": {
+      "bytes": 4414,
+      "sha256": "49488dafa8634f8bca73b018ad8e468f28615d189db122734e0ed255aba95b31"
+    },
+    "programs/projector/original.mil": {
+      "bytes": 25527,
+      "sha256": "48b7283a211ad98db3073b674cb8db55717c03e12dbf17c66d3f887abb4d626d"
+    },
+    "programs/projector/packing.json": {
+      "bytes": 3855,
+      "sha256": "e8d9fbc3e91a932627a491f6319351a70d8dae5ee16737b5f142a7bcc047a8ad"
+    },
+    "programs/projector/quantizer.bin.gz": {
+      "bytes": 687,
+      "sha256": "16afaf82d920540c985a0f9d146d9f8b7669c8bffb97630172c1492b5f784cef"
+    },
+    "programs/projector/status.json": {
+      "bytes": 2337,
+      "sha256": "f095a8fd486dfc7e834fbea2f94780277cff9438422da6bf4ba58c51452d6101"
+    },
+    "programs/target_0/kernel.hwx.gz": {
+      "bytes": 414122,
+      "sha256": "1e945f49df2493101a512e4a686a8776e7564a1b2b7e6f68af854e9c71fbd8de"
+    },
+    "programs/target_0/linux-plan.json": {
+      "bytes": 8284,
+      "sha256": "2c69da72e4ca33543813e2dd19f847dd4fd2963b103eeab09504c6d2d4070c78"
+    },
+    "programs/target_0/original.mil": {
+      "bytes": 428228,
+      "sha256": "6cb17e53d15b19ab4125b6f4e38929e97ee335aff357fc584864ec38feb7c28f"
+    },
+    "programs/target_0/packing.json": {
+      "bytes": 192419,
+      "sha256": "69490b3873627e816ccb044649f5c41ff6242a3534b2f5790bf0d2adfa503cca"
+    },
+    "programs/target_0/quantizer.bin.gz": {
+      "bytes": 688066,
+      "sha256": "12cfd5c7fe2f9a0d139b3b702fc82687d22734ec8244927452b8c89f6cf8ad37"
+    },
+    "programs/target_0/status.json": {
+      "bytes": 4408,
+      "sha256": "ed5d3b845b3630111bd0a1d349f2c00d2c9890ef33b03c2232f10d5954644910"
+    },
+    "programs/target_14/kernel.hwx.gz": {
+      "bytes": 414494,
+      "sha256": "b83ae539418ffee9b0bf88995994e917241186bfb955f3c09365eccecf460980"
+    },
+    "programs/target_14/linux-plan.json": {
+      "bytes": 8284,
+      "sha256": "dfb4ec0f503f991c0ad36ead412db9d5f913c8126473ba46118f1d11a2d93467"
+    },
+    "programs/target_14/original.mil": {
+      "bytes": 431472,
+      "sha256": "09c532d527107bf176b48a6ca3f65732f47fea4978a6b9390cb8f8e69ddb0e3d"
+    },
+    "programs/target_14/packing.json": {
+      "bytes": 192122,
+      "sha256": "bcdaece1de67a325cad568bed53f1fdd9d2cd03516e43d8a722b3210edbd7999"
+    },
+    "programs/target_14/quantizer.bin.gz": {
+      "bytes": 691125,
+      "sha256": "11e42fce9cdd08ae5772caea1483e4a7ac199bb38f3cc2037e7c65df0fbc7336"
+    },
+    "programs/target_14/status.json": {
+      "bytes": 4409,
+      "sha256": "27c799864c58d3a8aef46bc0179eb1c51734b010a372e535fd728aedaa178803"
+    },
+    "reconstruction.json": {
+      "bytes": 1869,
+      "sha256": "9149aeed73642bba8600f4b2fa0c094309d6559d6183ea59d907fa2331543ba4"
+    },
+    "rope.npz": {
+      "bytes": 40341,
+      "sha256": "12659ec071df2951c8c49a0f1ac4453d2730ba4498a72d4777e3fa1dd5df03a8"
+    },
+    "stack.json": {
+      "bytes": 5966,
+      "sha256": "56cb1afe852b8e94ff1751a72a72bba0ed802617ec923f92b0d01fc514698f0c"
+    }
+  },
+  "stored_bytes": 5537635,
+  "learned_weight_banks_included": false,
+  "captured_tensor_binaries_included": false,
+  "offline_hwx_evaluated": false,
+  "linux_replay_verified": false
+}

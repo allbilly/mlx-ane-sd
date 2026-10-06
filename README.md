@@ -8,42 +8,58 @@ Macs, then test whether heterogeneous ANE + GPU parallel execution (per the
 Apple [Mirror Speculative Decoding](https://arxiv.org/abs/2510.13161) paper)
 can push past it.
 
-**Tested on:** Mac mini M4 Pro, 64 GB.
+**Tested on:** Mac mini M4 Pro, 64 GB (macOS), and MacBook Air M1, 8 GB
+(macOS and Fedora Asahi Remix).
 
-## Current best (Qwen3-4B-bf16 target)
+## Current best (macOS and Asahi)
 
-Native Swift SD runner with **full ANE offload** — draft body + draft
-lm_head + full target (2×K=18 chunks) + target lm_head all on ANE; MLX
+On M4 Pro / Qwen3-4B, the native Swift SD runner uses **full ANE offload** —
+draft body + draft lm_head + full target (2×K=18 chunks) + target lm_head all on ANE; MLX
 only does token embedding + final norm (`dflash-sd` binary in
 `swift-bench/`):
 
 **Mean tok/s, 4-prompt bench at max_new=100 (all decode-only):**
 
-| config                                            | mean t/s | vs MLX bf16 baseline |
-|:--------------------------------------------------|---------:|---------------------:|
-| MLX bf16 baseline (no SD)                         |    29.27 |                1.00× |
-| dflash-mlx (custom MLX draft)                     |    43.6  |                1.49× |
-| Python F.1 (ANE draft + MLX target)               |    34.97 |                1.19× |
-| Swift `dflash-sd` (matches Python F.1)            |    34.05 |                1.16× |
-| + ANE LUT6 lm_head (draft-side)                   |    40.96 |                1.40× |
-| + LUT6 draft body                                 |    43.05 |                1.47× |
-| + K=18 partial target (**byte-identical output**) |    52.81 |                1.80× |
-| + chunked full target (per_tensor LUT6)           |    55.90 |                1.91× |
-| + chunked + ANE target lm_head (per_tensor)       |    62.78 |                2.14× |
-| **+ chunked pgc LUT6 + ANE target lm_head** (BEST) | **64.76**|            **2.21×** |
-| _(alt: 8bit target option, different quality)_    |    60.66 |                2.07× |
+| config | platform / target | mean t/s | vs local MLX bf16 baseline |
+|:--|:--|--:|--:|
+| MLX bf16 baseline (no SD) | M4 Pro macOS / Qwen3-4B | 29.27 | 1.00× |
+| dflash-mlx (custom MLX draft) | M4 Pro macOS / Qwen3-4B | 43.6 | 1.49× |
+| Python F.1 (ANE draft + MLX target) | M4 Pro macOS / Qwen3-4B | 34.97 | 1.19× |
+| Swift `dflash-sd` (matches Python F.1) | M4 Pro macOS / Qwen3-4B | 34.05 | 1.16× |
+| + ANE LUT6 lm_head (draft-side) | M4 Pro macOS / Qwen3-4B | 40.96 | 1.40× |
+| + LUT6 draft body | M4 Pro macOS / Qwen3-4B | 43.05 | 1.47× |
+| + K=18 partial target (**byte-identical output**) | M4 Pro macOS / Qwen3-4B | 52.81 | 1.80× |
+| + chunked full target (per_tensor LUT6) | M4 Pro macOS / Qwen3-4B | 55.90 | 1.91× |
+| + chunked + ANE target lm_head (per_tensor) | M4 Pro macOS / Qwen3-4B | 62.78 | 2.14× |
+| **+ chunked pgc LUT6 + ANE target lm_head** (BEST) | M4 Pro macOS / Qwen3-4B | **64.76** | **2.21×** |
+| _(alt: 8bit target option, different quality)_ | M4 Pro macOS / Qwen3-4B | 60.66 | 2.07× |
+| MLX bf16 baseline (no SD) | M1 macOS / Qwen3-0.6B | 45.19 | 1.000× |
+| Full LUT6 ANE AR (padded B=8) | M1 macOS / Qwen3-0.6B | 53.36 | 1.181× |
+| **Full LUT6 ANE SD** | M1 macOS / Qwen3-0.6B | **72.00** | **1.593×** |
+| MLX bf16 baseline (no SD) | M1 Asahi / Qwen3-0.6B | 36.22 | 1.000× |
+| Full LUT6 ANE AR (padded B=8) | M1 Asahi / Qwen3-0.6B | 51.94 | 1.434× |
+| **Full LUT6 ANE SD** | M1 Asahi / Qwen3-0.6B | **61.39** | **1.695×** |
 
-**Per-prompt (current best vs MLX bf16 baseline):**
+The M1 rows use the public Qwen3-0.6B DFlash pair and the same full-ANE offload
+method, with separate Metal and Vulkan baselines. Each speedup divides by the
+MLX baseline on that platform and model. macOS used two passes; the Asahi
+confirmation used four. The M1 target is LUT6 compressed: SD matches that
+compressed target, with **1,600 matching Asahi SD tokens**, but BF16 token
+identity is not claimed. Its same-target AR control computes padded B=8
+blocks; SD is **1.182×** that control on Asahi. See
+[Asahi setup, validation and receipts](asahi/README.md).
 
-| prompt    | MLX bf16 | current best | speedup |
-|:----------|---------:|-------------:|--------:|
-| capital   |    29.39 |        32.99 |   1.12× |
-| fibonacci |    29.25 |       140.82 |   4.81× |
-| math      |    29.17 |        48.48 |   1.66× |
-| story     |    29.26 |        36.74 |   1.26× |
+**Per-prompt (M4 Pro / Qwen3-4B and M1 Asahi / Qwen3-0.6B):**
 
-Fibonacci hits 4.8× because its draft acceptance is very high (7.6 tokens
-per cycle). Prose prompts gain less (draft accepts 1.8-1.9 tokens/cycle).
+| prompt | M4 MLX bf16 | M4 best SD | M4 speedup | M1 Asahi MLX bf16 | M1 Asahi SD | M1 speedup |
+|:--|--:|--:|--:|--:|--:|--:|
+| capital | 29.39 | 32.99 | 1.12× | 36.54 | 64.70 | 1.770× |
+| fibonacci | 29.25 | 140.82 | 4.81× | 35.59 | 68.98 | 1.938× |
+| math | 29.17 | 48.48 | 1.66× | 36.27 | 61.39 | 1.693× |
+| story | 29.26 | 36.74 | 1.26× | 36.48 | 50.50 | 1.384× |
+
+On M4 Pro, Fibonacci hits 4.8× because its draft acceptance is very high
+(7.6 tokens per cycle). Prose prompts gain less (draft accepts 1.8-1.9 tokens/cycle).
 
 **Quality trade-off**: at the byte-identical level, the K=18 partial
 config (52.81 t/s, 1.80×) is strictly equivalent to the MLX bf16 target.
@@ -51,7 +67,7 @@ Beyond that, LUT6 palettization of all 36 layers introduces minor drift
 on open-ended prompts (near-tie argmax flips); text stays coherent and
 semantically valid.
 
-### Hardware utilization during bench
+### M4 Pro hardware utilization during bench
 
 Per-cycle compute distribution (profiler-measured, averaged across 4
 prompts):
@@ -277,6 +293,8 @@ swift-bench/    # Swift: native dflash-sd runner + ANE latency bench
     dflash-sd/         # Full SD loop executable
     ane-latency-bench/ # ANE predict-only latency micro-bench
     target-load-test/  # Smoke test for MLX target loading + hidden capture
+asahi/          # Linux ANE transport and M1 setup/reproduction guide
+artifacts/      # Compact kernel templates and external-weight recipes
 notes/          # Per-phase findings, comparisons, characterization data
 README.md       # this file
 CLAUDE.md       # symlinked → README.md (project memory for Claude Code)
@@ -284,6 +302,19 @@ AGENTS.md       # symlinked → README.md (agent context)
 ```
 
 ## Environments
+
+### Asahi Linux
+
+The M1 runner reconstructs the compact kernel kit from pinned public BF16
+safetensors and submits all five programs through the Linux ANE driver. MLX
+Vulkan supplies the stock GPU baseline. The Python host shares cache and
+acceptance logic with the macOS CoreML adapter; native NEON readback reduces
+vocabulary outputs and copies only committed K/V rows.
+
+[Asahi support](asahi/README.md) contains the environment setup, `hf download`
+commands, verification and confirmed benchmark recipe.
+
+### macOS
 
 Two Python environments are assumed in this repo:
 
@@ -305,6 +336,8 @@ All public on HuggingFace.
 
 | Role                  | Model                                  | Notes |
 |:----------------------|:---------------------------------------|:------|
+| M1 target             | `mlx-community/Qwen3-0.6B-bf16`       | Public BF16 source; LUT6 ANE runtime |
+| M1 draft              | `orestis-z/dflash-qwen3-0.6b-microcycle-dflash` | Trained DFlash, 3 layers, B=8 |
 | Target (current)      | `mlx-community/Qwen3-4B-bf16`          | ~8 GB, tied embeddings |
 | Draft (current)       | `z-lab/Qwen3-4B-DFlash-b16`            | Block-diffusion, 5 layers, 16-token block |
 | Draft compiled (ANE)  | `/tmp/dflash_ane_accum_c/dflash_ane_accum.mlmodelc` | 1 GB, LUT-compressed by convert script |

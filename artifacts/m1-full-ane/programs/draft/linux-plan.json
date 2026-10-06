@@ -1,0 +1,274 @@
+{
+  "schema": 1,
+  "architecture": "H13G",
+  "hwx_sha256": "6a7edb1cfdd9c96fd1734c73b0a9d789b882097bb67ebb71991e80c7907f748e",
+  "td_count": 369,
+  "td_size": 504,
+  "tsk_size": 236032,
+  "text_file_offset": 81920,
+  "text_file_bytes": 245760,
+  "buffers": [
+    {
+      "bank": 3,
+      "segment_index": 1,
+      "segment": "__DATA",
+      "bytes": 2195456,
+      "file_offset": 0,
+      "file_bytes": 0,
+      "role": "scratch"
+    },
+    {
+      "bank": 4,
+      "segment_index": 2,
+      "segment": "__FVMLIB",
+      "bytes": 1572864,
+      "file_offset": 0,
+      "file_bytes": 0,
+      "role": "surface"
+    },
+    {
+      "bank": 5,
+      "segment_index": 3,
+      "segment": "__FVMLIB",
+      "bytes": 1572864,
+      "file_offset": 0,
+      "file_bytes": 0,
+      "role": "surface"
+    },
+    {
+      "bank": 6,
+      "segment_index": 4,
+      "segment": "__FVMLIB",
+      "bytes": 16384,
+      "file_offset": 0,
+      "file_bytes": 0,
+      "role": "surface"
+    },
+    {
+      "bank": 7,
+      "segment_index": 5,
+      "segment": "__FVMLIB",
+      "bytes": 16384,
+      "file_offset": 0,
+      "file_bytes": 0,
+      "role": "surface"
+    },
+    {
+      "bank": 8,
+      "segment_index": 6,
+      "segment": "__FVMLIB",
+      "bytes": 16384,
+      "file_offset": 0,
+      "file_bytes": 0,
+      "role": "surface"
+    },
+    {
+      "bank": 9,
+      "segment_index": 7,
+      "segment": "__FVMLIB",
+      "bytes": 16384,
+      "file_offset": 0,
+      "file_bytes": 0,
+      "role": "surface"
+    },
+    {
+      "bank": 10,
+      "segment_index": 8,
+      "segment": "__FVMLIB",
+      "bytes": 16384,
+      "file_offset": 0,
+      "file_bytes": 0,
+      "role": "surface"
+    },
+    {
+      "bank": 11,
+      "segment_index": 10,
+      "segment": "__KERN_0",
+      "bytes": 35454976,
+      "file_offset": 327680,
+      "file_bytes": 35454976,
+      "role": "coefficient"
+    }
+  ],
+  "io": [
+    {
+      "direction": "inputs",
+      "index": 0,
+      "name": "cache_k",
+      "bank": 4,
+      "allocation_bytes": 1572864,
+      "compiler_geometry": {
+        "BatchStride": 524288,
+        "Batches": 3,
+        "Channels": 8,
+        "Depth": 1,
+        "DepthStride": 524288,
+        "Height": 256,
+        "Interleave": 1,
+        "Name": "cache_k",
+        "PlaneCount": 24,
+        "PlaneStride": 65536,
+        "RowStride": 256,
+        "Symbol": "cache_k",
+        "Type": "Float16",
+        "Width": 128
+      }
+    },
+    {
+      "direction": "inputs",
+      "index": 1,
+      "name": "cache_v",
+      "bank": 5,
+      "allocation_bytes": 1572864,
+      "compiler_geometry": {
+        "BatchStride": 524288,
+        "Batches": 3,
+        "Channels": 8,
+        "Depth": 1,
+        "DepthStride": 524288,
+        "Height": 256,
+        "Interleave": 1,
+        "Name": "cache_v",
+        "PlaneCount": 24,
+        "PlaneStride": 65536,
+        "RowStride": 256,
+        "Symbol": "cache_v",
+        "Type": "Float16",
+        "Width": 128
+      }
+    },
+    {
+      "direction": "inputs",
+      "index": 2,
+      "name": "cos",
+      "bank": 6,
+      "allocation_bytes": 2048,
+      "compiler_geometry": {
+        "BatchStride": 2048,
+        "Batches": 1,
+        "Channels": 1,
+        "Depth": 1,
+        "DepthStride": 2048,
+        "Height": 8,
+        "Interleave": 1,
+        "Name": "cos",
+        "PlaneCount": 1,
+        "PlaneStride": 2048,
+        "RowStride": 256,
+        "Symbol": "cos",
+        "Type": "Float16",
+        "Width": 128
+      }
+    },
+    {
+      "direction": "inputs",
+      "index": 3,
+      "name": "hidden",
+      "bank": 7,
+      "allocation_bytes": 16384,
+      "compiler_geometry": {
+        "BatchStride": 16384,
+        "Batches": 1,
+        "Channels": 1,
+        "Depth": 1,
+        "DepthStride": 16384,
+        "Height": 8,
+        "Interleave": 1,
+        "Name": "hidden",
+        "PlaneCount": 1,
+        "PlaneStride": 16384,
+        "RowStride": 2048,
+        "Symbol": "hidden",
+        "Type": "Float16",
+        "Width": 1024
+      }
+    },
+    {
+      "direction": "inputs",
+      "index": 4,
+      "name": "mask",
+      "bank": 9,
+      "allocation_bytes": 4608,
+      "compiler_geometry": {
+        "BatchStride": 4608,
+        "Batches": 1,
+        "Channels": 1,
+        "Depth": 1,
+        "DepthStride": 4608,
+        "Height": 8,
+        "Interleave": 1,
+        "Name": "mask",
+        "PlaneCount": 1,
+        "PlaneStride": 4608,
+        "RowStride": 576,
+        "Symbol": "mask",
+        "Type": "Float16",
+        "Width": 264
+      }
+    },
+    {
+      "direction": "inputs",
+      "index": 5,
+      "name": "sin",
+      "bank": 10,
+      "allocation_bytes": 2048,
+      "compiler_geometry": {
+        "BatchStride": 2048,
+        "Batches": 1,
+        "Channels": 1,
+        "Depth": 1,
+        "DepthStride": 2048,
+        "Height": 8,
+        "Interleave": 1,
+        "Name": "sin",
+        "PlaneCount": 1,
+        "PlaneStride": 2048,
+        "RowStride": 256,
+        "Symbol": "sin",
+        "Type": "Float16",
+        "Width": 128
+      }
+    },
+    {
+      "direction": "outputs",
+      "index": 0,
+      "name": "hidden_out",
+      "bank": 8,
+      "allocation_bytes": 16384,
+      "compiler_geometry": {
+        "BatchStride": 16384,
+        "Batches": 1,
+        "Channels": 1,
+        "Depth": 1,
+        "DepthStride": 16384,
+        "Height": 8,
+        "Interleave": 1,
+        "Name": "hidden_out@output",
+        "PlaneCount": 1,
+        "PlaneStride": 16384,
+        "RowStride": 2048,
+        "Symbol": "hidden_out@output",
+        "Type": "Float16",
+        "Width": 1024
+      }
+    }
+  ],
+  "active_bars": [
+    0,
+    1,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11
+  ],
+  "bootstrap_network_id": 64,
+  "original_network_id": 0,
+  "driver_synthesizes_bar1": true,
+  "task_descriptors_modified": false,
+  "linux_hardware_verified": false
+}
