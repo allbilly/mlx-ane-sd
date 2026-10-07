@@ -5,9 +5,10 @@ two 14-layer target chunks, the draft context projector, three-layer draft and
 shared full-vocabulary head. The Python host supplies embeddings, cache updates
 and acceptance decisions. MLX/Vulkan runs the stock BF16 GPU baseline.
 
-The confirmed measurements and per-prompt comparison extend the
+The measurements and per-prompt comparison from main commit `a4b4c71`,
+revalidated on ANE hardware on 2026-10-07, extend the
 [main README table](../README.md#current-best-macos-and-asahi). They use four
-prompts, four passes and 100 generated tokens per trial. The public model pair
+prompts, ten passes and 100 generated tokens per trial. The public model pair
 fits this 8 GB M1; these measurements are separate from the M4 Pro/Qwen3-4B
 experiment.
 
@@ -101,7 +102,7 @@ scripts/asahi_python.sh scripts/run_m1_full_ane_replay.py \
   --transport resident --head-readback native \
   --verify-readback accepted-prefix --kv-readback prefix \
   --native-threads 1 --cpu-affinity 4,5,6,7 --cpu-util-min 1024 \
-  --warmup-new 100 --max-new 100 --repeats 4 \
+  --warmup-new 100 --max-new 100 --repeats 10 \
   --out notes/m1_linux_full_ane_bench_new.json
 ```
 
@@ -119,12 +120,26 @@ utilization hint apply equally to MLX, ANE AR and ANE SD, including new workers.
 They change no system governor or other process. `--transport reference
 --head-readback full` selects the earlier full-cache/readback control.
 
-The [four-pass confirmation receipt](../notes/m1_linux_full_ane_bench_uclamp_confirm_warm100_20261006.json)
-contains all 48 measured trials. All 1,600 SD tokens and acceptance/cache
-choices match the macOS compressed-target reference. Mean paired speedup is
-1.696×, maximum paired speedup 1.954× and maximum SD trial 69.12 tok/s. The
+The ten-pass hardware revalidation of main commit `a4b4c71` on 2026-10-07
+completed 120 measured trials: 40 trials per configuration, with four equally
+weighted prompts. Hardware
+verification passed all 72 selected calls / 588 output hashes and four full SD
+traces. All 4,000 measured SD tokens match the same LUT6 ANE AR target and the
+macOS compressed-target reference, including acceptance/cache choices. Mean
+rates are **36.48 tok/s MLX BF16**, **52.26 tok/s ANE AR** and **61.99 tok/s
+ANE SD**: SD is **1.699× MLX** and **1.186× padded ANE AR**. Mean paired speedup
+is 1.700×, maximum paired speedup 1.938× and maximum SD trial 69.93 tok/s.
+The ten SD pass means range from 61.58 to 62.25 tok/s, with sample standard
+deviation 0.22 tok/s across pass means. Each pass averages the same four prompts.
+
+All five reconstructed HWX hashes and both MLX binary hashes match the earlier
+run. The
+[historical Asahi branch receipt](../notes/m1_linux_full_ane_bench_uclamp_confirm_warm100_20261006.json)
+measured 36.22 / 51.94 / 61.39 tok/s for MLX / ANE AR / ANE SD. The ten-pass SD
+mean is 1.0% higher and the MLX mean is 0.7% higher. These are differences
+between measured runs, without isolating the effect of the code refactor. The
 [profile receipt](../notes/asahi/m1_full_ane_profile_uclamp_prefix_20261006.json)
-records phase costs separately from benchmark throughput.
+records historical branch phase costs separately from benchmark throughput.
 
 The target is LUT6 compressed, so near-tie logits may differ from BF16.
 SD must match the same LUT6 ANE AR target. That AR control uses padded B=8
@@ -157,8 +172,8 @@ and ANE math placement; fresh artifacts can differ after recompilation or
 palettization. The [original macOS receipt](../notes/m1_m4_recipe.json),
 [completed historical audit](../notes/m1_m4_recipe_audit.json) and
 [compact-reference validation](../notes/m1_compact_reference_validation.json)
-remain unchanged. They describe the measured historical code, rather than a
-new hardware run of this refactor.
+describe historical macOS measurements. The Linux main revalidation above
+tests the current shared host code on ANE hardware.
 
 The complete research history, earlier unsuccessful routes, source snapshots,
 capture tools and cleanup receipts remain on the

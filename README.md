@@ -36,27 +36,28 @@ only does token embedding + final norm (`dflash-sd` binary in
 | MLX bf16 baseline (no SD) | M1 macOS / Qwen3-0.6B | 45.19 | 1.000× |
 | Full LUT6 ANE AR (padded B=8) | M1 macOS / Qwen3-0.6B | 53.36 | 1.181× |
 | **Full LUT6 ANE SD** | M1 macOS / Qwen3-0.6B | **72.00** | **1.593×** |
-| MLX bf16 baseline (no SD) | M1 Asahi / Qwen3-0.6B | 36.22 | 1.000× |
-| Full LUT6 ANE AR (padded B=8) | M1 Asahi / Qwen3-0.6B | 51.94 | 1.434× |
-| **Full LUT6 ANE SD** | M1 Asahi / Qwen3-0.6B | **61.39** | **1.695×** |
+| MLX bf16 baseline (no SD) | M1 Asahi / Qwen3-0.6B | 36.48 | 1.000× |
+| Full LUT6 ANE AR (padded B=8) | M1 Asahi / Qwen3-0.6B | 52.26 | 1.433× |
+| **Full LUT6 ANE SD** | M1 Asahi / Qwen3-0.6B | **61.99** | **1.699×** |
 
 The M1 rows use the public Qwen3-0.6B DFlash pair and the same full-ANE offload
 method, with separate Metal and Vulkan baselines. Each speedup divides by the
-MLX baseline on that platform and model. macOS used two passes; the Asahi
-confirmation used four. The M1 target is LUT6 compressed: SD matches that
-compressed target, with **1,600 matching Asahi SD tokens**, but BF16 token
+MLX baseline on that platform and model. macOS used two passes; Asahi used ten
+in the 2026-10-07 hardware revalidation of main commit `a4b4c71`.
+The M1 target is LUT6 compressed: SD matches that
+compressed target, with **4,000 matching Asahi SD tokens**, but BF16 token
 identity is not claimed. Its same-target AR control computes padded B=8
-blocks; SD is **1.182×** that control on Asahi. See
+blocks; SD is **1.186×** that control on Asahi. See
 [Asahi setup, validation and receipts](asahi/README.md).
 
 **Per-prompt (M4 Pro / Qwen3-4B and M1 Asahi / Qwen3-0.6B):**
 
 | prompt | M4 MLX bf16 | M4 best SD | M4 speedup | M1 Asahi MLX bf16 | M1 Asahi SD | M1 speedup |
 |:--|--:|--:|--:|--:|--:|--:|
-| capital | 29.39 | 32.99 | 1.12× | 36.54 | 64.70 | 1.770× |
-| fibonacci | 29.25 | 140.82 | 4.81× | 35.59 | 68.98 | 1.938× |
-| math | 29.17 | 48.48 | 1.66× | 36.27 | 61.39 | 1.693× |
-| story | 29.26 | 36.74 | 1.26× | 36.48 | 50.50 | 1.384× |
+| capital | 29.39 | 32.99 | 1.12× | 36.72 | 65.61 | 1.787× |
+| fibonacci | 29.25 | 140.82 | 4.81× | 36.43 | 69.50 | 1.908× |
+| math | 29.17 | 48.48 | 1.66× | 35.99 | 61.88 | 1.720× |
+| story | 29.26 | 36.74 | 1.26× | 36.78 | 50.97 | 1.386× |
 
 On M4 Pro, Fibonacci hits 4.8× because its draft acceptance is very high
 (7.6 tokens per cycle). Prose prompts gain less (draft accepts 1.8-1.9 tokens/cycle).
